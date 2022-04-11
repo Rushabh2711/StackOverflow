@@ -1,5 +1,6 @@
 const express = require("express");
 var app = express();
+const cors = require('cors');
 
 const { mongoDB } = require("./mongoConfig");
 const mongoose = require("mongoose");
@@ -20,8 +21,18 @@ mongoose.connect(mongoDB, options, (err, res) => {
   }
 });
 
+var corsOptions = {
+  'origin': "http://localhost:3000",
+  'Access-Control-Allow-Origin': '*',
+  'credentials': 'true'
+};
+
+app.use(cors(corsOptions));
+
 app.get("/", (req, res) => {
   res.send("Hi from Stackoverflow!");
 });
 
-app.listen(3000);
+app.listen(3001, () => {
+  console.log('server is up and running on port 3001');
+})

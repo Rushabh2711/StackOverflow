@@ -2,10 +2,48 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import { Provider } from 'react-redux'
+import {createStore} from 'redux';
+import rootReducer from './reducers';
+
+const loadState = () => {
+  try {
+    const serializedState = localStorage.getItem('state');
+    if(serializedState === null) {
+      return undefined;
+    }
+    return JSON.parse(serializedState);
+  } catch (e) {
+    return undefined;
+  }
+};
+
+const saveState = (state) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('state', serializedState);
+  } catch (e) {
+    // Ignore write errors;
+  }
+};
+
+const peristedState = loadState();
+
+const store = createStore(
+  rootReducer,
+  peristedState,
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+  );
+
+  store.subscribe(() => {
+    saveState(store.getState());
+  });
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById('root')
 );
