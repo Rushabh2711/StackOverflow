@@ -34,10 +34,12 @@ class PostController {
     }
   };
 
-  getPosts = async (req, res) => {
+  getAllQuestions = async (req, res) => {
     try {
       console.log("Get all posts");
-      const response = await Post.findAll();
+      const response = await Post.find({
+        postTypeId: 1,
+      });
       res.status(200).send({
         posts: response,
       });
@@ -46,7 +48,30 @@ class PostController {
     }
   };
 
-  getPostsByUser = async (req, res) => {
+  fetchQuestionDetails = async (req, res) => {
+    console.log("Inside post controller, about to make Kafka request");
+
+    const message = {};
+    message.body = req.params;
+    message.path = req.route.path;
+
+    make_request("post", message, (err, results) => {
+      if (err) {
+        console.error(err);
+        res.json({
+          status: "Error",
+          msg: "System error, try again",
+        });
+      } else {
+        console.log("Fetched question details with kafka-backend");
+        console.log(results);
+        res.json(results);
+        res.end();
+      }
+    });
+  };
+
+  getQuestionsAskedByUser = async (req, res) => {
     try {
       const response = await Post.find({
         ownerId: req.params.userId,
@@ -58,8 +83,6 @@ class PostController {
       console.error(err);
     }
   };
-
-  fetchPostDetails = async (req, res) => {};
 }
 
 export default PostController;

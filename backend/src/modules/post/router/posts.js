@@ -5,8 +5,9 @@ const postRouter = express.Router();
 
 const postController = new PostController();
 
-postRouter.post("/user/addPost", postController.create);
-postRouter.get("/getAllPosts", postController.getPosts);
-postRouter.get("/user/getPosts", postController.getPostsByUser);
+postRouter.post("/questions/ask", postController.create);
+postRouter.get("/questions", postController.getAllQuestions);
+postRouter.get("/questions/:questionId", postController.fetchQuestionDetails);
+postRouter.get("/user/questions", postController.getQuestionsAskedByUser);
 
 export default postRouter;
