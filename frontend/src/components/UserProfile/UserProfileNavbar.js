@@ -17,7 +17,7 @@ export default function UserProfileNavbar(props) {
   });
 
   const activityClickHandler = (e) => {
-    navigate("/users/activity/" + user.user_id);
+    navigate("/users/activity/answers/" + user.user_id);
   };
 
   const profileClickHandler = (e) => {
