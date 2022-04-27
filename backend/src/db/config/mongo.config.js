@@ -3,7 +3,7 @@ import app from "../../../app.js";
 
 const mongoInit = () => {
   let mongoUri =
-    "mongodb+srv://root:ylSa1QF0B4cv61BT@cluster0.s2g55.mongodb.net/stackoverflow?retryWrites=true&w=majority";
+    "mongodb+srv://root:hPchUowqPX2iz2t9@stackoverflow-cluster.mic5y.mongodb.net/stackoverflow?retryWrites=true&w=majority";
   try {
     mongoose.connect(mongoUri, {
       useNewUrlParser: true,
