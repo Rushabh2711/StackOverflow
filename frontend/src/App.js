@@ -1,4 +1,9 @@
+// Import CSS
 import './App.css';
+
+// Import Components
+import Navbar from './Navbar.js';
+// Import Dependencies
 import {
   BrowserRouter,
   Routes,
@@ -9,9 +14,8 @@ import {
 function App() {
   return (
     <div className="App">
-      Hello
-      {/* <Navbar/>
-          <BrowserRouter>
+      <Navbar/>
+          {/* <BrowserRouter>
             <Routes>
               <Route path="/" element={<Home handleIconclick={handleIconclick}/>} />/>
             </Routes>
