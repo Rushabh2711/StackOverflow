@@ -1,6 +1,5 @@
 import { make_request } from "../../../../kafka/client.js";
 import Questions from "../../../db/models/mongo/question.js";
-import QuestionViews from "../../../db/models/mongo/questionViews.js";
 
 class QuestionController {
   postQuestion = async (req, res) => {
@@ -15,6 +14,7 @@ class QuestionController {
         addedAt: time.toISOString(),
         modifiedTime: time.toISOString(),
         userId: req.body.userId,
+        username: req.body.username,
       });
       const response = await newQuestion.save();
       res.status(200).send(response);
@@ -51,12 +51,20 @@ class QuestionController {
       const questionPostedDate = new Date(questionPostedDateString);
       const today = new Date();
       const difference = today.getTime() - questionPostedDate.getTime();
-      console.log(difference + " since question was posted");
-      return difference;
+      let seconds = difference / 1000;
+      let minutes = seconds / 60;
+      let hours = minutes / 60;
+      if (seconds < 60) {
+        return Math.floor(seconds) + "s";
+      } else if (minutes < 60) {
+        return Math.floor(minutes) + "m";
+      } else {
+        return Math.floor(hours) + "h";
+      }
     };
 
     try {
-      let questions = Questions.find(
+      let questions = await Questions.find(
         {},
         { answers: 0, questionComments: 0, Activity: 0 }
       );
@@ -68,14 +76,15 @@ class QuestionController {
           tags: question.tags,
           upvotes: question.upvotes,
           numberOfAnswers: question.numberOfAnswers,
-          numberOfViews: QuestionViews.findById({ questionId: question._id })
-            .views,
+          views: question.views,
+          userId: question.userId,
+          username: question.username,
           relativeTimePosted: computeTimeElapsed(question.addedAt),
         })
       );
 
       res.status(200).send(results);
-    } catch (error) {
+    } catch (err) {
       console.error(err);
     }
   };
@@ -102,28 +111,25 @@ class QuestionController {
   };
 
   getQuestionsAskedByUser = async (req, res) => {
-    // try {
-    //   const response = await Post.find({
-    //     ownerId: req.params.userId,
-    //   });
-    //   res.status(200).send({
-    //     userPosts: response,
-    //   });
-    // } catch (err) {
-    //   console.error(err);
-    // }
+    const { userId } = req.params;
+    try {
+      const response = await Questions.find({ userId: userId });
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   bookmark = async (req, res) => {};
 
   removeBookmark = async (req, res) => {};
 
-  postAnswer = async (req, res) => {};
-
   votePost = async (req, res) => {
     //type -> question/answer
     //downvote/upvote
   };
+
+  postAnswer = async (req, res) => {};
 
   postComment = async (req, res) => {};
 }

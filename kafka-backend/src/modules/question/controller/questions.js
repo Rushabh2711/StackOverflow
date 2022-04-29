@@ -12,6 +12,12 @@ class QuestionController {
     const questionId = data.questionId;
     const date = moment().format("MM-DD-YYYY");
     try {
+      const result = await Questions.updateOne(
+        { _id: questionId },
+        { $inc: { views: 1 } }
+      );
+      console.log(result);
+
       const res = await QuestionViews.updateOne(
         { questionId: questionId, date: date },
         {
