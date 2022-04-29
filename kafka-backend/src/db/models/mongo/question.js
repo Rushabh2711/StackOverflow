@@ -19,8 +19,9 @@ const questionSchema = new Schema({
       downvotes: { type: Number, default: 0 },
       comments: [
         {
-          Description: { type: String, required: true },
+          description: { type: String, required: true },
           userId: { type: String, required: true },
+          postedOn: { type: Date, required: true },
         },
       ],
       createdTime: { type: Date, required: true },
@@ -32,6 +33,7 @@ const questionSchema = new Schema({
     {
       description: { type: String, required: true },
       userId: { type: String, required: true },
+      postedOn: { type: Date, required: true },
     },
   ],
   userId: { type: String, required: true, index: true },

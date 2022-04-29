@@ -20,6 +20,7 @@ class QuestionController {
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
+      res.status(400).send(err);
     }
   };
 
@@ -86,6 +87,7 @@ class QuestionController {
       res.status(200).send(results);
     } catch (err) {
       console.error(err);
+      res.status(400).send(err);
     }
   };
 
@@ -117,6 +119,7 @@ class QuestionController {
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
+      res.status(400).send(err);
     }
   };
 
@@ -125,13 +128,105 @@ class QuestionController {
   removeBookmark = async (req, res) => {};
 
   votePost = async (req, res) => {
-    //type -> question/answer
-    //downvote/upvote
+    const { voteType, postType, questionId } = req.body;
+    let response;
+
+    try {
+      if (postType == "Question") {
+        const filter = { _id: questionId };
+        const update =
+          voteType == "Upvote"
+            ? { $inc: { upvotes: 1 } }
+            : { $inc: { downvotes: 1 } };
+
+        response = await Questions.findOneAndUpdate(filter, update);
+      }
+
+      if (postType == "Answer") {
+        // const question = await Questions.findById({ _id: questionId });
+        const _id = req.body.answerId;
+        // const answer = question.answers.id(_id);
+        // answer.set();
+        const update =
+          voteType == "Upvote"
+            ? { $inc: { "answers.$[a].upvotes": 1 } }
+            : { $dec: { "answers.$[a].downvotes": 1 } };
+
+        response = await Questions.findOneAndUpdate(
+          { _id: questionId },
+          update,
+          { arrayFilters: [{ "a._id": _id }] }
+        );
+      }
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
   };
 
-  postAnswer = async (req, res) => {};
+  postAnswer = async (req, res) => {
+    console.log("Inside question controller, about to make Kafka request");
+    const message = {};
+    message.body = req.body;
+    message.path = req.route.path;
+    make_request("question", message, (err, results) => {
+      if (err) {
+        console.error(err);
+        res.json({
+          status: "Error",
+          msg: "System error, try again",
+        });
+      } else {
+        console.log("Post answer with kafka-backend");
+        console.log(results);
+        res.json(results);
+        res.end();
+      }
+    });
+  };
 
-  postComment = async (req, res) => {};
+  postCommentToQuestion = async (req, res) => {
+    const { questionId, description, userId } = req.params;
+    let time = new Date();
+
+    const comment = {
+      description: description,
+      userId: userId,
+      postedOn: time.toISOString(),
+    };
+
+    try {
+      const response = await Questions.findByIdAndUpdate(questionId, {
+        $push: { questionComments: comment },
+      });
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+
+  postCommentToAnswer = async (req, res) => {
+    console.log("Inside question controller, about to make Kafka request");
+    const message = {};
+    message.body = req.body;
+    message.path = req.route.path;
+    make_request("question", message, (err, results) => {
+      if (err) {
+        console.error(err);
+        res.json({
+          status: "Error",
+          msg: "System error, try again",
+        });
+      } else {
+        console.log("Fetched question details with kafka-backend");
+        console.log(results);
+        res.json(results);
+        res.end();
+      }
+    });
+  };
 }
 
 export default QuestionController;

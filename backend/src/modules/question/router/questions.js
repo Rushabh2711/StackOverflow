@@ -12,8 +12,14 @@ questionRouter.post("/question/bookmark", questionController.bookmark);
 questionRouter.post("/question/unbookmark", questionController.removeBookmark);
 questionRouter.put("/votePost", questionController.votePost);
 questionRouter.put("/question/postAnswer", questionController.postAnswer);
-questionRouter.put("/question/postComment", questionController.postComment);
-
+questionRouter.put(
+  "/question/postComment",
+  questionController.postCommentToQuestion
+);
+questionRouter.put(
+  "/answer/postComment",
+  questionController.postCommentToAnswer
+);
 questionRouter.get(
   "/questions/:questionId",
   questionController.fetchQuestionDetails
