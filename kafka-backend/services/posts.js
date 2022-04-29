@@ -1,17 +1,17 @@
-import PostController from "../src/modules/post/controller/posts.js";
+import QuestionController from "../src/modules/question/controller/questions.js";
 
-const handlePostRequest = async (req, callback) => {
+const handleQuestionRequest = async (req, callback) => {
   console.log("----------------", req.path, "----------------");
 
-  const postController = new PostController();
+  const questionController = new QuestionController();
   let results;
   switch (req.path) {
     case "/questions/:questionId":
-      results = await postController.fetchQuestionDetails(req.body);
+      results = await questionController.fetchQuestionDetails(req.body);
       break;
   }
 
   callback(null, results);
 };
 
-export default handlePostRequest;
+export default handleQuestionRequest;
