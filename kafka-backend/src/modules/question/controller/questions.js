@@ -12,6 +12,12 @@ class QuestionController {
     const questionId = data.questionId;
     const date = moment().format("MM-DD-YYYY");
     try {
+      const result = await Questions.updateOne(
+        { _id: questionId },
+        { $inc: { views: 1 } }
+      );
+      console.log(result);
+
       const res = await QuestionViews.updateOne(
         { questionId: questionId, date: date },
         {
@@ -24,6 +30,7 @@ class QuestionController {
         { upsert: true }
       );
       console.log(res);
+      return this.responseGenerator(200, res);
     } catch (err) {
       console.error("Error when adding view count to question view ", err);
     }
@@ -60,6 +67,52 @@ class QuestionController {
         404,
         "Error when fetching question details"
       );
+    }
+  };
+
+  postAnswer = async (data) => {
+    console.log(data);
+    const questionId = data.questionId;
+    const time = new Date();
+
+    const answer = {
+      userId: data.userId,
+      description: data.description,
+      createdTime: time.toISOString(),
+      modifiedTime: time.toISOString(),
+    };
+
+    try {
+      const response = await Questions.findByIdAndUpdate(questionId, {
+        $push: { answers: answer },
+      });
+
+      console.log(JSON.stringify(response));
+      return this.responseGenerator(200, "Added new answer to question");
+    } catch (err) {
+      console.error("Error when posting answer ", err);
+    }
+  };
+
+  postCommentToAnswer = async (data) => {
+    const questionId = data.questionId;
+    const time = new Date();
+
+    const comment = {
+      userId: data.userId,
+      description: data.description,
+      postedOn: time.toISOString(),
+    };
+
+    try {
+      const response = await Questions.findByIdAndUpdate(questionId, {
+        $push: { "answers.comments": comment },
+      });
+
+      console.log(JSON.stringify(response));
+      return this.responseGenerator(200, "Added new comment to answer");
+    } catch (err) {
+      console.error("Error when posting comment to answer ", err);
     }
   };
 }
