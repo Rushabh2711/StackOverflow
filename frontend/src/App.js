@@ -1,9 +1,14 @@
+
 // Import CSS
 import './App.css';
 
 // Import Pages
 import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
+import SignUp from "./pages/SignUp";
+import Login from "./pages/Login";
+import UserProfile from "./pages/UserProfile";
+import UserActivity from "./pages/UserActivity";
 
 // Import Dependencies
 import {
@@ -87,6 +92,7 @@ export default function App() {
   }
   return (
     <div className="App">
+
       <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <Navbar />
@@ -134,7 +140,7 @@ export default function App() {
       {/* <Navbar/> */}
       {/* <Demo/> */}
       
-          
+
     </div>
   );
 }
