@@ -4,6 +4,7 @@ import Typography from "@mui/material/Typography";
 import CakeIcon from "@mui/icons-material/Cake";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Moment from "react-moment";
 
 export default function UserDetails(props) {
   const [image, setImage] = useState("");
@@ -47,14 +48,17 @@ export default function UserDetails(props) {
                 <CakeIcon />
               </Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3.5}>
               <Typography
                 color="text.secondary"
                 align="left"
                 sx={{ fontSize: 15, color: "#9e9e9e" }}
                 gutterBottom
               >
-                Member for
+                Member for{" "}
+                <Moment fromNow ago>
+                  {user.joiningDate}
+                </Moment>
               </Typography>
             </Grid>
             <Grid item xs={0.5}>
@@ -74,7 +78,7 @@ export default function UserDetails(props) {
                 sx={{ fontSize: 15, color: "#9e9e9e" }}
                 gutterBottom
               >
-                Last seen
+                Last seen <Moment fromNow>{user.visitedTime}</Moment>
               </Typography>
             </Grid>
           </Grid>

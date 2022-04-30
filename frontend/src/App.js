@@ -9,6 +9,7 @@ import UserActivityTags from "./pages/UserActivityTags";
 import UserActivityBadges from "./pages/UserActivityBadges";
 import UserActivityBookmarks from "./pages/UserActivityBookmarks";
 import UserActivityReputation from "./pages/UserActivityReputation";
+import UserEditProfile from "./pages/UserEditProfile";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/users/profile/:id" element={<UserProfile />} />
+          <Route path="/users/editprofile/:id" element={<UserEditProfile />} />
           <Route
             path="/users/activity/answers/:id"
             element={<UserActivityAnswers />}
