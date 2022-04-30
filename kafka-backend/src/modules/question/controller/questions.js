@@ -1,5 +1,6 @@
 import Questions from "../../../db/models/mongo/question.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
+import moment from "moment";
 
 class QuestionController {
   responseGenerator = (statusCode, message) => ({
@@ -7,41 +8,20 @@ class QuestionController {
     response: message,
   });
 
-  addView = async (data) => {
-    console.log(data);
-    const questionId = data.questionId;
-    const date = moment().format("MM-DD-YYYY");
-    try {
-      const res = await QuestionViews.updateOne(
-        { questionId: questionId, date: date },
-        {
-          $set: {
-            questionId: questionId,
-            date: date,
-          },
-          $inc: { views: 1 },
-        },
-        { upsert: true }
-      );
-      console.log(res);
-    } catch (err) {
-      console.error("Error when adding view count to question view ", err);
-    }
-  };
-
   fetchQuestionDetails = async (data) => {
     console.log(data);
     const questionId = data.questionId;
     try {
-      const questionDetails = await Questions.find({ id: questionId });
-      const questionViews = await QuestionViews.findById({
+      const questionDetails = await Questions.findById({ _id: questionId });
+      console.log("questionDetails",questionDetails);
+      const questionViews = await QuestionViews.find({
         questionId: questionId,
       });
       console.log(JSON.stringify(questionDetails));
       const result = {
         questionId: questionDetails._id,
         questionTitle: questionDetails.title,
-        numberOfViews: questionViews.views,
+        views: questionViews[0].views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
         modifiedTime: questionDetails.modifiedTime,
@@ -60,6 +40,90 @@ class QuestionController {
         404,
         "Error when fetching question details"
       );
+    }
+  };
+
+  addView = async (data) => {
+    console.log(data);
+    const questionId = data.questionId;
+    console.log("qid",questionId);
+    const date = moment().format("MM-DD-YYYY");
+    try {
+      const result = await Questions.updateOne(
+        { _id: questionId },
+        { $inc: { views: 1 } }
+      );
+      console.log(result);
+
+      const res = await QuestionViews.updateOne(
+        { questionId: questionId, date: date },
+        {
+          $set: {
+            questionId: questionId,
+            date: date,
+          },
+          $inc: { views: 1 },
+        },
+        { upsert: true }
+      );
+      console.log(res);
+      return this.responseGenerator(200, res);
+    } catch (err) {
+      console.error("Error when adding view count to question view ", err);
+    }
+  };
+
+  postAnswer = async (data) => {
+    console.log(data);
+    const questionId = data.questionId;
+    const time = new Date();
+
+    const answer = {
+      userId: data.userId,
+      description: data.description,
+      createdTime: time.toISOString(),
+      modifiedTime: time.toISOString(),
+    };
+
+    try {
+      const response = await Questions.findByIdAndUpdate(questionId, {
+        $push: { answers: answer },
+      });
+
+      console.log(JSON.stringify(response));
+      return this.responseGenerator(200, "Added new answer to question");
+    } catch (err) {
+      console.error("Error when posting answer ", err);
+    }
+  };
+
+  postCommentToAnswer = async (data) => {
+    const questionId = data.questionId;
+    const time = new Date();
+
+    const comment = {
+      userId: data.userId,
+      description: data.description,
+      postedOn: time.toISOString(),
+    };
+
+    try {
+      const comments = await Questions.findOneAndUpdate(
+        {
+          _id: questionId,
+          'answers._id': data.answerId,
+        },
+        {
+          $push: { 'answers.$.comments': comment },
+        },
+        {
+          upsert: true
+        }
+      );
+      console.log(JSON.stringify(comments));
+      return this.responseGenerator(200, "Added new comment to answer");
+    } catch (err) {
+      console.error("Error when posting comment to answer ", err);
     }
   };
 }
