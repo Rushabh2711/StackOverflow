@@ -9,6 +9,15 @@ const handleQuestionRequest = async (req, callback) => {
     case "/questions/:questionId":
       results = await questionController.fetchQuestionDetails(req.body);
       break;
+    case "/question/addView":
+      results = await questionController.addView(req.body);
+      break;
+    case "/question/postAnswer":
+      results = await questionController.postAnswer(req.body);
+      break;
+    case "/answer/postComment":
+      results = await questionController.postCommentToAnswer(req.body);
+      break;
   }
 
   callback(null, results);

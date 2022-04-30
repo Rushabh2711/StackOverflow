@@ -1,5 +1,6 @@
 import Questions from "../../../db/models/mongo/question.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
+import moment from "moment";
 
 class QuestionController {
   responseGenerator = (statusCode, message) => ({
@@ -7,9 +8,45 @@ class QuestionController {
     response: message,
   });
 
+  fetchQuestionDetails = async (data) => {
+    console.log(data);
+    const questionId = data.questionId;
+    try {
+      const questionDetails = await Questions.findById({ _id: questionId });
+      console.log("questionDetails",questionDetails);
+      const questionViews = await QuestionViews.find({
+        questionId: questionId,
+      });
+      console.log(JSON.stringify(questionDetails));
+      const result = {
+        questionId: questionDetails._id,
+        questionTitle: questionDetails.title,
+        views: questionViews[0].views,
+        description: questionDetails.description,
+        createdTime: questionDetails.addedAt,
+        modifiedTime: questionDetails.modifiedTime,
+        tags: questionDetails.tags,
+        upvotes: questionDetails.upvotes,
+        downvotes: questionDetails.downvotes,
+        numberOfAnswers: questionDetails.numberOfAnswers,
+        answers: questionDetails.answers,
+        questionComments: questionDetails.questionComments,
+        //user details
+      };
+      return this.responseGenerator(200, result);
+    } catch (err) {
+      console.error("Error when fetching question details ", err);
+      return this.responseGenerator(
+        404,
+        "Error when fetching question details"
+      );
+    }
+  };
+
   addView = async (data) => {
     console.log(data);
     const questionId = data.questionId;
+    console.log("qid",questionId);
     const date = moment().format("MM-DD-YYYY");
     try {
       const result = await Questions.updateOne(
@@ -33,40 +70,6 @@ class QuestionController {
       return this.responseGenerator(200, res);
     } catch (err) {
       console.error("Error when adding view count to question view ", err);
-    }
-  };
-
-  fetchQuestionDetails = async (data) => {
-    console.log(data);
-    const questionId = data.questionId;
-    try {
-      const questionDetails = await Questions.find({ id: questionId });
-      const questionViews = await QuestionViews.findById({
-        questionId: questionId,
-      });
-      console.log(JSON.stringify(questionDetails));
-      const result = {
-        questionId: questionDetails._id,
-        questionTitle: questionDetails.title,
-        numberOfViews: questionViews.views,
-        description: questionDetails.description,
-        createdTime: questionDetails.addedAt,
-        modifiedTime: questionDetails.modifiedTime,
-        tags: questionDetails.tags,
-        upvotes: questionDetails.upvotes,
-        downvotes: questionDetails.downvotes,
-        numberOfAnswers: questionDetails.numberOfAnswers,
-        answers: questionDetails.answers,
-        questionComments: questionDetails.questionComments,
-        //user details
-      };
-      return this.responseGenerator(200, result);
-    } catch (err) {
-      console.error("Error when fetching question details ", err);
-      return this.responseGenerator(
-        404,
-        "Error when fetching question details"
-      );
     }
   };
 
@@ -105,11 +108,19 @@ class QuestionController {
     };
 
     try {
-      const response = await Questions.findByIdAndUpdate(questionId, {
-        $push: { "answers.comments": comment },
-      });
-
-      console.log(JSON.stringify(response));
+      const comments = await Questions.findOneAndUpdate(
+        {
+          _id: questionId,
+          'answers._id': data.answerId,
+        },
+        {
+          $push: { 'answers.$.comments': comment },
+        },
+        {
+          upsert: true
+        }
+      );
+      console.log(JSON.stringify(comments));
       return this.responseGenerator(200, "Added new comment to answer");
     } catch (err) {
       console.error("Error when posting comment to answer ", err);
