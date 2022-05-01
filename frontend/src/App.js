@@ -46,7 +46,7 @@ export default function App() {
           />
           <Route
             path="/tags"
-            element={<Layout page={<Home />} sidebarTabValue={0} />}
+            element={<Layout page={<Home />} sidebarTabValue={3} />}
           />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
