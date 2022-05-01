@@ -13,7 +13,6 @@ import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
 import UserActivity from "./pages/UserActivity";
 
-
 // Import Dependencies
 import {
   BrowserRouter,
