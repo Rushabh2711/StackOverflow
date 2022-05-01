@@ -4,7 +4,7 @@ import moment from "moment";
 const Schema = mongoose.Schema;
 
 const questionViewsSchema = new Schema({
-  questionId: { type: mongoose.Schema.Types.ObjectId, ref: "questionDetail" },
+  questionId: { type: Schema.Types.ObjectId, ref: "question" },
   questionName: { type: String },
   date: { type: String, default: moment().format("MM-DD-YYYY") },
   views: { type: Number, default: 0 },
