@@ -46,14 +46,22 @@ export default function App() {
           />
           <Route
             path="/tags"
-            element={<Layout page={<Home />} sidebarTabValue={0} />}
+            element={<Layout page={<Home />} sidebarTabValue={3} />}
           />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
+          <Route
+            path="/login"
+            element={<Layout page={<Login />} sidebarTabValue={4} />}
+          />
+          <Route
+            path="/signup"
+            element={<Layout page={<SignUp />} sidebarTabValue={4} />}
+          />
+
           <Route
             path="/users/profile/:id"
-            element={<UserProfile sidebarTabValue={3} />}
+            element={<Layout page={<UserProfile />} />}
           />
+
           <Route path="/users/editprofile/:id" element={<UserEditProfile />} />
           <Route
             path="/users/activity/answers/:id"
