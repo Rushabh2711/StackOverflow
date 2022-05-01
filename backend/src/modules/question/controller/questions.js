@@ -27,7 +27,7 @@ class QuestionController {
   addView = async (req, res) => {
     console.log("Inside question controller, about to make Kafka request");
     const message = {};
-    message.body = req.params;
+    message.body = req.body;
     message.path = req.route.path;
     make_request("question", message, (err, results) => {
       if (err) {
@@ -143,10 +143,7 @@ class QuestionController {
       }
 
       if (postType == "Answer") {
-        // const question = await Questions.findById({ _id: questionId });
         const _id = req.body.answerId;
-        // const answer = question.answers.id(_id);
-        // answer.set();
         const update =
           voteType == "Upvote"
             ? { $inc: { "answers.$[a].upvotes": 1 } }
