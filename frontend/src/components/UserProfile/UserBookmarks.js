@@ -9,7 +9,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import questionsJson from "../../dummydata/questions.json";
 
-export default function UserAnswers(props) {
+export default function UserBookmarks(props) {
   const { id } = useParams();
   const [answers, setAnswers] = useState(questionsJson);
 
@@ -33,7 +33,6 @@ export default function UserAnswers(props) {
                     primary={
                       <div>
                         <div>
-                          {question.upvotes - question.downvotes} votes{" "}
                           {question.correct_answer != null ? (
                             <Box
                               component="div"
@@ -51,6 +50,8 @@ export default function UserAnswers(props) {
                           ) : (
                             <di></di>
                           )}
+                          {"  "}
+                          {question.upvotes - question.downvotes} votes{" "}
                         </div>
                         <div>{question.title}</div>
                         <div>

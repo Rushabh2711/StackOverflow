@@ -5,6 +5,8 @@ import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import { Grid, Typography } from "@mui/material";
 import UserAnswers from "../components/UserProfile/UserAnswers";
+import { useParams } from "react-router";
+import axios from "axios";
 
 export default function UserActivityAnswers() {
   const [user, setUser] = useState(userJson.userData);
