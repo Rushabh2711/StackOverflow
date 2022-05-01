@@ -46,6 +46,16 @@ class QuestionController {
   };
 
   fetchAllQuestions = async (req, res) => {
+      try {
+        const results = await this.getAllQuestion();
+        res.status(200).send(results);
+      } catch (error) {
+        console.error(err);
+        res.status(400).send(err);
+      }
+  };
+
+  getAllQuestion = async () => {
     let results = [];
 
     const computeTimeElapsed = (questionPostedDateString) => {
@@ -84,12 +94,11 @@ class QuestionController {
         })
       );
 
-      res.status(200).send(results);
+     return results;
     } catch (err) {
-      console.error(err);
-      res.status(400).send(err);
+      return err;
     }
-  };
+  }
 
   fetchQuestionDetails = async (req, res) => {
     console.log("Inside question controller, about to make Kafka request");
