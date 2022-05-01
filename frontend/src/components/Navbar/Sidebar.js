@@ -65,6 +65,9 @@ const useStyles = makeStyles((theme) => ({
         "& .MuiButtonBase-root.MuiTab-root.Mui-selected": {
             color: "#0C0D0E",
             fontWeight: "bold"
+        },
+        "& .nav-links .nav-links--link:hover":{
+          color: "#0C0D0E"
         }
     },
     publicTab: {
@@ -81,35 +84,38 @@ function a11yProps(index) {
 
 export default function Sidebar(props) {
   const classes = useStyles();
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = React.useState(props.tabValue);
 
   const handleChange = (event, newValue) => {
     console.log(newValue);
     setValue(newValue);
     props.setComponent(newValue);
+    // this.props.history.push('/tags');
   };
 
   
   return (
     <Box
       sx={{ flexGrow: 1, bgcolor: 'background.paper', display: 'flex', height: "100%", justifyContent:"flex-end" }}
+      
     >
       <Tabs
+        id="sidebar"
         orientation="vertical"
         value={value}
         onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{ borderRight: 0, borderColor: 'divider',
-        width:"164px"
+        width:"150px"
          }}
         className={classes.tabs}
       >
-        <Tab label="Home" className="normalTab" {...a11yProps(0)} />
+        <Tab label="Home" value={0} className="normalTab" {...a11yProps(0)} />
         
-        <Tab label="PUBLIC" className="publicTab" {...a11yProps(4)} disabled/>
-        <Tab label="Question" className="normalTab" icon={<PublicIcon />} iconPosition="start" {...a11yProps(1)} />
-        <Tab label="Tags" className="normalTab" icon={<PublicIcon style={{ visibility: "hidden"}}/>} iconPosition="start" {...a11yProps(2)} />
-        <Tab label="Users"  className="normalTab" icon={<PublicIcon style={{ visibility: "hidden"}}/>} iconPosition="start" {...a11yProps(3)} />
+        <Tab label="PUBLIC" value={1} className="publicTab" {...a11yProps(4)} disabled/>
+        <Tab label="Question" value={2} className="normalTab" icon={<PublicIcon />} iconPosition="start" {...a11yProps(1)} />
+        <Tab label="Tags" value={3} className="normalTab" icon={<PublicIcon style={{ visibility: "hidden"}}/>} iconPosition="start" {...a11yProps(2)} />
+        <Tab label="Users" value={4} className="normalTab" icon={<PublicIcon style={{ visibility: "hidden"}}/>} iconPosition="start" {...a11yProps(3)} />
       </Tabs>
       {/* <Divider flexItem orientation="vertical"/> */}
       
