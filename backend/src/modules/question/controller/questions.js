@@ -128,6 +128,7 @@ class QuestionController {
   removeBookmark = async (req, res) => {};
 
   votePost = async (req, res) => {
+    //Get user id who posted answer
     const { voteType, postType, questionId } = req.body;
     let response;
 
@@ -143,6 +144,7 @@ class QuestionController {
       }
 
       if (postType == "Answer") {
+        //update user activity 
         const _id = req.body.answerId;
         const update =
           voteType == "Upvote"

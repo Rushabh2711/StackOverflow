@@ -1,5 +1,7 @@
 import Questions from "../../../db/models/mongo/question.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
+import UserDetails from "../../../db/models/mongo/userDetails.js";
+
 import moment from "moment";
 
 class QuestionController {
@@ -88,9 +90,19 @@ class QuestionController {
     try {
       const response = await Questions.findByIdAndUpdate(questionId, {
         $push: { answers: answer },
-      });
+      }, {new: true});
 
       console.log(JSON.stringify(response));
+      
+      let count = response.answers.length;
+      let answerId = response.answers[count-1]._id;
+      let pair = {
+        questionId: questionId,
+        answerId: answerId
+      }
+      await UserDetails.findByIdAndUpdate(data.userId,{
+        $push : {questionsAnswered : pair }
+      })
       return this.responseGenerator(200, "Added new answer to question");
     } catch (err) {
       console.error("Error when posting answer ", err);

@@ -37,12 +37,12 @@ const questionSchema = new Schema({
   ],
   userId: { type: String, required: true, index: true },
   username: { type: String, required: true },
-  Activity: [
+  activities: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "activity",
-    },
-  ],
+        type: Schema.Types.ObjectId,
+        ref: "questionActivity",
+    }
+  ]
 });
 
 const Questions = mongoose.model("question", questionSchema);
