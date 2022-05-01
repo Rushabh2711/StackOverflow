@@ -5,15 +5,15 @@ import './App.css';
 // Import Pages
 import LandingPage from './pages/LandingPage';
 import Home from './pages/Home';
-<<<<<<< HEAD
+
 import Question from './pages/Question';
-=======
+
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
 import UserActivity from "./pages/UserActivity";
 
->>>>>>> 75f74ad374879263377b4cd93501b7af50dcf7ea
+
 // Import Dependencies
 import {
   BrowserRouter,
