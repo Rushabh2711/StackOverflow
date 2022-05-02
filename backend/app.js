@@ -8,7 +8,7 @@ const app = express();
 // );
 
 var corsOptions = {
-  origin: "http://localhost:3000",
+  origin: "http://team7-1-540514524.us-west-1.elb.amazonaws.com:3001/",
   "Access-Control-Allow-Origin": "*",
   credentials: "true",
 };
