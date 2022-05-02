@@ -2,6 +2,7 @@ import conn from "../../../db/config/mysql.config.js"
 import UserDetails from "../../../db/models/mongo/userDetails.js";
 import Questions from "../../../db/models/mongo/question.js";
 import bcrypt from 'bcrypt';
+import { v4 as uuidv4 } from 'uuid';
 
 export class UserController {
 	login = async (req, res) => {
@@ -39,9 +40,8 @@ export class UserController {
 		try {
             const {emailId, username, password, accountType} = req.body;
             const hashpassword = await bcrypt.hash(password, 10);
-        
-            let sql = "INSERT INTO users (emailId, username, password, accountType) VALUES (?, ?, ?, ?)";
-            conn.query(sql, [emailId, username, hashpassword, accountType],
+            let sql = "INSERT INTO users (id, username, emailId, password, accountType) values (?, ?, ?, ?, ?)";
+            conn.query(sql, [uuidv4(), username, emailId, hashpassword, accountType],
                 async (err, result) => {
                     if (err) {
                         res.status(500);

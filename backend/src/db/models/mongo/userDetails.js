@@ -9,7 +9,10 @@ const userDetailsSchema = new Schema({
     profilePicture: { type: String },
     accountType: {type: String},
     reputation: {type: Number},
-    location: {type: Number},
+    location: {
+        city: {type: String},
+        country: {type: String},
+    },
     tags: [
         {name: {type: String}},
         {score: {type: Number}},
@@ -31,6 +34,9 @@ const userDetailsSchema = new Schema({
     visitedTime: {type: Date},
     questionsAskedCount: {type: Number},
     questionsAnsweredCount: {type: Number},
+    upvotesCount: {type: Number},
+    downvotesCount: {type: Number},
+    commentsCount: {type: Number},
     questionsViewCount: {type: Number},
     about: {type: String},
 });
