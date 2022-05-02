@@ -8,7 +8,7 @@ const app = express();
 // );
 
 var corsOptions = {
-  origin: "team7-3-504484586.us-west-1.elb.amazonaws.com:3001/",
+  origin: "team7-1-3-2103565225.us-west-1.elb.amazonaws.com",
   "Access-Control-Allow-Origin": "*",
   credentials: "true",
 };
