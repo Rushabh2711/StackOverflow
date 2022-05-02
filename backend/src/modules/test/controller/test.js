@@ -13,40 +13,46 @@ export class TestController {
 	  };
 
 	  fetchQuestionsFromCache = async (req, res) => {
-		  console.log("cache");
-		  client.get("test-questions", async (err, data) => {
-			if (err) 
-			{
-				console.error(err);
-				res.status(500).send("Error when connecting to Redis cache");
-			}
-			if (data != null) 
-			{
-				console.log("cache hit");
-				res.status(200).send(data);
-			} 
-			else 
-			{
-				console.log("cache miss");
-				const results = await Questions.find({},{ answers: 0, questionComments: 0, Activity: 0 });
-				client.set("test-questions", JSON.stringify(results));
-				res.status(200).send(results);
-			} 
-		  });
+		  client.get("test-questions")
+				.then(async function(data, err) {
+					if (err) 
+					{
+						console.error(err);
+						res.status(500).send("Error when connecting to Redis cache");
+					}
+					if (data != null) 
+					{
+						console.log("cache hit");
+						res.status(200).send(data);
+					} 
+					else 
+					{
+						console.log("cache miss");
+						const results = await Questions.find({},{ answers: 0, questionComments: 0, Activity: 0 });
+						client.set("test-questions", JSON.stringify(results));
+						res.status(200).send(results);
+					} 
+				}
+			);
 	};
 
 	fetchFromKafkaAndCache = async (req, res) => {
-		client.get("test-questions", async (err, data) => {
-			if (err) {
-				console.error(err);
-				res.status(500).send("Error when connecting to Redis cache");
-			} else {
-				if (data != null) {
+		client.get("test-questions")
+			  .then(async function(data, err) {
+				if (err) 
+				{
+					console.error(err);
+					res.status(500).send("Error when connecting to Redis cache");
+				}
+				if (data != null) 
+				{
 					console.log("Found from cache");
 					res.status(200).send(JSON.parse(data));
-				} else {
+				} 
+				else 
+				{
 					const message = {};
-    				message.path = req.route.path;
+					message.path = req.route.path;
 					make_request("question", message, (err, results) => {
 						if (err) {
 							console.error(err);
@@ -61,9 +67,8 @@ export class TestController {
 							res.end();
 						}
 					});
-				}
-			}
-		});
+				}	
+			  })
 	}
 
 	insert10K = async (req, res) => {
@@ -71,7 +76,7 @@ export class TestController {
 			let allQuestions = [];
 			let time = new Date();
 			let question;
-			for (let i = 0; i < 1; i++) {
+			for (let i = 0; i < 1000; i++) {
 				question = new Questions({
 					title: (Math.random() + 1).toString(36).substring(7),
 					tags: req.body.tags,
