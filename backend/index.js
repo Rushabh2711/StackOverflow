@@ -3,6 +3,9 @@ import app from "./app.js";
 import questionRouter from "./src/modules/question/router/questions.js";
 import multer from 'multer';
 import {uploadFile,downloadFile} from './s3.cjs';
+import userRouter from "./src/modules/user/router/users.js";
+import testRouter from "./src/modules/test/router/test.js";
+
 //initialize db
 mongoInit();
 
@@ -55,3 +58,5 @@ const storage = multer.diskStorage({
     // }
   });
   
+app.use(userRouter);
+app.use(testRouter)

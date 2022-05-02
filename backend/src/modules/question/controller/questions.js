@@ -46,49 +46,23 @@ class QuestionController {
   };
 
   fetchAllQuestions = async (req, res) => {
-    let results = [];
-
-    const computeTimeElapsed = (questionPostedDateString) => {
-      const questionPostedDate = new Date(questionPostedDateString);
-      const today = new Date();
-      const difference = today.getTime() - questionPostedDate.getTime();
-      let seconds = difference / 1000;
-      let minutes = seconds / 60;
-      let hours = minutes / 60;
-      if (seconds < 60) {
-        return Math.floor(seconds) + "s";
-      } else if (minutes < 60) {
-        return Math.floor(minutes) + "m";
+    console.log("Inside question controller, about to make Kafka request");
+    const message = {};
+    message.path = req.route.path;
+    make_request("question", message, (err, results) => {
+      if (err) {
+        console.error(err);
+        res.json({
+          status: "Error",
+          msg: "System error, try again",
+        });
       } else {
-        return Math.floor(hours) + "h";
+        console.log("Fetch all questions with kafka-backend");
+        console.log(results);
+        res.json(results);
+        res.end();
       }
-    };
-
-    try {
-      let questions = await Questions.find(
-        {},
-        { answers: 0, questionComments: 0, Activity: 0 }
-      );
-
-      questions.map((question) =>
-        results.push({
-          questionId: question._id,
-          questionTitle: question.title,
-          tags: question.tags,
-          upvotes: question.upvotes,
-          numberOfAnswers: question.numberOfAnswers,
-          views: question.views,
-          userId: question.userId,
-          username: question.username,
-          relativeTimePosted: computeTimeElapsed(question.addedAt),
-        })
-      );
-
-      res.status(200).send(results);
-    } catch (err) {
-      console.error(err);
-      res.status(400).send(err);
-    }
+    });
   };
 
   fetchQuestionDetails = async (req, res) => {
@@ -128,6 +102,7 @@ class QuestionController {
   removeBookmark = async (req, res) => {};
 
   votePost = async (req, res) => {
+    //Get user id who posted answer
     const { voteType, postType, questionId } = req.body;
     let response;
 
@@ -143,6 +118,7 @@ class QuestionController {
       }
 
       if (postType == "Answer") {
+        //update user activity 
         const _id = req.body.answerId;
         const update =
           voteType == "Upvote"
