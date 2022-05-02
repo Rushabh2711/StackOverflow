@@ -1,5 +1,7 @@
+import client from "../../../db/config/redis.config.js";
 import Questions from "../../../db/models/mongo/question.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
+import UserDetails from "../../../db/models/mongo/userDetails.js";
 import moment from "moment";
 
 class QuestionController {
@@ -7,6 +9,53 @@ class QuestionController {
     status: statusCode,
     response: message,
   });
+
+  fetchAllQuestions = async () => {
+    let results = [];
+
+    try {
+      let questions = await Questions.find(
+        {},
+        { answers: 0, questionComments: 0, Activity: 0 }
+      );
+
+      questions.map((question) =>
+        results.push({
+          questionId: question._id,
+          questionTitle: question.title,
+          tags: question.tags,
+          upvotes: question.upvotes,
+          numberOfAnswers: question.numberOfAnswers,
+          views: question.views,
+          userId: question.userId,
+          username: question.username,
+          addedAt: question.addedAt,
+        })
+      );
+
+      return this.responseGenerator(200, results);
+    } catch (err) {
+      console.error(err);
+      return this.responseGenerator(
+        404,
+        "Error when fetching question details"
+      );
+    }
+  }
+
+  fetch10kQuestions = async () => {
+    try {
+      let questions = await Questions.find({},{ answers: 0, questionComments: 0, Activity: 0 });
+      client.set("test-questions", JSON.stringify(questions));
+      return this.responseGenerator(200, questions);
+    } catch (err) {
+      console.error(err);
+      return this.responseGenerator(
+        404,
+        "Error when fetching question details"
+      );
+    }
+  }
 
   fetchQuestionDetails = async (data) => {
     console.log(data);
@@ -88,9 +137,19 @@ class QuestionController {
     try {
       const response = await Questions.findByIdAndUpdate(questionId, {
         $push: { answers: answer },
-      });
+      }, {new: true});
 
       console.log(JSON.stringify(response));
+      
+      let count = response.answers.length;
+      let answerId = response.answers[count-1]._id;
+      let pair = {
+        questionId: questionId,
+        answerId: answerId
+      }
+      await UserDetails.findByIdAndUpdate(data.userId,{
+        $push : {questionsAnswered : pair }
+      })
       return this.responseGenerator(200, "Added new answer to question");
     } catch (err) {
       console.error("Error when posting answer ", err);
