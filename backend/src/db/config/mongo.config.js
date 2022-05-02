@@ -8,7 +8,7 @@ const mongoInit = () => {
     mongoose.connect(mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
-      maxPoolSize: 500,
+      // maxPoolSize: 500,
     });
     console.log("Mongoose is connected!");
     app.listen(3001, () => {
