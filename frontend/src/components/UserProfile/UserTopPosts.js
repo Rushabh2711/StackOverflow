@@ -6,47 +6,187 @@ import ListItem from "@mui/material/ListItem";
 import Box from "@mui/material/Box";
 import toppostsJson from "../../dummydata/toppost.json";
 
-export default function UserTopPosts(props) {
-  const { user } = props;
-  const { type } = props;
+export default function UserTopPosts() {
   const [topposts, setTopPosts] = useState(toppostsJson);
+  const [answers, setAnswers] = useState("");
+  const [questions, setQuestions] = useState("");
+  const [postType, setPostType] = useState("all");
+  const [filterType, setFilterType] = useState("score");
+  const [posts, setPosts] = useState([]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setPosts(
+      topposts.sort(
+        (a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes)
+      )
+    );
+  }, []);
 
+  useEffect(() => {
+    if (postType === "all") {
+      if (filterType === "score") {
+        setPosts(
+          topposts.sort(
+            (a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes)
+          )
+        );
+      } else if (filterType === "newest") {
+        setPosts(topposts.sort((a, b) => a.addedAt - b.addedAt));
+      }
+    } else if (postType === "questions") {
+      if (filterType === "score") {
+        setPosts(
+          topposts
+            .filter((x) => x.postType === "question")
+            .sort((a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes))
+        );
+      } else if (filterType === "newest") {
+        setPosts(
+          topposts
+            .filter((x) => x.postType === "question")
+            .sort((a, b) => a.addedAt - b.addedAt)
+        );
+      }
+    } else if (postType === "answers") {
+      if (filterType === "score") {
+        setPosts(
+          topposts
+            .filter((x) => x.postType === "answer")
+            .sort((a, b) => b.upvotes - b.downvotes - (a.upvotes - a.downvotes))
+        );
+      } else if (filterType === "newest") {
+        setPosts(
+          topposts
+            .filter((x) => x.postType === "answer")
+            .sort((a, b) => a.addedAt - b.addedAt)
+        );
+      }
+    }
+  }, [postType, filterType]);
+
+  const allClickHandler = (e) => {
+    setPostType("all");
+  };
+  const questionsClickHandler = (e) => {
+    setPostType("questions");
+  };
+  const answersClickHandler = (e) => {
+    setPostType("answers");
+  };
+  const scoreClickHandler = (e) => {
+    setFilterType("score");
+  };
+  const newestClickHandler = (e) => {
+    setFilterType("newest");
+  };
   return (
     <div>
       <Grid container spacing={1}>
         <Grid item xs={11}>
-          {type === "posts" ? (
-            <Typography
-              sx={{ fontSize: 20, color: "#212121", align: "left" }}
-              color="text.secondary"
-              gutterBottom
-              align="left"
-            >
-              Top Posts
-            </Typography>
-          ) : type === "questions" ? (
-            <Typography
-              sx={{ fontSize: 20, color: "#212121", align: "left" }}
-              color="text.secondary"
-              gutterBottom
-              align="left"
-            >
-              Top Questions
-            </Typography>
-          ) : (
-            <Typography
-              sx={{ fontSize: 20, color: "#212121", align: "left" }}
-              color="text.secondary"
-              gutterBottom
-              align="left"
-            >
-              Top Answers
-            </Typography>
-          )}
+          <Grid container spacing={1}>
+            <Grid item xs={7}>
+              {postType === "all" && filterType === "score" ? (
+                <Typography
+                  sx={{ fontSize: 20, color: "#212121", align: "left" }}
+                  color="text.secondary"
+                  gutterBottom
+                  align="left"
+                >
+                  Top Posts
+                </Typography>
+              ) : postType === "all" && filterType === "newest" ? (
+                <Typography
+                  sx={{ fontSize: 20, color: "#212121", align: "left" }}
+                  color="text.secondary"
+                  gutterBottom
+                  align="left"
+                >
+                  Newest Posts
+                </Typography>
+              ) : postType === "questions" && filterType === "score" ? (
+                <Typography
+                  sx={{ fontSize: 20, color: "#212121", align: "left" }}
+                  color="text.secondary"
+                  gutterBottom
+                  align="left"
+                >
+                  Top Questions
+                </Typography>
+              ) : postType === "questions" && filterType === "newest" ? (
+                <Typography
+                  sx={{ fontSize: 20, color: "#212121", align: "left" }}
+                  color="text.secondary"
+                  gutterBottom
+                  align="left"
+                >
+                  Newest Questions
+                </Typography>
+              ) : postType === "answers" && filterType === "score" ? (
+                <Typography
+                  sx={{ fontSize: 20, color: "#212121", align: "left" }}
+                  color="text.secondary"
+                  gutterBottom
+                  align="left"
+                >
+                  Top Answers
+                </Typography>
+              ) : (
+                <Typography
+                  sx={{ fontSize: 20, color: "#212121", align: "left" }}
+                  color="text.secondary"
+                  gutterBottom
+                  align="left"
+                >
+                  Newest Answers
+                </Typography>
+              )}
+            </Grid>
+            <Grid item xs={3}>
+              <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onClick={allClickHandler}
+                >
+                  All
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onClick={questionsClickHandler}
+                >
+                  Questions
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onClick={answersClickHandler}
+                >
+                  Answers
+                </button>
+              </div>
+            </Grid>
+            <Grid item xs={2}>
+              <div class="btn-group mr-2" role="group" aria-label="First group">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onClick={scoreClickHandler}
+                >
+                  Score
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  onClick={newestClickHandler}
+                >
+                  Newest
+                </button>
+              </div>
+            </Grid>
+          </Grid>
           <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-            {topposts.slice(0, 6).map((post) => (
+            {posts.slice(0, 10).map((post) => (
               <ListItem sx={{ border: 1, borderColor: "#e0e0e0" }}>
                 <Grid container spacing={0}>
                   <Grid item xs={0.5}>
