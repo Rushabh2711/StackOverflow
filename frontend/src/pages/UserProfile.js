@@ -4,17 +4,19 @@ import UserDetails from "../components/UserProfile/UserDetails";
 import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserStats from "../components/UserProfile/UserStats";
 import UserAbout from "../components/UserProfile/UserAbout";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import UserBadges from "../components/UserProfile/UserBadges";
 import UserTopTags from "../components/UserProfile/UserTopTags";
 import UserTopPosts from "../components/UserProfile/UserTopPosts";
+import toppostsJson from "../dummydata/toppost.json";
 
 export default function UserProfile() {
   const [user, setUser] = useState(userJson.userData);
 
+  const [posts, setPosts] = useState(toppostsJson);
+
   useEffect(() => {
     setUser(userJson.userData);
-    console.log(user);
   }, []);
 
   return (
@@ -43,10 +45,18 @@ export default function UserProfile() {
             <UserBadges user={user}></UserBadges>
           </div>
           <div className="userprofile-toptags-component">
-            <UserTopTags user={user}></UserTopTags>
+            <Typography
+              sx={{ fontSize: 20, color: "#212121", align: "left" }}
+              color="text.secondary"
+              gutterBottom
+              align="left"
+            >
+              Top tags
+            </Typography>
+            <UserTopTags user={user} length={6}></UserTopTags>
           </div>
           <div className="userprofile-topposts-component">
-            <UserTopPosts user={user} type={"posts"}></UserTopPosts>
+            <UserTopPosts user={user}></UserTopPosts>
           </div>
         </Grid>
       </Grid>

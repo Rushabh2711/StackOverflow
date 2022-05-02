@@ -2,6 +2,11 @@ import { make_request } from "../../../../kafka/client.js";
 import Questions from "../../../db/models/mongo/question.js";
 
 class QuestionController {
+
+  checkHealth = async (req, res) => {
+    res.status(200).send("Up and Running");
+  }
+
   postQuestion = async (req, res) => {
     console.log("Add question");
     let time = new Date();
