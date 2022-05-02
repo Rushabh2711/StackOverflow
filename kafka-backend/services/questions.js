@@ -6,6 +6,9 @@ const handleQuestionRequest = async (req, callback) => {
   const questionController = new QuestionController();
   let results;
   switch (req.path) {
+    case "/questions":
+      results = await questionController.fetchAllQuestions();
+      break;
     case "/questions/:questionId":
       results = await questionController.fetchQuestionDetails(req.body);
       break;

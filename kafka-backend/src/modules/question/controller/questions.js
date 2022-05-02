@@ -10,6 +10,39 @@ class QuestionController {
     response: message,
   });
 
+  fetchAllQuestions = async () => {
+    let results = [];
+
+    try {
+      let questions = await Questions.find(
+        {},
+        { answers: 0, questionComments: 0, Activity: 0 }
+      );
+
+      questions.map((question) =>
+        results.push({
+          questionId: question._id,
+          questionTitle: question.title,
+          tags: question.tags,
+          upvotes: question.upvotes,
+          numberOfAnswers: question.numberOfAnswers,
+          views: question.views,
+          userId: question.userId,
+          username: question.username,
+          addedAt: question.addedAt,
+        })
+      );
+
+      return this.responseGenerator(200, results);
+    } catch (err) {
+      console.error(err);
+      return this.responseGenerator(
+        404,
+        "Error when fetching question details"
+      );
+    }
+  }
+
   fetchQuestionDetails = async (data) => {
     console.log(data);
     const questionId = data.questionId;
