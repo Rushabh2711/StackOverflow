@@ -46,8 +46,6 @@ class QuestionController {
   };
 
   fetchAllQuestions = async (req, res) => {
-    //Kafka
-    
     console.log("Inside question controller, about to make Kafka request");
     const message = {};
     message.path = req.route.path;
@@ -65,38 +63,6 @@ class QuestionController {
         res.end();
       }
     });
-    
-
-    // Base
-
-    // let results = [];
-
-    // try {
-    //   let questions = await Questions.find(
-    //     {},
-    //     { answers: 0, questionComments: 0, Activity: 0 }
-    //   );
-
-    //   questions.map((question) =>
-    //     results.push({
-    //       questionId: question._id,
-    //       questionTitle: question.title,
-    //       tags: question.tags,
-    //       upvotes: question.upvotes,
-    //       numberOfAnswers: question.numberOfAnswers,
-    //       views: question.views,
-    //       userId: question.userId,
-    //       username: question.username,
-    //       addedAt: question.addedAt,
-    //     })
-    //   );
-
-    //   res.status(200).send(results);
-    // } catch (err) {
-    //   console.error(err);
-    //   res.status(400).send(err);
-    // }
-    
   };
 
   fetchQuestionDetails = async (req, res) => {

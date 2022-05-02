@@ -9,6 +9,9 @@ const handleQuestionRequest = async (req, callback) => {
     case "/questions":
       results = await questionController.fetchAllQuestions();
       break;
+    case "/get-test-questions-kafka":
+        results = await questionController.fetch10kQuestions();
+        break;
     case "/questions/:questionId":
       results = await questionController.fetchQuestionDetails(req.body);
       break;

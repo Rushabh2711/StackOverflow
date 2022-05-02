@@ -1,7 +1,7 @@
+import client from "../../../db/config/redis.config.js";
 import Questions from "../../../db/models/mongo/question.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
-
 import moment from "moment";
 
 class QuestionController {
@@ -34,6 +34,20 @@ class QuestionController {
       );
 
       return this.responseGenerator(200, results);
+    } catch (err) {
+      console.error(err);
+      return this.responseGenerator(
+        404,
+        "Error when fetching question details"
+      );
+    }
+  }
+
+  fetch10kQuestions = async () => {
+    try {
+      let questions = await Questions.find({},{ answers: 0, questionComments: 0, Activity: 0 });
+      client.set("test-questions", JSON.stringify(questions));
+      return this.responseGenerator(200, questions);
     } catch (err) {
       console.error(err);
       return this.responseGenerator(
