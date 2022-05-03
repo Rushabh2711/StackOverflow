@@ -32,7 +32,7 @@ import Add from './pages/AddQuestion';
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
 import Layout from './pages/Layout';
-//import MainQuestion from './components/ViewQuestion/MainQuestion';
+import MainQuestion from './components/ViewQuestion/MainQuestion';
 export default function App() {
   
   return (
@@ -50,8 +50,8 @@ export default function App() {
         <Route path="/question" element={ <Layout page={<Question />} sidebarTabValue={2}/> }/>
         <Route path="/tags" element={ <Layout page={<Home />} sidebarTabValue={3}/> }/>
         {/* <Route path="/ask" element={<AskQuestion />}/> */}
-        {/* <Route path="/view" element={<MainQuestion />}/> */}
-        {/* <Route path="/view" element={ <Layout page={<MainQuestion />} sidebarTabValue={0}/> }/> */}
+         {/* <Route path="/view" element={<MainQuestion />}/>  */}
+        { <Route path="/view" element={ <Layout page={<MainQuestion />} sidebarTabValue={0}/> }/> }
 
 
       </Routes>
