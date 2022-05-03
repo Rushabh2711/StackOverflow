@@ -5,6 +5,8 @@ const questionRouter = express.Router();
 
 const questionController = new QuestionController();
 
+questionRouter.get("/checkHealth", questionController.checkHealth);
+
 questionRouter.post("/questions/ask", questionController.postQuestion);
 questionRouter.get("/questions", questionController.fetchAllQuestions);
 questionRouter.post("/question/addView", questionController.addView);
