@@ -8,7 +8,7 @@ import "./index.css";
 // import { useSelector } from "react-redux";
 //import { selectUser } from "../../feature/userSlice";
 import { stringAvatar } from "../../utils/Avatar";
-import toppostsJson from "../../dummydata/toppost.json";
+import questions from "../../dummydata/questions.json";
 import "./AllQuestions.css";
 import "./Main.css";
 import QuillEditor from "../Questions/Editor";
@@ -23,7 +23,7 @@ function MainQuestion() {
   const params = new URLSearchParams(search);
   const id = params.get("q");
   
-  const [questionData, setQuestionData] = useState(toppostsJson[0]);
+  const [questionData, setQuestionData] = useState(questions.questions[0]);
   const [answer, setAnswer] = useState("");
   // const [show, setShow] = useState("");
   const [comment, setComment] = useState("");
@@ -34,19 +34,25 @@ function MainQuestion() {
     setAnswer(value);
   };
 
+  // useEffect(() => {
+  //   async function getFunctionDetails() {
+  //     await axios
+  //       .get(`/api/question/${id}`)
+  //       .then((res) => setQuestionData(res.data[0]))
+  //       .catch((err) => console.log(err));
+  //   }
+  //   getFunctionDetails();
+  // }, [id]);
   useEffect(() => {
-    async function getFunctionDetails() {
-      await axios
-        .get(`/api/question/${id}`)
-        .then((res) => setQuestionData(res.data[0]))
-        .catch((err) => console.log(err));
-    }
-    getFunctionDetails();
-  }, [id]);
+    setQuestionData(questions.questions[0])
+    console.log("data",questionData)
+    console.log("dawwwta",questions[0])
+  }, [questionData, comments,id]);
+  
   useEffect(() => {
-    setQuestionData(toppostsJson[0])
-    setComments(toppostsJson[0].comments);
-  }, [questionData, comments]);
+    setQuestionData(questions.questions[0])
+    console.log("data",questionData)
+  }, []);
 
   async function getUpdatedAnswer() {
     await axios
@@ -102,7 +108,7 @@ function MainQuestion() {
           </div>
         </div>
         <div className="all-questions">
-          <Question question={questionData} />
+         {questionData && <Question question={questionData} />}
         </div>
         <div
           style={{
@@ -119,7 +125,7 @@ function MainQuestion() {
               fontWeight: "300",
             }}
           >
-            {questionData && questionData?.answers.length} Answers
+            {questionData && questionData?.answers?.length} Answers
           </p>
           { questionData?.answers && questionData?.answers.map((_q) => (
             <Answer answer={_q} question_id={questionData.question_id}/>

@@ -31,7 +31,7 @@ import Add from './pages/AddQuestion';
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
 import Layout from './pages/Layout';
-//import MainQuestion from './components/ViewQuestion/MainQuestion';
+import MainQuestion from './components/ViewQuestion/MainQuestion';
 
 export default function App() {
   return (
@@ -94,6 +94,10 @@ export default function App() {
             element={<UserActivityReputation />}
           />
               <Route path="/ask" element={<Add />}/>
+              <Route
+            path="/view"
+            element={<Layout page={<MainQuestion />} sidebarTabValue={0} />}
+          />
         </Routes>
       </Box>
     </div>
