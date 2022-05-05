@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { TextField, Box, Typography, Button,Autocomplete } from '@mui/material';
 import QuillEditor from "../components/Questions/Editor";
 
-import { useSelector } from "react-redux";
-import ReactQuill , { Quill } from "react-quill";
+import  { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ES6
 import "../components/Questions/index.css";
-import Editor from "react-quill/lib/toolbar";
 import axios from "axios";
 //import { TagsInput } from "react-tag-input-component";
 // import { selectUser } from "../../feature/userSlice";
 import { useNavigate } from "react-router-dom";
 // import ChipsArray from "./TagsInput";
 import ImageUploader from "quill-image-uploader";
+import Navbar from "../components/Navbar/Navbar";
 //import ImageResize from "quill-image-resize-module-react";
 
 // #2 register module
@@ -42,28 +41,34 @@ function Ask() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (title !== "" && body !== "") {
-      const bodyJSON = {
-        title: title,
-        body: body,
-        tag: JSON.stringify(tag),
-       // user: user,
-      };
-      await axios
-        .post("/api/question", bodyJSON)
-        .then((res) => {
-          // console.log(res.data);
-          alert("Question added successfully");
-          history.push("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    console.log("title",title)
+    console.log("body",body)
+    console.log("tag",tag)
+      if (title !== "" && body !== "") {
+        const bodyJSON = {
+          title: title,
+          description: body,
+          tags: tag,
+          userId:"userId",
+          username:"virag"
+         // user: user,
+        };
+        await axios
+          .post("http://localhost:3001/questions/ask", bodyJSON)
+          .then((res) => {
+             console.log(res.data);
+            alert("Question added successfully");
+            //history.push("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
   };
  
   return (
+    <>
+    <Navbar/>
     <div className="add-question">
       <div className="add-question-container">
         <div className="head-title">
@@ -79,12 +84,14 @@ function Ask() {
                   person
                 </small>
                 <TextField
+                required
            value={title}
             // label="Title"
             id="outlined-size-small"
             size="small"
             onChange={(event, newTitle) => {
-              setTitle(newTitle);
+              setTitle(event.target.value);
+              // console.log("title change ",event.target.value)
             }}
           />
                 {/* <input
@@ -104,10 +111,13 @@ function Ask() {
                 </small>
                 <QuillEditor
                  body={body}
+                 onBlur={setBody}
+                 onChange={setBody}
                 />
               </div>
             </div>
             <Autocomplete
+            required
             // sx={{ pt: 2, width: 800 }}
             multiple
             id="tags-outlined"
@@ -138,6 +148,8 @@ function Ask() {
         </button>
       </div>
     </div>
+    </>
+
   );
 }
 
