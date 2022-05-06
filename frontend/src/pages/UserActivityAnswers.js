@@ -33,7 +33,7 @@ export default function UserActivityAnswers() {
           ></UserActivitySidebar>
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={10}>
           {" "}
           <Typography
             sx={{ fontSize: 20, color: "#212121", align: "left" }}

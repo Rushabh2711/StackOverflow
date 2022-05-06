@@ -8,7 +8,7 @@ export default function UserAbout(props) {
   return (
     <div>
       <Grid container spacing={1}>
-        <Grid item xs={8}>
+        <Grid item xs={12}>
           <Typography
             sx={{ fontSize: 20, color: "#212121", align: "left" }}
             color="text.secondary"

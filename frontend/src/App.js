@@ -62,30 +62,39 @@ export default function App() {
             element={<Layout page={<UserProfile />} />}
           />
 
-          <Route path="/users/editprofile/:id" element={<UserEditProfile />} />
+          <Route
+            path="/users/editprofile/:id"
+            element={<Layout page={<UserEditProfile />} />}
+          />
+
           <Route
             path="/users/activity/answers/:id"
-            element={<UserActivityAnswers />}
+            element={<Layout page={<UserActivityAnswers />} />}
           />
+
           <Route
             path="/users/activity/questions/:id"
-            element={<UserActivityQuestions />}
+            element={<Layout page={<UserActivityQuestions />} />}
           />
+
           <Route
             path="/users/activity/tags/:id"
-            element={<UserActivityTags />}
+            element={<Layout page={<UserActivityTags />} />}
           />
+
           <Route
             path="/users/activity/bookmarks/:id"
-            element={<UserActivityBookmarks />}
+            element={<Layout page={<UserActivityBookmarks />} />}
           />
+
           <Route
             path="/users/activity/badges/:id"
-            element={<UserActivityBadges />}
+            element={<Layout page={<UserActivityBadges />} />}
           />
+
           <Route
             path="/users/activity/reputation/:id"
-            element={<UserActivityReputation />}
+            element={<Layout page={<UserActivityReputation />} />}
           />
         </Routes>
       </Box>

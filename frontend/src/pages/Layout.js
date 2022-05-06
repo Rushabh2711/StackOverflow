@@ -60,6 +60,7 @@ export default function Layout(props) {
           paddingLeft: "0%",
           paddingRight: "10%",
           justifyContent: "center",
+          width: "150%",
         }}
       >
         <Drawer
@@ -85,7 +86,7 @@ export default function Layout(props) {
         <Box
           component="main"
           sx={{ flexGrow: 1, p: 3 }}
-          style={{ width: "1000px", wordWrap: "wrap", wordBreak: "break-all" }}
+          style={{ width: "1175px", wordWrap: "wrap", wordBreak: "break-all" }}
         >
           <Toolbar />
           {props.page}

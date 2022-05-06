@@ -107,7 +107,7 @@ export default function UserStats(props) {
       </Grid>
       <Grid container spacing={0}>
         <Grid item xs={11} align="center">
-          <Box sx={{ width: 250 }}>
+          <Box sx={{ width: 225 }}>
             <Card variant="outlined">{card}</Card>
           </Box>
         </Grid>

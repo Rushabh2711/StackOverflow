@@ -8,15 +8,23 @@
     "location": "San Jose",
 
     "gold": [
-      "dataframe",
-      "python-3.x",
-      "pandas",
-      "numpy",
-      "Tag Editor",
-      "List"
+      { "name": "dataframe", "type": "tag" },
+      { "name": "python-3.x", "type": "tag" },
+      { "name": "pandas", "type": "tag" },
+      { "name": "numpy", "type": "tag" },
+      { "name": "Tag Editor", "type": "other" },
+      { "name": "Curious", "type": "other" }
     ],
-    "silver": ["matplotlib", "dataframe", "editor"],
-    "bronze": ["vox populi", "arrays", "Quorum", "Excavator", "Informed"],
+    "silver": [
+      { "name": "matplotlib", "type": "tag" },
+      { "name": "dataframe", "type": "tag" },
+      { "name": "Inventor", "type": "other" }
+    ],
+    "bronze": [
+      { "name": "vox populi", "type": "tag" },
+      { "name": "arrays", "type": "tag" },
+      { "name": "Excavator", "type": "other" }
+    ],
     "profilepicture": "",
     "joiningDate": "04/06/2018",
     "visitedTime": "04/06/2022",

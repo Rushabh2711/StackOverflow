@@ -19,10 +19,10 @@ export default function UserBadges(props) {
       >
         Badges
       </Typography>
-      <Grid item xs={11} align="left">
-        <Grid container spacing={0}>
+      <Grid item xs={12} align="left">
+        <Grid container spacing={5}>
           <Grid item xs={4} align="left">
-            <Box sx={{ width: 250, minHeight: 250 }}>
+            <Box sx={{ width: 200, minHeight: 250 }}>
               <Card variant="outlined" sx={{ width: 250, height: 200 }}>
                 <CardContent>
                   <Grid container spacing={0}>
@@ -79,7 +79,7 @@ export default function UserBadges(props) {
                             fontSize: 10,
                           }}
                         ></CircleIcon>{" "}
-                        {badge}
+                        {badge.name}
                       </Box>
                     </div>
                   ))}
@@ -88,7 +88,7 @@ export default function UserBadges(props) {
             </Box>
           </Grid>
           <Grid item xs={4} align="left">
-            <Box sx={{ width: 250, minHeight: 250 }}>
+            <Box sx={{ width: 200, minHeight: 250 }}>
               <Card variant="outlined" sx={{ width: 250, height: 200 }}>
                 <CardContent>
                   <Grid container spacing={0}>
@@ -145,7 +145,7 @@ export default function UserBadges(props) {
                             fontSize: 10,
                           }}
                         ></CircleIcon>{" "}
-                        {badge}
+                        {badge.name}
                       </Box>
                     </div>
                   ))}
@@ -154,7 +154,7 @@ export default function UserBadges(props) {
             </Box>
           </Grid>
           <Grid item xs={4} align="left">
-            <Box sx={{ width: 250, height: 250 }}>
+            <Box sx={{ width: 200, height: 250 }}>
               <Card variant="outlined" sx={{ width: 250, height: 200 }}>
                 <CardContent>
                   <Grid container spacing={0}>
@@ -211,7 +211,7 @@ export default function UserBadges(props) {
                             fontSize: 10,
                           }}
                         ></CircleIcon>{" "}
-                        {badge}
+                        {badge.name}
                       </Box>
                     </div>
                   ))}
