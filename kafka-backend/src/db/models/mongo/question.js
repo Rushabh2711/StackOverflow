@@ -33,17 +33,17 @@ const questionSchema = new Schema({
     {
       description: { type: String, required: true },
       userId: { type: String, required: true },
-      postedOn: { type: Date, required: true },
     },
   ],
   userId: { type: String, required: true, index: true },
   username: { type: String, required: true },
-  Activity: [
+  activities: [
     {
-      type: Schema.Types.ObjectId,
-      ref: "activity",
-    },
-  ],
+        type: Schema.Types.ObjectId,
+        ref: "questionActivity",
+        required: true
+    }
+  ]
 });
 
 const Questions = mongoose.model("question", questionSchema);

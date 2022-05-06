@@ -2,9 +2,11 @@
 import "./App.css";
 
 // Import Pages
+
 import LandingPage from "./pages/LandingPage";
 import Home from "./pages/Home";
 import Question from "./pages/Question";
+
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
@@ -20,19 +22,23 @@ import UserEditProfile from "./pages/UserEditProfile";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 //Import Layout Components
-import * as React from "react";
-import Box from "@mui/material/Box";
-import CssBaseline from "@mui/material/CssBaseline";
-import Navbar from "./components/Navbar/Navbar";
 
-import Layout from "./pages/Layout";
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
+import Navbar from './components/Navbar/Navbar';
+import Add from './pages/AddQuestion';
+//import ViewQuestion from "./components/ViewQuestion/MainQuestion";
+
+import Layout from './pages/Layout';
+//import MainQuestion from './components/ViewQuestion/MainQuestion';
+
 export default function App() {
   return (
     <div className="App">
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
 
-        <Navbar />
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -96,6 +102,7 @@ export default function App() {
             path="/users/activity/reputation/:id"
             element={<Layout page={<UserActivityReputation />} />}
           />
+              <Route path="/ask" element={<Add />}/>
         </Routes>
       </Box>
     </div>

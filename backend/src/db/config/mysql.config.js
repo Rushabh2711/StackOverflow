@@ -1,5 +1,13 @@
 import Sequelize from "sequelize";
-import constants from "./sqlConfig.json";
+// import constants from "./sqlConfig.json";
+
+const constants = {
+    HOST: "etsy.c5bcnawebmvb.us-east-2.rds.amazonaws.com",
+    USER: "admin",
+    PASSWORD: "apup%123",
+    PORT: 3306,
+    DATABASE: "StackOverflow"
+}
 
 // Create connection to database
 // var connection = mysql.createConnection({
@@ -20,11 +28,11 @@ import constants from "./sqlConfig.json";
 // });
 
 const db = new Sequelize(
-  constants.DB.database,
-  constants.DB.username,
-  constants.DB.password,
+  constants.DATABASE,
+  constants.USER,
+  constants.PASSWORD,
   {
-    host: constants.DB.host,
+    host: constants.HOST,
     dialect: "mysql",
     pool: {
       max: 5,
