@@ -15,7 +15,7 @@ export default function UserTopTags(props) {
   return (
     <div>
       <Grid container spacing={1}>
-        <Grid item xs={11}>
+        <Grid item xs={12}>
           <List sx={{ width: "100%", bgcolor: "background.paper" }}>
             {tags.slice(0, length).map((tag) => (
               <ListItem sx={{ border: 1, borderColor: "#e0e0e0" }}>

@@ -30,7 +30,7 @@ export default function UserActivityQuestions() {
             user={user}
           ></UserActivitySidebar>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           {" "}
           <Typography
             sx={{ fontSize: 20, color: "#212121", align: "left" }}

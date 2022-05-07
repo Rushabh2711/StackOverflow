@@ -1,5 +1,5 @@
 import Questions from "../../../db/models/mongo/question.js";
-import client from "../../../db/config/redis.config.js";
+// import client from "../../../db/config/redis.config.js";
 
 export class TestController {
 	fetchAllQuestions = async (req, res) => {	
@@ -13,62 +13,62 @@ export class TestController {
 	  };
 
 	  fetchQuestionsFromCache = async (req, res) => {
-		  client.get("test-questions")
-				.then(async function(data, err) {
-					if (err) 
-					{
-						console.error(err);
-						res.status(500).send("Error when connecting to Redis cache");
-					}
-					if (data != null) 
-					{
-						console.log("cache hit");
-						res.status(200).send(data);
-					} 
-					else 
-					{
-						console.log("cache miss");
-						const results = await Questions.find({},{ answers: 0, questionComments: 0, Activity: 0 });
-						client.set("test-questions", JSON.stringify(results));
-						res.status(200).send(results);
-					} 
-				}
-			);
+		//   client.get("test-questions")
+		// 		.then(async function(data, err) {
+		// 			if (err) 
+		// 			{
+		// 				console.error(err);
+		// 				res.status(500).send("Error when connecting to Redis cache");
+		// 			}
+		// 			if (data != null) 
+		// 			{
+		// 				console.log("cache hit");
+		// 				res.status(200).send(data);
+		// 			} 
+		// 			else 
+		// 			{
+		// 				console.log("cache miss");
+		// 				const results = await Questions.find({},{ answers: 0, questionComments: 0, Activity: 0 });
+		// 				client.set("test-questions", JSON.stringify(results));
+		// 				res.status(200).send(results);
+		// 			} 
+		// 		}
+		// 	);
 	};
 
 	fetchFromKafkaAndCache = async (req, res) => {
-		client.get("test-questions")
-			  .then(async function(data, err) {
-				if (err) 
-				{
-					console.error(err);
-					res.status(500).send("Error when connecting to Redis cache");
-				}
-				if (data != null) 
-				{
-					console.log("Found from cache");
-					res.status(200).send(JSON.parse(data));
-				} 
-				else 
-				{
-					const message = {};
-					message.path = req.route.path;
-					make_request("question", message, (err, results) => {
-						if (err) {
-							console.error(err);
-							res.json({
-								status: "Error",
-								msg: "System error, try again",
-							});
-						} else {
-							console.log("Fetched all questions with kafka-backend");
-							console.log(results);
-							res.json(results);
-							res.end();
-						}
-					});
-				}	
-			  })
+		// client.get("test-questions")
+		// 	  .then(async function(data, err) {
+		// 		if (err) 
+		// 		{
+		// 			console.error(err);
+		// 			res.status(500).send("Error when connecting to Redis cache");
+		// 		}
+		// 		if (data != null) 
+		// 		{
+		// 			console.log("Found from cache");
+		// 			res.status(200).send(JSON.parse(data));
+		// 		} 
+		// 		else 
+		// 		{
+		// 			const message = {};
+		// 			message.path = req.route.path;
+		// 			make_request("question", message, (err, results) => {
+		// 				if (err) {
+		// 					console.error(err);
+		// 					res.json({
+		// 						status: "Error",
+		// 						msg: "System error, try again",
+		// 					});
+		// 				} else {
+		// 					console.log("Fetched all questions with kafka-backend");
+		// 					console.log(results);
+		// 					res.json(results);
+		// 					res.end();
+		// 				}
+		// 			});
+		// 		}	
+		// 	  })
 	}
 
 	insert10K = async (req, res) => {

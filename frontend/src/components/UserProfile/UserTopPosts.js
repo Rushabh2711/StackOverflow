@@ -82,7 +82,7 @@ export default function UserTopPosts() {
   return (
     <div>
       <Grid container spacing={1}>
-        <Grid item xs={11}>
+        <Grid item xs={12}>
           <Grid container spacing={1}>
             <Grid item xs={7}>
               {postType === "all" && filterType === "score" ? (

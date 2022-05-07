@@ -12,7 +12,7 @@ export default function UserDetails(props) {
 
   return (
     <div className="userprofile-details-component">
-      <Grid container spacing={0}>
+      <Grid container spacing={2}>
         <Grid item xs={1.5}>
           <br></br>
           <img
@@ -26,7 +26,7 @@ export default function UserDetails(props) {
             alt="description of image"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <br></br>
           <br></br>
           <Typography

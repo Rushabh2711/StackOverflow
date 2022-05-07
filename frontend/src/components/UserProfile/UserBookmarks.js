@@ -24,7 +24,7 @@ export default function UserBookmarks(props) {
   return (
     <div>
       <Grid container spacing={1}>
-        <Grid item xs={11}>
+        <Grid item xs={12}>
           <List sx={{ width: "100%", bgcolor: "background.paper" }}>
             {answers !== "" ? (
               answers.questions.map((question) => (

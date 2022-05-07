@@ -1,4 +1,4 @@
-import client from "../../../db/config/redis.config.js";
+// import client from "../../../db/config/redis.config.js";
 import Questions from "../../../db/models/mongo/question.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";

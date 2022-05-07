@@ -23,11 +23,11 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 //Import Layout Components
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Navbar from './components/Navbar/Navbar';
-import Add from './pages/AddQuestion';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Navbar from "./components/Navbar/Navbar";
+import Add from "./pages/AddQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
 import Layout from './pages/Layout';
@@ -38,7 +38,6 @@ export default function App() {
     <div className="App">
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -68,30 +67,39 @@ export default function App() {
             element={<Layout page={<UserProfile />} />}
           />
 
-          <Route path="/users/editprofile/:id" element={<UserEditProfile />} />
+          <Route
+            path="/users/editprofile/:id"
+            element={<Layout page={<UserEditProfile />} />}
+          />
+
           <Route
             path="/users/activity/answers/:id"
-            element={<UserActivityAnswers />}
+            element={<Layout page={<UserActivityAnswers />} />}
           />
+
           <Route
             path="/users/activity/questions/:id"
-            element={<UserActivityQuestions />}
+            element={<Layout page={<UserActivityQuestions />} />}
           />
+
           <Route
             path="/users/activity/tags/:id"
-            element={<UserActivityTags />}
+            element={<Layout page={<UserActivityTags />} />}
           />
+
           <Route
             path="/users/activity/bookmarks/:id"
-            element={<UserActivityBookmarks />}
+            element={<Layout page={<UserActivityBookmarks />} />}
           />
+
           <Route
             path="/users/activity/badges/:id"
-            element={<UserActivityBadges />}
+            element={<Layout page={<UserActivityBadges />} />}
           />
+
           <Route
             path="/users/activity/reputation/:id"
-            element={<UserActivityReputation />}
+            element={<Layout page={<UserActivityReputation />} />}
           />
               <Route path="/ask" element={<Add />}/>
               <Route

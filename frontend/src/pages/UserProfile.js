@@ -28,7 +28,7 @@ export default function UserProfile() {
         <UserProfileNavbar page={"profile"} user={user}></UserProfileNavbar>
       </div>
       <br></br>
-      <Grid container spacing={0}>
+      <Grid container spacing={2}>
         <Grid item xs={2.75}>
           {" "}
           <div className="userprofile-stats-component">

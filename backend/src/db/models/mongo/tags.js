@@ -3,9 +3,9 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const tagsSchema = new Schema({
-  name: { type: String },
-  description: { type: String},
-  questions: [{ type: Schema.Types.ObjectId, ref: "question"}],
+  name: { type: String, required: true },
+  description: { type: String, required: true },
+  posts: [{ type: Schema.Types.ObjectId, ref: "post" }],
 });
 
 const Tags = mongoose.model("tag", tagsSchema);
