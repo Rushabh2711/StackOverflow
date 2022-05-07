@@ -23,14 +23,14 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 //Import Layout Components
 
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import CssBaseline from '@mui/material/CssBaseline';
-import Navbar from './components/Navbar/Navbar';
-import Add from './pages/AddQuestion';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import CssBaseline from "@mui/material/CssBaseline";
+import Navbar from "./components/Navbar/Navbar";
+import Add from "./pages/AddQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
-import Layout from './pages/Layout';
+import Layout from "./pages/Layout";
 //import MainQuestion from './components/ViewQuestion/MainQuestion';
 
 export default function App() {
@@ -38,7 +38,6 @@ export default function App() {
     <div className="App">
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
-
 
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -102,7 +101,8 @@ export default function App() {
             path="/users/activity/reputation/:id"
             element={<Layout page={<UserActivityReputation />} />}
           />
-              <Route path="/ask" element={<Add />}/>
+
+          <Route path="/ask" element={<Layout page={<Add />} />} />
         </Routes>
       </Box>
     </div>

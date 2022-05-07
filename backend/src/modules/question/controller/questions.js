@@ -1,25 +1,47 @@
 import { make_request } from "../../../../kafka/client.js";
 import Questions from "../../../db/models/mongo/question.js";
+import Posts from "../../../db/models/mongo/posts.js";
 
 class QuestionController {
-
   checkHealth = async (req, res) => {
     res.status(200).send("Up and Running");
-  }
+  };
+
+  // postQuestion = async (req, res) => {
+  //   console.log("Add question");
+  //   let time = new Date();
+
+  //   try {
+  //     const newQuestion = new Questions({
+  //       title: req.body.title,
+  //       tags: req.body.tags,
+  //       description: req.body.description,
+  //       addedAt: time.toISOString(),
+  //       modifiedTime: time.toISOString(),
+  //       userId: req.body.userId,
+  //       username: req.body.username,
+  //     });
+  //     const response = await newQuestion.save();
+  //     res.status(200).send(response);
+  //   } catch (err) {
+  //     console.error(err);
+  //     res.status(400).send(err);
+  //   }
+  // };
 
   postQuestion = async (req, res) => {
     console.log("Add question");
     let time = new Date();
-
     try {
-      const newQuestion = new Questions({
+      const newQuestion = new Posts({
         title: req.body.title,
+        postType: "question",
         tags: req.body.tags,
         description: req.body.description,
         addedAt: time.toISOString(),
-        modifiedTime: time.toISOString(),
+        modifiedAt: time.toISOString(),
+        status: "APPROVED",
         userId: req.body.userId,
-        username: req.body.username,
       });
       const response = await newQuestion.save();
       res.status(200).send(response);
@@ -123,7 +145,7 @@ class QuestionController {
       }
 
       if (postType == "Answer") {
-        //update user activity 
+        //update user activity
         const _id = req.body.answerId;
         const update =
           voteType == "Upvote"
