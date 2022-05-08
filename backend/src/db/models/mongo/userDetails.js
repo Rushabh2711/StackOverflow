@@ -25,9 +25,11 @@ const userDetailsSchema = new Schema({
     },
   ],
   badges: [
-    { name: { type: String },
-    type: { type: String } ,
-    tagBased: { type: Boolean }
+    { 
+      name: { type: String },
+      type: { type: String } ,
+      tagBased: { type: Boolean }
+    }
   ],
   bookmarkedQuestions: [{ type: Schema.Types.ObjectId, ref: "question" }],
   joiningDate: { type: Date, required: true },

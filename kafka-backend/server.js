@@ -38,4 +38,4 @@ const handleTopicRequest = (topic, functionName) => {
   });
 };
 
-handleTopicRequest("question", handleQuestionRequest);
+handleTopicRequest("post", handleQuestionRequest);

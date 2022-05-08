@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const questionSchema = new Schema({
   title: { type: String, required: true },
-  tags: [{ type: String }],
   description: { type: String, required: true },
   upvotes: { type: Number, default: 0 },
   downvotes: { type: Number, default: 0 },
@@ -11,6 +10,8 @@ const questionSchema = new Schema({
   numberOfAnswers: { type: Number, default: 0 },
   addedAt: { type: Date, required: true },
   modifiedTime: { type: Date },
+  isAcceptedAnswerId: {type: String},
+  status: { type: String, default: "PENDING" },
   answers: [
     {
       userId: { type: String, required: true },
@@ -21,6 +22,7 @@ const questionSchema = new Schema({
         {
           description: { type: String, required: true },
           userId: { type: String, required: true },
+          username: { type: String, required: true },
           postedOn: { type: Date, required: true },
         },
       ],
@@ -33,15 +35,22 @@ const questionSchema = new Schema({
     {
       description: { type: String, required: true },
       userId: { type: String, required: true },
+      username: { type: String, required: true },
+      postedOn: {type: Date, required: true}
     },
   ],
   userId: { type: String, required: true, index: true },
   username: { type: String, required: true },
+  tags: [
+    {
+        type: Schema.Types.ObjectId,
+        ref: "tag",
+    }
+  ],
   activities: [
     {
         type: Schema.Types.ObjectId,
         ref: "questionActivity",
-        required: true
     }
   ]
 });

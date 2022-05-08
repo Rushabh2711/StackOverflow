@@ -1,6 +1,6 @@
 import mongoInit from "./src/db/config/mongo.config.js";
 import app from "./app.js";
-import questionRouter from "./src/modules/question/router/questions.js";
+import questionRouter from "./src/modules/post/router/posts.js";
 import multer from "multer";
 import { uploadFile, downloadFile } from "./s3.cjs";
 import userRouter from "./src/modules/user/router/users.js";
