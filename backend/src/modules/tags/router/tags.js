@@ -9,5 +9,8 @@ tagRouter.get("/checkHealth", tagController.checkHealth);
 
 tagRouter.post("/tags/addTag", tagController.addTag);
 
+tagRouter.get("/tags", tagController.getTags);
+
 tagRouter.get("/tags/:tagId", tagController.getTagsByTagId);
+
 export default tagRouter;

@@ -30,6 +30,16 @@ class TagController {
       res.status(400).send(err);
     }
   };
+
+  getTags = async (req, res) => {
+    try {
+      const response = await Tags.find({}, {posts : 0, __v: 0});
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
 }
 
 export default TagController;
