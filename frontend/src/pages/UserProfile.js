@@ -35,7 +35,7 @@ export default function UserProfile() {
             <UserStats user={user}></UserStats>
           </div>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           {" "}
           <div className="userprofile-about-component">
             <UserAbout user={user}></UserAbout>

@@ -20,10 +20,10 @@ export default function UserBadges(props) {
         Badges
       </Typography>
       <Grid item xs={12} align="left">
-        <Grid container spacing={5}>
+        <Grid container spacing={0}>
           <Grid item xs={4} align="left">
             <Box sx={{ width: 200, minHeight: 250 }}>
-              <Card variant="outlined" sx={{ width: 250, height: 200 }}>
+              <Card variant="outlined" sx={{ width: 220, height: 200 }}>
                 <CardContent>
                   <Grid container spacing={0}>
                     <Grid item xs={4}>
@@ -89,7 +89,7 @@ export default function UserBadges(props) {
           </Grid>
           <Grid item xs={4} align="left">
             <Box sx={{ width: 200, minHeight: 250 }}>
-              <Card variant="outlined" sx={{ width: 250, height: 200 }}>
+              <Card variant="outlined" sx={{ width: 220, height: 200 }}>
                 <CardContent>
                   <Grid container spacing={0}>
                     <Grid item xs={4}>
@@ -154,8 +154,8 @@ export default function UserBadges(props) {
             </Box>
           </Grid>
           <Grid item xs={4} align="left">
-            <Box sx={{ width: 200, height: 250 }}>
-              <Card variant="outlined" sx={{ width: 250, height: 200 }}>
+            <Box sx={{ width: 120070, height: 250 }}>
+              <Card variant="outlined" sx={{ width: 220, height: 200 }}>
                 <CardContent>
                   <Grid container spacing={0}>
                     <Grid item xs={4}>

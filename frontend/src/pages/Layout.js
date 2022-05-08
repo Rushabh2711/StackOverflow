@@ -86,7 +86,7 @@ export default function Layout(props) {
         <Box
           component="main"
           sx={{ flexGrow: 1, p: 3 }}
-          style={{ width: "1175px", wordWrap: "wrap", wordBreak: "break-all" }}
+          style={{ width: "1020px", wordWrap: "wrap", wordBreak: "break-all" }}
         >
           <Toolbar />
           {props.page}

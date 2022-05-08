@@ -84,7 +84,7 @@ export default function UserTopPosts() {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Grid container spacing={1}>
-            <Grid item xs={7}>
+            <Grid item xs={5}>
               {postType === "all" && filterType === "score" ? (
                 <Typography
                   sx={{ fontSize: 20, color: "#212121", align: "left" }}
@@ -141,7 +141,7 @@ export default function UserTopPosts() {
                 </Typography>
               )}
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={4}>
               <div class="btn-group mr-2" role="group" aria-label="First group">
                 <button
                   type="button"
@@ -166,7 +166,7 @@ export default function UserTopPosts() {
                 </button>
               </div>
             </Grid>
-            <Grid item xs={2}>
+            <Grid item xs={3}>
               <div class="btn-group mr-2" role="group" aria-label="First group">
                 <button
                   type="button"
