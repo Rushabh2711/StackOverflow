@@ -28,17 +28,41 @@ function Ask() {
     "AWS",
     'C#'
   ];
+  const top100Films11 = [
+    { title: 'React', year: 1972 }
+  ];
+  const top100Films1 = [
+    { title: 'java', year: 1994 },
+    { title: 'React', year: 1972 },
+    { title: 'HTML', year: 1974 },
+    { title: 'C', year: 2008 },
+    { title: 'C++', year: 1957 },
+    { title: "AWS", year: 1993 },
+    { title: 'Node', year: 1994 }
+  ]
   const [title, setTitle] = useState("");
   const [body, setBody] = useState(`<p>test 1 descriptiondfsfsdf asdsadas</p><p><img src="http://localhost:3001/download-file/node.png"></p><pre class="ql-syntax" spellcheck="false">asdfasdsa
   asdfasfas
   </pre><p><br></p>`);
-  const [tag, setTag] = useState([]);
+  const [tag, setTag] = useState(top100Films11);
+  const [tagList, setTagList] = useState();
   const history = useNavigate();
 
   const handleQuill = (value) => {
     setBody(value);
   };
 
+  useEffect(() => {
+    console.log("inside")
+          axios
+           .get(`http://localhost:3001/tags/getAllTags`)
+           .then((res) => {setTagList(res.data)
+          console.log("response",res) 
+          })
+           .catch((err) => console.log(err));
+    console.log("data",tagList)
+  }, []);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("title",title)
@@ -49,8 +73,8 @@ function Ask() {
           title: title,
           description: body,
           tags: tag,
-          userId:"userId",
-          username:"virag"
+          userId:"userId",//localStorage.getItem('userId')
+          username:"virag"//localStorage.getItem('username')
          // user: user,
         };
         await axios
@@ -116,7 +140,7 @@ function Ask() {
                 />
               </div>
             </div>
-            <Autocomplete
+            {/* <Autocomplete
             required
             // sx={{ pt: 2, width: 800 }}
             multiple
@@ -139,7 +163,32 @@ function Ask() {
                 placeholder="Tags"
               />
             )}
+          /> */}
+          <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={top100Films1}
+        getOptionLabel={(option) => option.title}
+        isOptionEqualToValue={(option, value) => option.title === value.title}
+        defaultValue={top100Films11}
+         onChange={(event, newValue) => {
+           if(tag.length<5){
+             setTag(newValue);
+           }
+           else{
+             alert("You can add only 5 tags")
+           }
+           console.log(newValue)
+         }}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Tags"
+            placeholder="Favorites"
           />
+        )}
+      />
           </div>
         </div>
 

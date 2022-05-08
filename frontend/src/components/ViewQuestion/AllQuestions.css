@@ -68,7 +68,7 @@
   display: flex;
   flex-direction: column;
   margin-left: auto;
-  background-color: #bfdaea;
+  background-color: rgb(calc(216.75 + 243.525) * .15), calc(216.75 + 129.9225 * .15), calc(216.75 + (36.975) * .15);
   padding: 5px 6px 7px 7px;
 }
 .author_ans {
@@ -140,4 +140,43 @@
 }
 .votes{
   cursor: pointer;
+}
+
+/* .badge1{
+  font-weight: normal;
+  margin-right: 3px;
+  margin-left: 2px;
+} */
+.badge1, .badge2, .badge3 {
+  display: inline-block;
+  overflow: hidden;
+  line-height: inherit;
+  vertical-align: text-bottom;
+  width: 14px;
+  height: 14px;
+  background-image: url("../../images/allSymbols.svg");
+  margin-right: 3px;
+    margin-left: 2px;
+    width: 6px;
+}
+.badge1{
+  background-position: -102px -398px;
+}
+.badge2{
+  background-position: -82px -398px;
+}
+.badge3{
+  background-position: -62px -398px;
+}
+.userBadges_queans{
+   margin-left: 5px;
+}
+.badgecount{
+  font-weight: 400;
+  padding-left: 0;
+  font-size: 12px;
+}
+.svg-Trueicon{
+  filter: invert(48%) sepia(79%) saturate(2476%) hue-rotate(86deg)  
+  /* filter: invert(100%) sepia(3%) saturate(112%) hue-rotate(157deg) brightness(500%) contrast(92%) */
 }
