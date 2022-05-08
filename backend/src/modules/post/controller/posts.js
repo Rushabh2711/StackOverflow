@@ -1,5 +1,4 @@
 import { make_request } from "../../../../kafka/client.js";
-import Questions from "../../../db/models/mongo/question.js";
 import Posts from "../../../db/models/mongo/posts.js";
 
 class QuestionController {
@@ -30,10 +29,10 @@ class QuestionController {
   // };
 
   postQuestion = async (req, res) => {
-    console.log("Add question");
+    console.log("Add post");
     let time = new Date();
     try {
-      const newQuestion = new Posts({
+      const newPost = new Posts({
         title: req.body.title,
         postType: "question",
         tags: req.body.tags,
@@ -43,7 +42,7 @@ class QuestionController {
         status: "APPROVED",
         userId: req.body.userId,
       });
-      const response = await newQuestion.save();
+      const response = await newPost.save();
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
@@ -51,6 +50,7 @@ class QuestionController {
     }
   };
 
+  //
   addView = async (req, res) => {
     console.log("Inside question controller, about to make Kafka request");
     const message = {};
@@ -73,10 +73,10 @@ class QuestionController {
   };
 
   fetchAllQuestions = async (req, res) => {
-    console.log("Inside question controller, about to make Kafka request");
+    console.log("Inside post controller, about to make Kafka request");
     const message = {};
     message.path = req.route.path;
-    make_request("question", message, (err, results) => {
+    make_request("post", message, (err, results) => {
       if (err) {
         console.error(err);
         res.json({
@@ -116,7 +116,7 @@ class QuestionController {
   getQuestionsAskedByUser = async (req, res) => {
     const { userId } = req.params;
     try {
-      const response = await Questions.find({ userId: userId });
+      const response = await Posts.find({ userId: userId });
       res.status(200).send(response);
     } catch (err) {
       console.error(err);

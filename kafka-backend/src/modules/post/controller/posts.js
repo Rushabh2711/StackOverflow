@@ -1,5 +1,5 @@
 // import client from "../../../db/config/redis.config.js";
-import Questions from "../../../db/models/mongo/question.js";
+import Posts from "../../../db/models/mongo/posts.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
 import moment from "moment";
@@ -14,21 +14,18 @@ class QuestionController {
     let results = [];
 
     try {
-      let questions = await Questions.find(
-        {},
-        { answers: 0, questionComments: 0, Activity: 0 }
-      );
+      let questions = await Posts.find({postType: "question"});
 
       questions.map((question) =>
         results.push({
           questionId: question._id,
           questionTitle: question.title,
           tags: question.tags,
-          upvotes: question.upvotes,
+          votes: question.votes,
           numberOfAnswers: question.numberOfAnswers,
           views: question.views,
           userId: question.userId,
-          username: question.username,
+          // username: question.username,
           addedAt: question.addedAt,
         })
       );
@@ -45,7 +42,7 @@ class QuestionController {
 
   fetch10kQuestions = async () => {
     try {
-      let questions = await Questions.find({},{ answers: 0, questionComments: 0, Activity: 0 });
+      let questions = await Posts.find({postType: "question"});
       client.set("test-questions", JSON.stringify(questions));
       return this.responseGenerator(200, questions);
     } catch (err) {
