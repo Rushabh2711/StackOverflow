@@ -8,26 +8,33 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import HistoryIcon from "@material-ui/icons/History";
 export default function Question(props) {
   const { question } = props;
-  const [aksedQuestionUser, setAksedQuestionUser] = useState("");
+  const [aksedQuestionUser, setAksedQuestionUser] = useState();
   const [isBookmarked, SetIsBookmarked] = useState(false);
-  const [text, setText] = React.useState(`<p>test 1 descriptiondfsfsdf asdsadas</p><p><img src="http://localhost:3001/download-file/node.png"></p><pre class="ql-syntax" spellcheck="false">public enum BookingStatus {
-    [Description("Pending")]
-    Pending = 0,
-    [Description("Booked")]
-    Booked = 1
-}  
-</pre>`);
+  //   const [text, setText] = React.useState(`<p>test 1 descriptiondfsfsdf asdsadas</p><p><img src="http://localhost:3001/download-file/node.png"></p><pre class="ql-syntax" spellcheck="false">public enum BookingStatus {
+  //     [Description("Pending")]
+  //     Pending = 0,
+  //     [Description("Booked")]
+  //     Booked = 1
+  // }  
+  // </pre>`);
+  const [text, setText] = useState(props.question.description)
+   useEffect(() => {
+     const body = {
+       userId: question.userId,
+     }
+     axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
+       console.log(res.data[0]);
+       setAksedQuestionUser(res.data[0]);
+     }).catch(err => {
+       console.log(err)
+     });
+   }, [question]);
+
   useEffect(() => {
-    const body = {
-      user_id: question.user_id,
-    }
-    axios.post(`/user/getuser`, body).then((res) => {
-      console.log(res.data);
-      setAksedQuestionUser(res.data);
-    }).catch(err => {
-      console.log(err)
-    });
-  }, [question]);
+    setText(question.description)
+    console.log("first", question.description)
+    console.log("first", question)
+  }, [props.question, question, question.description])
 
   const votePost = async (e) => {
     const body = {
@@ -73,32 +80,39 @@ export default function Question(props) {
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p>
 
             <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
+            <svg aria-hidden="true" class="svg-Trueicon votes" color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
             <BookmarkIcon className="votes" onClick={addBookmark} />
 
             <HistoryIcon className="votes" />
           </div>
         </div>
         <div className="question-answer" style={{ marginBottom: "10px" }}>
+          {/* <div dangerouslySetInnerHTML={{__html: text}}></div> */}
           <ReactQuill
             value={text}
             readOnly={true}
             theme={"bubble"}
           />
-          <Comments comments={question?.comments} isQuestionComment={true} question_id={question.question_id} answer_id={question.question_id} />
+          <Comments comments={question?.comments} isQuestionComment={true} question_id={question._id} answer_id={question._id} />
 
           <div className="author">
-                <small>
-                  asked {new Date(question?.addedAt).toLocaleString()}
-                </small>
-                <div className="auth-details">
-                  <Avatar {...stringAvatar(question?.user?.displayName)} />
-                  <p>
-                    {question?.user?.displayName
-                      ? question?.user?.displayName
-                      : "Virag B"}
-                  </p>
-                </div>
-              </div>
+            <small>
+              asked {new Date(question?.addedAt).toLocaleString()}
+            </small>
+            <div className="auth-details">
+              <Avatar {...stringAvatar(question?.user?.displayName)} />
+              <p>
+                {aksedQuestionUser?.username
+                  ? aksedQuestionUser?.username
+                  : "Virag B"}
+              </p>
+              <span class="userBadges_queans" title="badges" aria-hidden="true">
+                <span class="badge1"></span><span class="badgecount">8</span>
+                <span class="badge2"></span><span class="badgecount">10</span>
+                <span class="badge3"></span><span class="badgecount">11</span>
+                </span>
+            </div>
+          </div>
         </div>
       </div>
     </>

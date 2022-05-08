@@ -1,5 +1,6 @@
 import { Avatar } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 // import Editor from "react-quill/lib/toolbar";
 import axios from "axios";
 // import ReactHtmlParser from "react-html-parser";
@@ -19,11 +20,12 @@ import Question from "./QuestionSection";
 
 
 function MainQuestion() {
-  let search = window.location.search;
-  const params = new URLSearchParams(search);
-  const id = params.get("q");
-  
-  const [questionData, setQuestionData] = useState(questions.questions[0]);
+  //let search = window.location.search;
+  //const params = new URLSearchParams(search);
+ // const id = "627456028ee4459e04591bb0"//params.get("q");
+  const { id } = useParams();
+
+  const [questionData, setQuestionData] = useState("");
   const [answer, setAnswer] = useState("");
   // const [show, setShow] = useState("");
   const [comment, setComment] = useState("");
@@ -33,6 +35,18 @@ function MainQuestion() {
   const handleQuill = (value) => {
     setAnswer(value);
   };
+  useEffect(() => {
+    console.log("inside")
+          axios
+           .get(`http://localhost:3001/questions/${id}`)
+           .then((res) => {setQuestionData(res.data[0])
+          console.log("response",res) 
+          })
+           .catch((err) => console.log(err));
+    //setQuestionData(questions.questions[0])
+    console.log("data",questionData)
+   // console.log("dawwwta",questions[0])
+  }, [id]);
 
   // useEffect(() => {
   //   async function getFunctionDetails() {
@@ -43,16 +57,16 @@ function MainQuestion() {
   //   }
   //   getFunctionDetails();
   // }, [id]);
-  useEffect(() => {
-    setQuestionData(questions.questions[0])
-    console.log("data",questionData)
-    console.log("dawwwta",questions[0])
-  }, [questionData, comments,id]);
+  // useEffect(() => {
+  //   setQuestionData(questions.questions[0])
+  //   console.log("data",questionData)
+  //   console.log("dawwwta",questions[0])
+  // }, [questionData, comments,id]);
   
-  useEffect(() => {
-    setQuestionData(questions.questions[0])
-    console.log("data",questionData)
-  }, []);
+  // useEffect(() => {
+  //   setQuestionData(questions.questions[0])
+  //   console.log("data",questionData)
+  // }, []);
 
   async function getUpdatedAnswer() {
     await axios
@@ -63,25 +77,26 @@ function MainQuestion() {
 
   // console.log(questionData);
   const handleSubmit = async () => {
-    const body = {
-      question_id: id,
-      answer: answer,
-      user: user,
-    };
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    };
+    console.log(answer)
+    // const body = {
+    //   question_id: id,
+    //   answer: answer,
+    //   user: user,
+    // };
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
 
-    await axios
-      .post("/api/answer", body, config)
-      .then(() => {
-        alert("Answer added successfully");
-        setAnswer("");
-        getUpdatedAnswer();
-      })
-      .catch((err) => console.log(err));
+    // await axios
+    //   .post("/api/answer", body, config)
+    //   .then(() => {
+    //     alert("Answer added successfully");
+    //     setAnswer("");
+    //     getUpdatedAnswer();
+    //   })
+    //   .catch((err) => console.log(err));
   };
 
   return (
@@ -125,7 +140,7 @@ function MainQuestion() {
               fontWeight: "300",
             }}
           >
-            {questionData && questionData?.answers?.length} Answers
+            {questionData && questionData?.answers?.length?"Answers":""} 
           </p>
           { questionData?.answers && questionData?.answers.map((_q) => (
             <Answer answer={_q} question_id={questionData.question_id}/>
