@@ -8,28 +8,6 @@ class QuestionController {
     res.status(200).send("Up and Running");
   };
 
-  // postQuestion = async (req, res) => {
-  //   console.log("Add question");
-  //   let time = new Date();
-
-  //   try {
-  //     const newQuestion = new Questions({
-  //       title: req.body.title,
-  //       tags: req.body.tags,
-  //       description: req.body.description,
-  //       addedAt: time.toISOString(),
-  //       modifiedTime: time.toISOString(),
-  //       userId: req.body.userId,
-  //       username: req.body.username,
-  //     });
-  //     const response = await newQuestion.save();
-  //     res.status(200).send(response);
-  //   } catch (err) {
-  //     console.error(err);
-  //     res.status(400).send(err);
-  //   }
-  // };
-
   postQuestion = async (req, res) => {
     console.log("Add post");
     let time = new Date();
