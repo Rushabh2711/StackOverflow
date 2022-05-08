@@ -103,7 +103,7 @@ export default function App() {
           />
               <Route path="/ask" element={<Add />}/>
               <Route
-            path="/view"
+            path="/view/:id"
             element={<Layout page={<MainQuestion />} sidebarTabValue={0} />}
           />
         </Routes>
