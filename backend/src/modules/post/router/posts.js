@@ -30,5 +30,6 @@ questionRouter.get(
   "/user/questions/:userId",
   questionController.getQuestionsAskedByUser
 );
+questionRouter.get("/user/questionsAnswered/:userId", questionController.getQuestionsAnswered);
 
 export default questionRouter;

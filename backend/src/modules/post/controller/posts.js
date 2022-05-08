@@ -1,5 +1,7 @@
 import { make_request } from "../../../../kafka/client.js";
 import Posts from "../../../db/models/mongo/posts.js";
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 class QuestionController {
   checkHealth = async (req, res) => {
@@ -33,13 +35,13 @@ class QuestionController {
     let time = new Date();
     try {
       const newPost = new Posts({
-        title: req.body.title,
+        questionTitle: req.body.title,
         postType: "question",
-        tags: req.body.tags,
+        questionTags: req.body.tags,
         description: req.body.description,
         addedAt: time.toISOString(),
         modifiedAt: time.toISOString(),
-        status: "APPROVED",
+        status: req.body.image ? "PENDING" : "APPROVED",
         userId: req.body.userId,
       });
       const response = await newPost.save();
@@ -50,7 +52,6 @@ class QuestionController {
     }
   };
 
-  //
   addView = async (req, res) => {
     console.log("Inside question controller, about to make Kafka request");
     const message = {};
@@ -97,7 +98,7 @@ class QuestionController {
     const message = {};
     message.body = req.params;
     message.path = req.route.path;
-    make_request("question", message, (err, results) => {
+    make_request("post", message, (err, results) => {
       if (err) {
         console.error(err);
         res.json({
@@ -118,6 +119,33 @@ class QuestionController {
     try {
       const response = await Posts.find({ userId: userId });
       res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+
+  getQuestionsAnswered = async (req, res) => {
+    const { userId } = req.params;
+    let results = [];
+    try {
+      let answers = await Posts.find({ postType: "answer", userId: userId }, {parentId: 1, _id:0});
+      // console.log(answers);
+      answers.map(async (answer) => {
+        console.log("parentId",answer.parentId);
+        let questionDetails = await Posts.findOne({ _id: answer.parentId });
+        console.log(questionDetails);
+        results.push({
+          questionId: questionDetails._id,
+          questionTitle: questionDetails.questionTitle,
+          description: questionDetails.description,
+          createdTime: questionDetails.addedAt,
+          modifiedTime: questionDetails.modifiedTime,
+          tags: questionDetails.questionTags,
+          votes: questionDetails.votes,
+        })
+      });     
+      res.status(200).send(results);
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
@@ -170,7 +198,7 @@ class QuestionController {
     const message = {};
     message.body = req.body;
     message.path = req.route.path;
-    make_request("question", message, (err, results) => {
+    make_request("post", message, (err, results) => {
       if (err) {
         console.error(err);
         res.json({

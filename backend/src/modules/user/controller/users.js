@@ -3,6 +3,7 @@ import UserDetails from "../../../db/models/mongo/userDetails.js";
 import Questions from "../../../db/models/mongo/question.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
+import Posts from "../../../db/models/mongo/posts.js";
 
 export class UserController {
   login = async (req, res) => {
@@ -81,30 +82,6 @@ export class UserController {
   //     );
   //   } catch (error) {
   //     console.error(error);
-  //   }
-  // };
-
-  // getQuestionsAnswered = async (req, res) => {
-  //   const { userId } = req.body;
-  //   let results = [];
-  //   try {
-  //     let userDetails = await UserDetails.findOne({ userId: userId });
-
-  //     userDetails.questionsAnswered.foreach(async (qaPair) => {
-  //       let question = await Questions.findById({ _id: qaPair.questionId });
-  //       results.push({
-  //         questionTitle: question.title,
-  //         tags: question.tags,
-  //         upvotes: question.upvotes,
-  //         isBest: true,
-  //         answerPostedTime: 0,
-  //       });
-  //     });
-
-  //     res.status(200).send(results);
-  //   } catch (err) {
-  //     console.error(err);
-  //     res.status(400).send(err);
   //   }
   // };
 

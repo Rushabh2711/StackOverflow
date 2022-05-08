@@ -2,18 +2,19 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-  title: { type: String, required: true },
+  // _id: mongoose.ObjectId,
+  questionTitle: { type: String, required: true },
   postType: { type: String, required: true },
-  parentId: { type: Schema.Types.ObjectId, default: null },
+  parentId: { type: Schema.Types.ObjectId },
   description: { type: String, required: true },
   votes: { type: Number, default: 0 },
-  views: { type: Number, default: 0 },
-  numberOfAnswers: { type: Number, default: 0 },
+  views: { type: Number},
+  numberOfAnswers: { type: Number},
   addedAt: { type: Date, required: true },
   modifiedAt: { type: Date, required: true },
-  isAcceptedAnswerId: { type: Schema.Types.ObjectId, default: null },
-  status: { type: String, default: "PENDING" },
-  isAccepted: { type: Boolean, default: false },
+  isAcceptedAnswerId: { type: Schema.Types.ObjectId },
+  status: { type: String },
+  isAccepted: { type: Boolean },
   userId: { type: Schema.Types.ObjectId, required: true },
   comments: [
     {
@@ -23,7 +24,7 @@ const postSchema = new Schema({
       postedOn: { type: Date, required: true },
     },
   ],
-  tags: [
+  questionTags: [
     {
       tagId: { type: Schema.Types.ObjectId },
       name: { type: String },
