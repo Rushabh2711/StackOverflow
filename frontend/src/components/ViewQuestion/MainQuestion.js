@@ -102,7 +102,7 @@ function MainQuestion() {
     <div className="main">
       <div className="main-container">
         <div className="main-top">
-          <h2 className="main-question">{questionData?.title} </h2>
+          <h2 className="main-question">{questionData?.questionTitle} </h2>
           <Link to="/ask">
             <button>Ask Question</button>
           </Link>
@@ -111,13 +111,13 @@ function MainQuestion() {
           <div className="info">
             <p>
               Asked
-              <span>{new Date(questionData?.addedAt).toLocaleString()}</span>
+              <span>{new Date(questionData?.createdTime).toLocaleString()}</span>
             </p>
             <p>
               Active<span>today</span>
             </p>
             <p>
-              Viewed<span>43times</span>
+              Viewed<span>{questionData.views} times</span>
             </p>
           </div>
         </div>

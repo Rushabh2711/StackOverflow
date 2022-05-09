@@ -18,17 +18,17 @@ export default function Question(props) {
   // }  
   // </pre>`);
   const [text, setText] = useState(props.question.description)
-   useEffect(() => {
-     const body = {
-       userId: question.userId,
-     }
-     axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
-       console.log(res.data[0]);
-       setAksedQuestionUser(res.data[0]);
-     }).catch(err => {
-       console.log(err)
-     });
-   }, [question]);
+  useEffect(() => {
+    const body = {
+      userId: question.userId,
+    }
+    axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
+      console.log(res.data[0]);
+      setAksedQuestionUser(res.data[0]);
+    }).catch(err => {
+      console.log(err)
+    });
+  }, [question]);
 
   useEffect(() => {
     setText(question.description)
@@ -77,10 +77,10 @@ export default function Question(props) {
           <div className="all-options">
             <p className="arrow votes" name="Upvote" onClick={votePost}>▲</p>
 
-            <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p>
+            <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p>
 
             <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
-            <svg aria-hidden="true" class="svg-Trueicon votes" color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
+            <svg aria-hidden="true" className="svg-Trueicon votes" color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
             <BookmarkIcon className="votes" onClick={addBookmark} />
 
             <HistoryIcon className="votes" />
@@ -93,11 +93,11 @@ export default function Question(props) {
             readOnly={true}
             theme={"bubble"}
           />
-          <Comments comments={question?.comments} isQuestionComment={true} question_id={question._id} answer_id={question._id} />
+          <Comments comments={question?.comments} isQuestionComment={true} question_id={question.questionId} answer_id={question.questionId} />
 
           <div className="author">
             <small>
-              asked {new Date(question?.addedAt).toLocaleString()}
+              asked {new Date(question?.createdTime).toLocaleString()}
             </small>
             <div className="auth-details">
               <Avatar {...stringAvatar(question?.user?.displayName)} />
@@ -106,11 +106,20 @@ export default function Question(props) {
                   ? aksedQuestionUser?.username
                   : "Virag B"}
               </p>
+              {
+                aksedQuestionUser?.badges.length > 0 ?
+                  <span class="userBadges_queans" title="badges" aria-hidden="true">
+                    {aksedQuestionUser?.badges?.gold !== 0 ? <><span class="badge1"></span><span class="badgecount">{aksedQuestionUser.badges.gold}</span></> : ""}
+                    {aksedQuestionUser?.badges?.gold !== 0 ? <><span class="badge2"></span><span class="badgecount">{aksedQuestionUser.badges.silver}</span></> : ""}
+                    {aksedQuestionUser?.badges?.gold !== 0 ? <><span class="badge3"></span><span class="badgecount">{aksedQuestionUser.badges.bronze}</span></> : ""}
+                  </span>
+                  : ""
+              }
               <span class="userBadges_queans" title="badges" aria-hidden="true">
                 <span class="badge1"></span><span class="badgecount">8</span>
                 <span class="badge2"></span><span class="badgecount">10</span>
                 <span class="badge3"></span><span class="badgecount">11</span>
-                </span>
+              </span>
             </div>
           </div>
         </div>

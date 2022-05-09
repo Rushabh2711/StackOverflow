@@ -68,7 +68,7 @@ class QuestionController {
       const userDetails = UserDetails.find({_id : data.userId});
       const result = {
         questionId: questionDetails._id,
-        questionTitle: questionDetails.title,
+        questionTitle: questionDetails.questionTitle,
         views: questionViews.length ?? questionViews[0].views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
@@ -81,6 +81,7 @@ class QuestionController {
         username: userDetails.username,
         profilePicture: userDetails.profilePicture,
         badges: userDetails.badges,
+        userId: questionDetails.userId,
         reputation: userDetails.reputation
       };
       return this.responseGenerator(200, result);
@@ -150,6 +151,7 @@ class QuestionController {
 
     const comment = {
       userId: data.userId,
+      username: data.username,
       description: data.description,
       postedOn: time.toISOString(),
     };

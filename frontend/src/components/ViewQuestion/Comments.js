@@ -10,8 +10,10 @@ export default function Comments(props) {
       const body = {
         question_id: question_id,
         answer_id: answer_id,
-        comment: commentText,
-        isQuestionComment: isQuestionComment
+        description: commentText,
+        isQuestionComment: isQuestionComment,
+        username:"utkarshpant112",
+        userId:"62763e54bfe0a2faeddf026e"
         // user: user,
       };
       await axios.post(`/api/postComment`, body).then((res) => {

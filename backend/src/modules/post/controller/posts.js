@@ -19,7 +19,7 @@ class QuestionController {
         description: req.body.description,
         addedAt: time.toISOString(),
         modifiedAt: time.toISOString(),
-        status: req.body.image ? "PENDING" : "APPROVED",
+        status: req.body.description.includes('src="data:image/') ? "PENDING" : "APPROVED",
         userId: req.body.userId,
       });
       const response = await newPost.save();
@@ -193,18 +193,19 @@ class QuestionController {
   };
 
   postCommentToQuestion = async (req, res) => {
-    const { questionId, description, userId } = req.params;
+    const { questionId, description, userId,username } = req.params;
     let time = new Date();
 
     const comment = {
       description: description,
       userId: userId,
+      username:username,
       postedOn: time.toISOString(),
     };
 
     try {
-      const response = await Questions.findByIdAndUpdate(questionId, {
-        $push: { questionComments: comment },
+      const response = await Posts.findByIdAndUpdate(questionId, {
+        $push: { comments: comment },
       });
       res.status(200).send(response);
     } catch (err) {
