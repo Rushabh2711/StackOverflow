@@ -75,7 +75,35 @@ function MainQuestion() {
   }
 
   // console.log(questionData);
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("body",answer)
+      if (answer !== "") {
+        const bodyJSON = {
+          description: answer,
+          questionId:questionData.questionId,
+          questionTitle:questionData.questionTitle,
+          questionTags:questionData.tags,
+          userId:"62763e62bfe0a2faeddf0270",//localStorage.getItem('userId')
+          username:"harsha"//localStorage.getItem('username')
+        };
+        await axios
+          .put("http://localhost:3001/question/postAnswer", bodyJSON)
+          .then((res) => {
+             console.log(res.data);
+             setAnswer("")
+            alert("Answer added successfully");
+            //history.push("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      else{
+        alert("Please insert answer first!!!")
+      }
+  };
+  const handleSubmit1 = async () => {
     console.log(answer)
     // const body = {
     //   question_id: id,
@@ -161,6 +189,7 @@ function MainQuestion() {
         <QuillEditor
           body={answer}
           style={{ height: "200px" }}
+          onChange={setAnswer}
         />
 
       </div>
