@@ -4,12 +4,25 @@ import UserDetails from "../components/UserProfile/UserDetails";
 import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import { Grid } from "@mui/material";
+import { useNavigate, useParams } from "react-router";
+import axios from "axios";
 
 export default function UserActivityReputation() {
   const [user, setUser] = useState("");
 
+  const { id } = useParams();
+  let navigate = useNavigate();
   useEffect(() => {
-    setUser(userJson.userData);
+    axios
+      .get(`http://localhost:3001/user/` + id)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/errorpage");
+      });
   }, []);
 
   return (

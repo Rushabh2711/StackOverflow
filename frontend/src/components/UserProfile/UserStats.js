@@ -36,7 +36,7 @@ export default function UserStats(props) {
               align="left"
               gutterBottom
             >
-              {user.questions_view_count}
+              {user.questionsViewCount}
             </Typography>
             <Typography
               sx={{ fontSize: 15, color: "#212121" }}
@@ -57,7 +57,7 @@ export default function UserStats(props) {
               align="left"
               gutterBottom
             >
-              {user.numberOfQuestionsAnswered}
+              {user.questionsAnsweredCount}
             </Typography>
             <Typography
               sx={{ fontSize: 15, color: "#212121" }}
@@ -75,7 +75,7 @@ export default function UserStats(props) {
               align="left"
               gutterBottom
             >
-              {user.questions_asked_count}
+              {user.questionsAskedCount}
             </Typography>
             <Typography
               sx={{ fontSize: 15, color: "#212121" }}

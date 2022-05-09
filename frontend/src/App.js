@@ -17,6 +17,7 @@ import UserActivityBadges from "./pages/UserActivityBadges";
 import UserActivityBookmarks from "./pages/UserActivityBookmarks";
 import UserActivityReputation from "./pages/UserActivityReputation";
 import UserEditProfile from "./pages/UserEditProfile";
+import ErrorPage from "./pages/ErrorPage";
 
 // Import Dependencies
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -30,8 +31,8 @@ import Navbar from "./components/Navbar/Navbar";
 import Add from "./pages/AddQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
-import Layout from './pages/Layout';
-import MainQuestion from './components/ViewQuestion/MainQuestion';
+import Layout from "./pages/Layout";
+import MainQuestion from "./components/ViewQuestion/MainQuestion";
 
 export default function App() {
   return (
@@ -101,11 +102,13 @@ export default function App() {
             path="/users/activity/reputation/:id"
             element={<Layout page={<UserActivityReputation />} />}
           />
-              <Route path="/ask" element={<Add />}/>
-              <Route
+          <Route path="/ask" element={<Add />} />
+          <Route
             path="/view/:id"
             element={<Layout page={<MainQuestion />} sidebarTabValue={0} />}
           />
+
+          <Route path="/errorpage" element={<Layout page={<ErrorPage />} />} />
         </Routes>
       </Box>
     </div>

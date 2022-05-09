@@ -5,14 +5,24 @@ import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import { Grid, Typography } from "@mui/material";
 import UserAnswers from "../components/UserProfile/UserAnswers";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 
 export default function UserActivityAnswers() {
-  const [user, setUser] = useState(userJson.userData);
-
+  const [user, setUser] = useState("");
+  const { id } = useParams();
+  let navigate = useNavigate();
   useEffect(() => {
-    setUser(userJson.userData);
+    axios
+      .get(`http://localhost:3001/user/` + id)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/errorpage");
+      });
   }, []);
 
   return (
