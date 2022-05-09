@@ -26,6 +26,7 @@ questionRouter.get(
   "/questions/:questionId",
   questionController.fetchQuestionDetails
 );
+questionRouter.get("/questions/tags/:tagId", questionController.getQuestionsByTagId);
 questionRouter.get(
   "/user/questions/:userId",
   questionController.getQuestionsAskedByUser

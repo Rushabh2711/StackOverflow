@@ -60,16 +60,13 @@ class QuestionController {
     try {
       const questionDetails = await Posts.findById({ _id: questionId });
       console.log("questionDetails",questionDetails);
-      const questionViews = await QuestionViews.find({
-        questionId: questionId,
-      });
-      console.log("questions",JSON.stringify(questionViews));
 
       const userDetails = UserDetails.find({_id : data.userId});
+
       const result = {
         questionId: questionDetails._id,
-        questionTitle: questionDetails.questionTitle,
-        views: questionViews.length ?? questionViews[0].views,
+        questionTitle: questionDetails.title,
+        views: questionDetails.views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
         modifiedTime: questionDetails.modifiedTime,

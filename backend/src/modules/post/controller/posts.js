@@ -1,5 +1,6 @@
 import { make_request } from "../../../../kafka/client.js";
 import Posts from "../../../db/models/mongo/posts.js";
+import Tags from "../../../db/models/mongo/tags.js";
 // const mongoose = require('mongoose');
 import mongoose from 'mongoose';
 
@@ -22,7 +23,10 @@ class QuestionController {
         status: req.body.description.includes('src="data:image/') ? "PENDING" : "APPROVED",
         userId: req.body.userId,
       });
+
       const response = await newPost.save();
+      let postId = response._id;
+      //Trigger to update postId in tags
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
@@ -92,10 +96,37 @@ class QuestionController {
     });
   };
 
+  getQuestionsByTagId = async (req, res) => {
+    try {
+      const { tagId } = req.params;
+      let results = [];
+      let questionIds = await Tags.find({ _id: tagId}, {posts : 1});
+      questionIds.map(async questionId => {
+        let questionDetails = await Posts.findOne({ _id: questionId });
+        console.log(questionDetails);
+        if(questionDetails){
+          results.push({
+            questionId: questionDetails._id,
+            questionTitle: questionDetails.questionTitle,
+            description: questionDetails.description,
+            createdTime: questionDetails.addedAt,
+            modifiedTime: questionDetails.modifiedTime,
+            tags: questionDetails.questionTags,
+            votes: questionDetails.votes,
+          })
+        }
+        res.status(200).send(results);
+      })
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
+
   getQuestionsAskedByUser = async (req, res) => {
     const { userId } = req.params;
     try {
-      const response = await Posts.find({ userId: userId });
+      const response = await Posts.find({ userId: userId, postType : "question"});
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
@@ -130,7 +161,10 @@ class QuestionController {
     }
   };
 
-  bookmark = async (req, res) => {};
+  bookmark = async (req, res) => {
+    
+
+  };
 
   removeBookmark = async (req, res) => {};
 
