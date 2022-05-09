@@ -19,8 +19,8 @@ class QuestionController {
       questions.map((question) =>
         results.push({
           questionId: question._id,
-          questionTitle: question.title,
-          tags: question.tags,
+          questionTitle: question.questionTitle,
+          tags: question.questionTags,
           votes: question.votes,
           numberOfAnswers: question.numberOfAnswers,
           views: question.views,
@@ -58,26 +58,30 @@ class QuestionController {
     console.log(data);
     const questionId = data.questionId;
     try {
-      const questionDetails = await Questions.findById({ _id: questionId });
+      const questionDetails = await Posts.findById({ _id: questionId });
       console.log("questionDetails",questionDetails);
       const questionViews = await QuestionViews.find({
         questionId: questionId,
       });
-      console.log(JSON.stringify(questionDetails));
+      console.log("questions",JSON.stringify(questionViews));
+
+      const userDetails = UserDetails.find({_id : data.userId});
       const result = {
         questionId: questionDetails._id,
         questionTitle: questionDetails.title,
-        views: questionViews[0].views,
+        views: questionViews.length ?? questionViews[0].views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
         modifiedTime: questionDetails.modifiedTime,
-        tags: questionDetails.tags,
-        upvotes: questionDetails.upvotes,
-        downvotes: questionDetails.downvotes,
+        tags: questionDetails.questionTags,
+        votes: questionDetails.votes,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
         questionComments: questionDetails.questionComments,
-        //user details
+        username: userDetails.username,
+        profilePicture: userDetails.profilePicture,
+        badges: userDetails.badges,
+        reputation: userDetails.reputation
       };
       return this.responseGenerator(200, result);
     } catch (err) {
@@ -120,34 +124,21 @@ class QuestionController {
   };
 
   postAnswer = async (data) => {
-    console.log(data);
-    const questionId = data.questionId;
-    const time = new Date();
-
-    const answer = {
-      userId: data.userId,
-      description: data.description,
-      createdTime: time.toISOString(),
-      modifiedTime: time.toISOString(),
-    };
-
+    console.log("Add answer");
+    let time = new Date();
     try {
-      const response = await Questions.findByIdAndUpdate(questionId, {
-        $push: { answers: answer },
-      }, {new: true});
-
-      console.log(JSON.stringify(response));
-      
-      let count = response.answers.length;
-      let answerId = response.answers[count-1]._id;
-      let pair = {
-        questionId: questionId,
-        answerId: answerId
-      }
-      await UserDetails.findByIdAndUpdate(data.userId,{
-        $push : {questionsAnswered : pair }
-      })
-      return this.responseGenerator(200, "Added new answer to question");
+      const newPost = new Posts({
+        questionTitle: data.questionTitle,
+        postType: "answer",
+        parentId: data.questionId,
+        description: data.description,
+        questionTags: data.questionTags,
+        addedAt: time.toISOString(),
+        modifiedAt: time.toISOString(),
+        userId: data.userId,
+      });
+      const response = await newPost.save();
+      return this.responseGenerator(200, response);
     } catch (err) {
       console.error("Error when posting answer ", err);
     }

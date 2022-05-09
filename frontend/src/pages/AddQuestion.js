@@ -41,11 +41,9 @@ function Ask() {
     { title: 'Node', year: 1994 }
   ]
   const [title, setTitle] = useState("");
-  const [body, setBody] = useState(`<p>test 1 descriptiondfsfsdf asdsadas</p><p><img src="http://localhost:3001/download-file/node.png"></p><pre class="ql-syntax" spellcheck="false">asdfasdsa
-  asdfasfas
-  </pre><p><br></p>`);
-  const [tag, setTag] = useState(top100Films11);
-  const [tagList, setTagList] = useState();
+  const [body, setBody] = useState("");
+  const [tag, setTag] = useState([]);
+  const [tagList, setTagList] = useState([]);
   const history = useNavigate();
 
   const handleQuill = (value) => {
@@ -55,9 +53,10 @@ function Ask() {
   useEffect(() => {
     console.log("inside")
           axios
-           .get(`http://localhost:3001/tags/getAllTags`)
-           .then((res) => {setTagList(res.data)
-          console.log("response",res) 
+           .get(`http://localhost:3001/tags`)
+           .then((res) => {
+            setTagList(res.data)
+          // console.log("response",res.data) 
           })
            .catch((err) => console.log(err));
     console.log("data",tagList)
@@ -73,7 +72,7 @@ function Ask() {
           title: title,
           description: body,
           tags: tag,
-          userId:"userId",//localStorage.getItem('userId')
+          userId:"62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
           username:"virag"//localStorage.getItem('username')
          // user: user,
         };
@@ -90,6 +89,12 @@ function Ask() {
       }
   };
  
+
+  const setTagsState = (tagObj) => {
+    setTag(arr => [...arr, {tagId : tagObj._id, name: tagObj.name}])
+  };
+  
+
   return (
     <>
     <Navbar/>
@@ -167,19 +172,26 @@ function Ask() {
           <Autocomplete
         multiple
         id="tags-outlined"
-        options={top100Films1}
-        getOptionLabel={(option) => option.title}
-        isOptionEqualToValue={(option, value) => option.title === value.title}
-        defaultValue={top100Films11}
-         onChange={(event, newValue) => {
-           if(tag.length<5){
-             setTag(newValue);
-           }
-           else{
-             alert("You can add only 5 tags")
-           }
-           console.log(newValue)
-         }}
+        options={tagList}
+        getOptionLabel={(option) => option.name}
+        isOptionEqualToValue={(option, value) => option.name === value.name}
+        // defaultValue={top100Films11}
+         onChange={(event, tags) => {
+            console.log(event); 
+            console.log(tags); 
+
+            setTagsState(tags.at(-1)) 
+          }
+        }
+        //    if(tag.length<5){
+        //      setTag();
+        //      {tagId : "", name: ""}
+        //    }
+        //    else{
+        //      alert("You can add only 5 tags")
+        //    }
+        //    console.log(newValue)
+        //  }}
         filterSelectedOptions
         renderInput={(params) => (
           <TextField

@@ -11,6 +11,7 @@ import tagRouter from "./src/modules/tags/router/tags.js";
 mongoInit();
 
 app.use(questionRouter);
+app.use(tagRouter);
 
 //Storing documents/Images
 const storage = multer.diskStorage({

@@ -39,13 +39,12 @@ function MainQuestion() {
     console.log("inside")
           axios
            .get(`http://localhost:3001/questions/${id}`)
-           .then((res) => {setQuestionData(res.data[0])
-          console.log("response",res) 
+           .then((res) => {
+            console.log(res.data.response); 
+            setQuestionData(res.data.response)
           })
            .catch((err) => console.log(err));
-    //setQuestionData(questions.questions[0])
     console.log("data",questionData)
-   // console.log("dawwwta",questions[0])
   }, [id]);
 
   // useEffect(() => {
