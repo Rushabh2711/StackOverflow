@@ -61,6 +61,8 @@ class QuestionController {
       const questionDetails = await Posts.findById({ _id: questionId });
       console.log("questionDetails",questionDetails);
 
+      const answers = await Posts.find({parentId : questionId});
+
       const userDetails = UserDetails.find({_id : data.userId});
 
       const result = {
@@ -80,7 +82,8 @@ class QuestionController {
         profilePicture: userDetails.profilePicture,
         badges: userDetails.badges,
         userId: questionDetails.userId,
-        reputation: userDetails.reputation
+        reputation: userDetails.reputation,
+        answers : answers
       };
       return this.responseGenerator(200, result);
     } catch (err) {
