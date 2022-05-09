@@ -193,8 +193,9 @@ class QuestionController {
   };
 
   postCommentToQuestion = async (req, res) => {
-    const { questionId, description, userId,username } = req.params;
+    const { questionId, description, userId,username } = req.body;
     let time = new Date();
+    console.log("comment successfully added",req.body)
 
     const comment = {
       description: description,
@@ -206,8 +207,11 @@ class QuestionController {
     try {
       const response = await Posts.findByIdAndUpdate(questionId, {
         $push: { comments: comment },
+      }, {
+        upsert: true, new: true
       });
-      res.status(200).send(response);
+      console.log("comment successfully added",response)
+      res.status(200).send(response.comments);
     } catch (err) {
       console.error(err);
       res.status(400).send(err);

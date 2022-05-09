@@ -1,14 +1,19 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 
 export default function Comments(props) {
-  const { comments, answer_id, question_id, isQuestionComment } = props;
+  const {  answer_id, question_id, isQuestionComment } = props;
   const [showCommentBox, setshowCommentBox] = useState("");
   const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
+  useEffect(() => {
+    setComments(props.comments)
+  }, [props.comments])
+
   const handleComment = async () => {
     if (commentText !== "") {
       const body = {
-        question_id: question_id,
+        questionId: question_id,
         answer_id: answer_id,
         description: commentText,
         isQuestionComment: isQuestionComment,
@@ -16,9 +21,11 @@ export default function Comments(props) {
         userId:"62763e54bfe0a2faeddf026e"
         // user: user,
       };
-      await axios.post(`/api/postComment`, body).then((res) => {
+      await axios.put(`http://localhost:3001/question/postComment`, body).then((res) => {
         setCommentText("");
         setshowCommentBox("");
+        setComments(res.data)
+        console.log(res)
       });
     }
   };
@@ -26,7 +33,7 @@ export default function Comments(props) {
     <div>
       <div className="comments">
         <div className="comment">
-          {console.log("virag", answer_id)}
+          
           {comments &&
             comments.map((comment) => (
 

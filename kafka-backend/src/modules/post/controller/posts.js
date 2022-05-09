@@ -75,6 +75,7 @@ class QuestionController {
         modifiedTime: questionDetails.modifiedTime,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
+        comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
         questionComments: questionDetails.questionComments,
