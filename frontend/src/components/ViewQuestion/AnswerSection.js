@@ -8,19 +8,26 @@ import Comments from "./Comments";
 export default function Answer(props) {
   const { answer, question_id } = props;
   const [answeredUser, SetansweredUser] = useState("");
-  useEffect(() => {
-    const body = {
-      user_id: answer.user_id,
-    }
-    axios.post(`/user/getuser`, body).then((res) => {
-      console.log(res.data);
-      SetansweredUser(res.data);
+  // useEffect(() => {
+  //   const body = {
+  //     user_id: answer.user_id,
+  //   }
+  //   axios.post(`/user/getuser`, body).then((res) => {
+  //     console.log(res.data);
+  //     SetansweredUser(res.data);
 
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });
+  // }, [answer,question_id]);
+  useEffect(() => {
+    axios.get(`http://localhost:3001/user/${answer.userId}`).then((res) => {
+      console.log(res.data[0]);
+      SetansweredUser(res.data[0]);
     }).catch(err => {
       console.log(err)
     });
-  }, [answer,question_id]);
-  
+  }, [answer]);
   const votePost = async (e) => {
     const body = {
       question_id: question_id,
@@ -60,8 +67,8 @@ export default function Answer(props) {
             readOnly={true}
             theme={"bubble"}
           />
-          {/* {ReactHtmlParser(answer.description)} */}
-          <Comments comments={answer?.comments} isQuestionComment={false} question_id={question_id} answer_id={answer.answer_id} />
+          {/* {ReactHtmlParser(answer.description)} */}{console.log("answer ID",answer._id)}
+          <Comments comments={answer?.comments} isQuestionComment={false} question_id={answer._id} answer_id={answer._id} />
           {/* <div className="comments">
                     <div className="comment">
                       {console.log("virag", _q?.comments)}
@@ -110,13 +117,13 @@ export default function Answer(props) {
                   </div> */}
           <div className="author_ans">
             <small>
-              answered {new Date(answer.created_date).toLocaleString()}
+              answered {new Date(answer.addedAt).toLocaleString()}
             </small>
             <div className="auth-details">
-              <Avatar {...stringAvatar(answer?.user?.displayName)} />
+              <Avatar {...stringAvatar(answer?.user?.username)} />
               <p>
-                {answer?.user?.displayName
-                  ? answer?.user?.displayName
+                {answeredUser?.username
+                  ? answeredUser.username
                   : "Virag B"}
               </p>
             </div>

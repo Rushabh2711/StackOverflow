@@ -170,7 +170,7 @@ function MainQuestion() {
             {questionData && questionData?.answers?.length?"Answers":""} 
           </p>
           { questionData?.answers && questionData?.answers.map((_q) => (
-            <Answer answer={_q} question_id={questionData.question_id}/>
+            <Answer answer={_q} question_id={questionData.questionId}/>
           
           ))}
         </div>
