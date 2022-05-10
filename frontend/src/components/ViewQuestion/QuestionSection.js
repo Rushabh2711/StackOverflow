@@ -50,18 +50,28 @@ export default function Question(props) {
   }
   const addBookmark = async () => {
     const body = {
-      question_id: question.question_id,
-      // comment: comment,
-      // user: user,
+      questionId: question.questionId,
+      userId: "62763e62bfe0a2faeddf0270",//localStorage.getItem("userId")
     };
-    await axios.post(`/api/bookmark`, body).then((res) => {
-      // setShow(false);
+    await axios.put(`http://localhost:3001/user/question/bookmark`, body).then((res) => {
       console.log(res.data);
+      SetIsBookmarked(true)
+    }).catch(err => {
+      console.log(err)
+    });
+  };
+  const removeBookmark = async () => {
+    const body = {
+      questionId: question.questionId,
+      userId: "62763e62bfe0a2faeddf0270",//localStorage.getItem("userId")
+    };
+    await axios.put(`http://localhost:3001/user/question/removebookmark`, body).then((res) => {
+      console.log(res.data);
+      SetIsBookmarked(false)
     }).catch(err => {
       console.log(err)
     });
 
-    // setShow(true)
   };
   return (
     <>
@@ -80,7 +90,7 @@ export default function Question(props) {
 
             <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
             <svg aria-hidden="true" className="svg-Trueicon votes" color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
-            <BookmarkIcon className="votes" onClick={addBookmark} style={{ color: "cea81c" }}/>
+            {isBookmarked? <BookmarkIcon className="votes" onClick={removeBookmark} style={{ color: "cea81c" }}/>:<BookmarkIcon className="votes" onClick={addBookmark} />}
 
             <HistoryIcon className="votes" />
           </div>

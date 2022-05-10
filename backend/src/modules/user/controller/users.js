@@ -135,9 +135,12 @@ export class UserController {
     try {
 
       const response = await UserDetails.findByIdAndUpdate(userId, {
-          $pull: { bookmarkedQuestions: { $elemMatch : {questionId : questionId} }}
-      });
-      console.log("bookmark questions added",response)      
+          $pull: { bookmarkedQuestions:  questionId}
+      }, {
+        upsert: true,
+        new: true
+        });
+      console.log("bookmark questions removed",response)      
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
