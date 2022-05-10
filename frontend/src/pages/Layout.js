@@ -46,7 +46,7 @@ export default function Layout(props) {
   return (
     <Box sx={{ display: 'flex', flexGrow: 1 }}>
       <CssBaseline />
-    <Navbar setComponent={setComponent}/>
+    {/* <Navbar setComponent={setComponent}/> */}
       {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
@@ -54,15 +54,15 @@ export default function Layout(props) {
           </Typography>
         </Toolbar>
       </AppBar> */}
-      <Box sx={{ display: 'flex' }} style={{paddingLeft: "10%",
-            paddingRight: "10%", justifyContent:"center"}}>
+      <Box sx={{ display: 'flex' }} style={{paddingLeft: "0%",
+            paddingRight: "0%", justifyContent:"center"}}>
             
       <Drawer
         variant="permanent"
         sx={{
           width: 174,
           flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 174, boxSizing: 'border-box', marginLeft:"10%" },
+          [`& .MuiDrawer-paper`]: { width: 174, boxSizing: 'border-box', marginLeft:"0%" },
         }}
       >
         <Toolbar />
@@ -70,7 +70,7 @@ export default function Layout(props) {
            <Sidebar setComponent={setComponent} tabValue={props.sidebarTabValue}/>
         </Box>
       </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} style={{ width:"1000px", wordWrap: "wrap",
+      <Box component="main" sx={{ flexGrow: 1, p: 3 }} style={{ width:"80vw", wordWrap: "wrap", paddingTop: "0px",
           wordBreak: "break-all" }}>
         <Toolbar />
         {props.page}

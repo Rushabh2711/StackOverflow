@@ -232,8 +232,8 @@ setAnchorEl(event.currentTarget);
           style={{
             borderTop: "5px solid orange",
             backgroundColor: "white",
-            paddingLeft: "10%",
-            paddingRight: "10%",
+            paddingLeft: "0%",
+            paddingRight: "0%",
             paddingTop: "0px",
             paddingBottom: "0px",
           }}
