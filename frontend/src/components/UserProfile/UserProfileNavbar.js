@@ -17,12 +17,17 @@ export default function UserProfileNavbar(props) {
   });
 
   const activityClickHandler = (e) => {
-    navigate("/users/activity/" + user.user_id);
+    navigate("/users/activity/answers/" + user.user_id);
   };
 
   const profileClickHandler = (e) => {
     navigate("/users/profile/" + user.user_id);
   };
+
+  const updateProfileClickHandler = (e) => {
+    navigate("/users/editprofile/" + user.user_id);
+  };
+
   return (
     <div className="userprofile-details-component">
       <Grid container spacing={0}>
@@ -66,6 +71,27 @@ export default function UserProfileNavbar(props) {
               onClick={activityClickHandler}
             >
               Activity
+            </Button>
+          )}
+        </Grid>
+        <Grid item xs={1.3}>
+          {page === "editprofile" ? (
+            <ThemeProvider theme={theme}>
+              <Button
+                variant="contained"
+                color="primary"
+                align="center"
+                sx={{ color: "white", font: 20 }}
+              >
+                Settings
+              </Button>
+            </ThemeProvider>
+          ) : (
+            <Button
+              sx={{ color: "#757575", font: 20 }}
+              onClick={updateProfileClickHandler}
+            >
+              Settings
             </Button>
           )}
         </Grid>
