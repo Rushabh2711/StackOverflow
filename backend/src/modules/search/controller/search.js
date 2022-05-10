@@ -5,7 +5,7 @@ import QuestionViews from "../../../db/models/mongo/questionViews.js";
 class SearchController {
 
     fetchSearchResult = async (req, res) => {
-        const text = "design";
+        const text = "[java] user:12345 \"tex\" is:question isaccepted:yes";
         // req.params.searchText;
         // "[java] user:12345 \"tex\" is:question isaccepted:yes";
         var results = [];
