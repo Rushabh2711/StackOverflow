@@ -39,7 +39,7 @@ class QuestionController {
     const message = {};
     message.body = req.body;
     message.path = req.route.path;
-    make_request("question", message, (err, results) => {
+    make_request("post", message, (err, results) => {
       if (err) {
         console.error(err);
         res.json({
@@ -233,7 +233,7 @@ class QuestionController {
     const message = {};
     message.body = req.body;
     message.path = req.route.path;
-    make_request("question", message, (err, results) => {
+    make_request("post", message, (err, results) => {
       if (err) {
         console.error(err);
         res.json({
@@ -248,6 +248,23 @@ class QuestionController {
       }
     });
   };
+
+  markAnswerAsAccepted = async (req, res) => {
+    const {questionId, answerId} = req.body;
+    
+    try {
+      let question = await Posts.findOneAndUpdate({_id : questionId}, 
+          {
+            "$set" : {isAcceptedAnswerId : answerId, isAccepted : true }
+          },
+          {new : true}
+        );
+
+      
+    } catch (error) {
+      
+    }
+  }
 }
 
 export default QuestionController;

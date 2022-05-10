@@ -29,5 +29,6 @@ questionRouter.get(
   questionController.getQuestionsAskedByUser
 );
 questionRouter.get("/user/questionsAnswered/:userId", questionController.getQuestionsAnswered);
+questionRouter.put("/question/markAnswerAccepted", questionController.markAnswerAsAccepted)
 
 export default questionRouter;

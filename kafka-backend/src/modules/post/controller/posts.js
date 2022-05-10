@@ -147,33 +147,27 @@ class QuestionController {
   };
 
   postCommentToAnswer = async (data) => {
-    const questionId = data.questionId;
-    const time = new Date();
+    const { answerId, description, userId,username } = data;
+    let time = new Date();
 
     const comment = {
-      userId: data.userId,
-      username: data.username,
-      description: data.description,
+      description: description,
+      userId: userId,
+      username:username,
       postedOn: time.toISOString(),
     };
 
     try {
-      const comments = await Questions.findOneAndUpdate(
-        {
-          _id: questionId,
-          'answers._id': data.answerId,
-        },
-        {
-          $push: { 'answers.$.comments': comment },
-        },
-        {
-          upsert: true
-        }
-      );
-      console.log(JSON.stringify(comments));
-      return this.responseGenerator(200, "Added new comment to answer");
+      const response = await Posts.findByIdAndUpdate(answerId, {
+        $push: { comments: comment },
+      }, {
+        upsert: true, new: true
+      });
+      console.log("comment successfully added to answer",answerId)
+      res.status(200).send(response.comments);
     } catch (err) {
-      console.error("Error when posting comment to answer ", err);
+      console.error(err);
+      res.status(400).send(err);
     }
   };
 }
