@@ -17,27 +17,27 @@ export default function UserActivitySidebar(props) {
   });
 
   const answersClickHandler = (e) => {
-    navigate("/users/activity/answers/" + user.user_id);
+    navigate("/users/activity/answers/" + user._id);
   };
 
   const questionsClickHandler = (e) => {
-    navigate("/users/activity/questions/" + user.user_id);
+    navigate("/users/activity/questions/" + user._id);
   };
 
   const tagsClickHandler = (e) => {
-    navigate("/users/activity/tags/" + user.user_id);
+    navigate("/users/activity/tags/" + user._id);
   };
 
   const badgesClickHandler = (e) => {
-    navigate("/users/activity/badges/" + user.user_id);
+    navigate("/users/activity/badges/" + user._id);
   };
 
   const bookmarksClickHandler = (e) => {
-    navigate("/users/activity/bookmarks/" + user.user_id);
+    navigate("/users/activity/bookmarks/" + user._id);
   };
 
   const reputationClickHandler = (e) => {
-    navigate("/users/activity/reputation/" + user.user_id);
+    navigate("/users/activity/reputation/" + user._id);
   };
 
   return (

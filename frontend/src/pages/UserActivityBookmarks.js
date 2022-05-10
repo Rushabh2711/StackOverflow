@@ -5,12 +5,24 @@ import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import UserBookmarks from "../components/UserProfile/UserBookmarks";
 import { Grid, Typography } from "@mui/material";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router";
 
 export default function UserActivityBookmarks() {
   const [user, setUser] = useState("");
-
+  const { id } = useParams();
+  let navigate = useNavigate();
   useEffect(() => {
-    setUser(userJson.userData);
+    axios
+      .get(`http://localhost:3001/user/` + id)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/errorpage");
+      });
   }, []);
 
   return (

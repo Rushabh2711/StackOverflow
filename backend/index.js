@@ -3,6 +3,7 @@ import app from "./app.js";
 import questionRouter from "./src/modules/post/router/posts.js";
 import multer from "multer";
 import { uploadFile, downloadFile } from "./s3.cjs";
+import searchRouter from "./src/modules/post/router/search.js";
 import userRouter from "./src/modules/user/router/users.js";
 import testRouter from "./src/modules/test/router/test.js";
 import tagRouter from "./src/modules/tags/router/tags.js";
@@ -11,7 +12,9 @@ import tagRouter from "./src/modules/tags/router/tags.js";
 mongoInit();
 
 app.use(questionRouter);
+
 app.use(tagRouter);
+app.use(searchRouter);
 
 //Storing documents/Images
 const storage = multer.diskStorage({
