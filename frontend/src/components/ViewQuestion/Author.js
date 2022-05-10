@@ -39,10 +39,10 @@ export default function Author(props) {
                 {isQuestion?"asked":"answered"} {new Date(createdTime).toLocaleString()}
               </Typography>
             </Grid>
-            <Grid xs={5}>
+            <Grid item xs={5}>
               <Avatar src='../../images/profile.jpeg' />
             </Grid>
-            <Grid xs={7} sx={{ textAlign: "left", ml: -3 }}>
+            <Grid item xs={7} sx={{ textAlign: "left", ml: -3 }}>
               <Typography variant="body2" component="div" sx={{color:"blue"}} className="votes">
                 <Link to="" style={{textDecoration:"none"}}>{author?.username}</Link>
               </Typography>
