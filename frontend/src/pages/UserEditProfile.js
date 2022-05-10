@@ -25,13 +25,13 @@ export default function UserEditProfile() {
         <UserProfileNavbar page={"editprofile"} user={user}></UserProfileNavbar>
       </div>
       <br></br>
-      <Grid container spacing={2}>
-        <Grid item xs={2}>
+      <Grid container spacing={0}>
+        <Grid item xs={2.5}>
           {" "}
           <UserEditSidebar user={user}></UserEditSidebar>
         </Grid>
 
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           {" "}
           <Typography
             sx={{ fontSize: 25, color: "#212121", align: "left" }}

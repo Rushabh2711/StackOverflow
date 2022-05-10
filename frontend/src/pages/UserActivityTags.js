@@ -5,12 +5,24 @@ import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import { Grid, Typography } from "@mui/material";
 import UserTopTags from "../components/UserProfile/UserTopTags";
+import { useNavigate, useParams } from "react-router";
+import axios from "axios";
 
 export default function UserActivityTags() {
   const [user, setUser] = useState("");
-
+  const { id } = useParams();
+  let navigate = useNavigate();
   useEffect(() => {
-    setUser(userJson.userData);
+    axios
+      .get(`http://localhost:3001/user/` + id)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/errorpage");
+      });
   }, []);
 
   return (
@@ -27,7 +39,7 @@ export default function UserActivityTags() {
           {" "}
           <UserActivitySidebar tab={"tags"} user={user}></UserActivitySidebar>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           {" "}
           <Typography
             sx={{ fontSize: 20, color: "#212121", align: "left" }}

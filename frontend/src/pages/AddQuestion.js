@@ -2,17 +2,16 @@ import React, { useEffect, useState } from "react";
 import { TextField, Box, Typography, Button,Autocomplete } from '@mui/material';
 import QuillEditor from "../components/Questions/Editor";
 
-import { useSelector } from "react-redux";
-import ReactQuill , { Quill } from "react-quill";
+import  { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css"; // ES6
 import "../components/Questions/index.css";
-import Editor from "react-quill/lib/toolbar";
 import axios from "axios";
 //import { TagsInput } from "react-tag-input-component";
 // import { selectUser } from "../../feature/userSlice";
 import { useNavigate } from "react-router-dom";
 // import ChipsArray from "./TagsInput";
 import ImageUploader from "quill-image-uploader";
+import Navbar from "../components/Navbar/Navbar";
 //import ImageResize from "quill-image-resize-module-react";
 
 // #2 register module
@@ -29,41 +28,76 @@ function Ask() {
     "AWS",
     'C#'
   ];
+  const top100Films11 = [
+    { title: 'React', year: 1972 }
+  ];
+  const top100Films1 = [
+    { title: 'java', year: 1994 },
+    { title: 'React', year: 1972 },
+    { title: 'HTML', year: 1974 },
+    { title: 'C', year: 2008 },
+    { title: 'C++', year: 1957 },
+    { title: "AWS", year: 1993 },
+    { title: 'Node', year: 1994 }
+  ]
   const [title, setTitle] = useState("");
-  const [body, setBody] = useState(`<p>test 1 descriptiondfsfsdf asdsadas</p><p><img src="http://localhost:3001/download-file/node.png"></p><pre class="ql-syntax" spellcheck="false">asdfasdsa
-  asdfasfas
-  </pre><p><br></p>`);
+  const [body, setBody] = useState("");
   const [tag, setTag] = useState([]);
+  const [tagList, setTagList] = useState([]);
   const history = useNavigate();
 
   const handleQuill = (value) => {
     setBody(value);
   };
 
+  useEffect(() => {
+    console.log("inside")
+          axios
+           .get(`http://localhost:3001/tags`)
+           .then((res) => {
+            setTagList(res.data)
+          // console.log("response",res.data) 
+          })
+           .catch((err) => console.log(err));
+    console.log("data",tagList)
+  }, []);
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (title !== "" && body !== "") {
-      const bodyJSON = {
-        title: title,
-        body: body,
-        tag: JSON.stringify(tag),
-       // user: user,
-      };
-      await axios
-        .post("/api/question", bodyJSON)
-        .then((res) => {
-          // console.log(res.data);
-          alert("Question added successfully");
-          history.push("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    }
+    console.log("title",title)
+    console.log("body",body)
+    console.log("tag",tag)
+      if (title !== "" && body !== "") {
+        const bodyJSON = {
+          title: title,
+          description: body,
+          tags: tag,
+          userId:"62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
+          username:"virag"//localStorage.getItem('username')
+         // user: user,
+        };
+        await axios
+          .post("http://localhost:3001/questions/ask", bodyJSON)
+          .then((res) => {
+             console.log(res.data);
+            alert("Question added successfully");
+            //history.push("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
   };
  
+
+  const setTagsState = (tagObj) => {
+    setTag(arr => [...arr, {tagId : tagObj._id, name: tagObj.name}])
+  };
+  
+
   return (
+    <>
+    <Navbar/>
     <div className="add-question">
       <div className="add-question-container">
         <div className="head-title">
@@ -79,12 +113,14 @@ function Ask() {
                   person
                 </small>
                 <TextField
+                required
            value={title}
             // label="Title"
             id="outlined-size-small"
             size="small"
             onChange={(event, newTitle) => {
-              setTitle(newTitle);
+              setTitle(event.target.value);
+              // console.log("title change ",event.target.value)
             }}
           />
                 {/* <input
@@ -104,10 +140,13 @@ function Ask() {
                 </small>
                 <QuillEditor
                  body={body}
+                 onBlur={setBody}
+                 onChange={setBody}
                 />
               </div>
             </div>
-            <Autocomplete
+            {/* <Autocomplete
+            required
             // sx={{ pt: 2, width: 800 }}
             multiple
             id="tags-outlined"
@@ -129,7 +168,39 @@ function Ask() {
                 placeholder="Tags"
               />
             )}
+          /> */}
+          <Autocomplete
+        multiple
+        id="tags-outlined"
+        options={tagList}
+        getOptionLabel={(option) => option.name}
+        isOptionEqualToValue={(option, value) => option.name === value.name}
+        // defaultValue={top100Films11}
+         onChange={(event, tags) => {
+            console.log(event); 
+            console.log(tags); 
+
+            setTagsState(tags.at(-1)) 
+          }
+        }
+        //    if(tag.length<5){
+        //      setTag();
+        //      {tagId : "", name: ""}
+        //    }
+        //    else{
+        //      alert("You can add only 5 tags")
+        //    }
+        //    console.log(newValue)
+        //  }}
+        filterSelectedOptions
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            label="Tags"
+            placeholder="Favorites"
           />
+        )}
+      />
           </div>
         </div>
 
@@ -138,6 +209,8 @@ function Ask() {
         </button>
       </div>
     </div>
+    </>
+
   );
 }
 

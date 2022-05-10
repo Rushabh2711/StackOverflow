@@ -1,4 +1,4 @@
-import QuestionController from "../src/modules/question/controller/questions.js";
+import QuestionController from "../src/modules/post/controller/posts.js";
 
 const handleQuestionRequest = async (req, callback) => {
   console.log("----------------", req.path, "----------------");

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
@@ -17,27 +17,27 @@ export default function UserActivitySidebar(props) {
   });
 
   const answersClickHandler = (e) => {
-    navigate("/users/activity/answers/" + user.user_id);
+    navigate("/users/activity/answers/" + user._id);
   };
 
   const questionsClickHandler = (e) => {
-    navigate("/users/activity/questions/" + user.user_id);
+    navigate("/users/activity/questions/" + user._id);
   };
 
   const tagsClickHandler = (e) => {
-    navigate("/users/activity/tags/" + user.user_id);
+    navigate("/users/activity/tags/" + user._id);
   };
 
   const badgesClickHandler = (e) => {
-    navigate("/users/activity/badges/" + user.user_id);
+    navigate("/users/activity/badges/" + user._id);
   };
 
   const bookmarksClickHandler = (e) => {
-    navigate("/users/activity/bookmarks/" + user.user_id);
+    navigate("/users/activity/bookmarks/" + user._id);
   };
 
   const reputationClickHandler = (e) => {
-    navigate("/users/activity/reputation/" + user.user_id);
+    navigate("/users/activity/reputation/" + user._id);
   };
 
   return (
@@ -49,17 +49,44 @@ export default function UserActivitySidebar(props) {
             variant="contained"
             color="primary"
             align="center"
-            sx={{ color: "#424242", font: 20, width: 200 }}
+            sx={{
+              color: "#424242",
+              font: 20,
+              width: 150,
+              borderRadius: "24px",
+            }}
           >
-            Answers
+            <Typography
+              variant="body2"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                color: "#525960",
+              }}
+              textTransform="capitalize"
+            >
+              Answers
+            </Typography>
           </Button>
         </ThemeProvider>
       ) : (
         <Button
-          sx={{ color: "#757575", width: 200, font: 20 }}
+          sx={{ color: "#757575", width: 150, font: 20, borderRadius: "24px" }}
           onClick={answersClickHandler}
         >
-          Answers
+          <Typography
+            variant="body2"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              color: "#525960",
+            }}
+            textTransform="capitalize"
+          >
+            Answers
+          </Typography>
         </Button>
       )}
       <br></br>
@@ -69,17 +96,44 @@ export default function UserActivitySidebar(props) {
             variant="contained"
             color="primary"
             align="center"
-            sx={{ color: "#424242", width: 200, font: 20 }}
+            sx={{
+              color: "#424242",
+              width: 150,
+              font: 20,
+              borderRadius: "24px",
+            }}
           >
-            Questions
+            <Typography
+              variant="body2"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                color: "#525960",
+              }}
+              textTransform="capitalize"
+            >
+              Questions
+            </Typography>
           </Button>
         </ThemeProvider>
       ) : (
         <Button
-          sx={{ color: "#757575", width: 200, font: 20 }}
+          sx={{ color: "#757575", width: 150, font: 20, borderRadius: "24px" }}
           onClick={questionsClickHandler}
         >
-          Questions
+          <Typography
+            variant="body2"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              color: "#525960",
+            }}
+            textTransform="capitalize"
+          >
+            Questions
+          </Typography>
         </Button>
       )}
       <br></br>
@@ -89,17 +143,44 @@ export default function UserActivitySidebar(props) {
             variant="contained"
             color="primary"
             align="center"
-            sx={{ color: "#424242", width: 200, font: 20 }}
+            sx={{
+              color: "#424242",
+              width: 150,
+              font: 20,
+              borderRadius: "24px",
+            }}
           >
-            Tags
+            <Typography
+              variant="body2"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                color: "#525960",
+              }}
+              textTransform="capitalize"
+            >
+              Tags
+            </Typography>
           </Button>
         </ThemeProvider>
       ) : (
         <Button
-          sx={{ color: "#757575", width: 200, font: 20 }}
+          sx={{ color: "#757575", width: 150, font: 20, borderRadius: "24px" }}
           onClick={tagsClickHandler}
         >
-          Tags
+          <Typography
+            variant="body2"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              color: "#525960",
+            }}
+            textTransform="capitalize"
+          >
+            Tags
+          </Typography>
         </Button>
       )}
       <br></br>
@@ -109,17 +190,44 @@ export default function UserActivitySidebar(props) {
             variant="contained"
             color="primary"
             align="center"
-            sx={{ color: "#424242", width: 200, font: 20 }}
+            sx={{
+              color: "#424242",
+              width: 150,
+              font: 20,
+              borderRadius: "24px",
+            }}
           >
-            Bookmarks
+            <Typography
+              variant="body2"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                color: "#525960",
+              }}
+              textTransform="capitalize"
+            >
+              Bookmarks
+            </Typography>
           </Button>
         </ThemeProvider>
       ) : (
         <Button
-          sx={{ color: "#757575", width: 200, font: 20 }}
+          sx={{ color: "#757575", width: 150, font: 20, borderRadius: "24px" }}
           onClick={bookmarksClickHandler}
         >
-          Bookmarks
+          <Typography
+            variant="body2"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              color: "#525960",
+            }}
+            textTransform="capitalize"
+          >
+            Bookmarks
+          </Typography>
         </Button>
       )}
       <br></br>
@@ -129,17 +237,44 @@ export default function UserActivitySidebar(props) {
             variant="contained"
             color="primary"
             align="center"
-            sx={{ color: "#424242", width: 200, font: 20 }}
+            sx={{
+              color: "#424242",
+              width: 150,
+              font: 20,
+              borderRadius: "24px",
+            }}
           >
-            Badges
+            <Typography
+              variant="body2"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                color: "#525960",
+              }}
+              textTransform="capitalize"
+            >
+              Badges
+            </Typography>
           </Button>
         </ThemeProvider>
       ) : (
         <Button
-          sx={{ color: "#757575", width: 200, font: 20 }}
+          sx={{ color: "#757575", width: 150, font: 20, borderRadius: "24px" }}
           onClick={badgesClickHandler}
         >
-          Badges
+          <Typography
+            variant="body2"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              color: "#525960",
+            }}
+            textTransform="capitalize"
+          >
+            Badges
+          </Typography>
         </Button>
       )}
       <br></br>
@@ -149,17 +284,44 @@ export default function UserActivitySidebar(props) {
             variant="contained"
             color="primary"
             align="center"
-            sx={{ color: "#424242", width: 200, font: 20 }}
+            sx={{
+              color: "#424242",
+              width: 150,
+              font: 20,
+              borderRadius: "24px",
+            }}
           >
-            Reputation
+            <Typography
+              variant="body2"
+              noWrap
+              component="div"
+              sx={{
+                display: { xs: "none", sm: "block" },
+                color: "#525960",
+              }}
+              textTransform="capitalize"
+            >
+              Reputation
+            </Typography>
           </Button>
         </ThemeProvider>
       ) : (
         <Button
-          sx={{ color: "#757575", width: 200, font: 20 }}
+          sx={{ color: "#757575", width: 150, font: 20, borderRadius: "24px" }}
           onClick={reputationClickHandler}
         >
-          Reputation
+          <Typography
+            variant="body2"
+            noWrap
+            component="div"
+            sx={{
+              display: { xs: "none", sm: "block" },
+              color: "#525960",
+            }}
+            textTransform="capitalize"
+          >
+            Reputation
+          </Typography>
         </Button>
       )}
     </div>

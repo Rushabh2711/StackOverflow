@@ -16,7 +16,6 @@ import ImageUploader from "quill-image-uploader";
 Quill.register("modules/imageUploader", ImageUploader);
 function QuillEditor(props) {
   const [body, setBody] = React.useState(props.body);
-  console.log("text",props.body)
   console.log("text2",body)
 
     useEffect(() => {
@@ -40,6 +39,7 @@ function QuillEditor(props) {
     [{ color: [] }, { background: [] }], // dropdown with defaults from theme
     [{ font: [] }],
     [{ align: [] }],
+    ["link"],
     ["image"],
 
     ["clean"], // remove formatting button
@@ -95,17 +95,21 @@ function QuillEditor(props) {
   ];
 
  
-  const handleQuill = (value) => {
-    setBody(value);
-  };
+  // const handleQuill = (value) => {
+  //   setBody(value);
+  // };
 
-  
-  
+  const onChange = (value) => {
+       console.log("onchange event",value)
+     setBody(value);
+     props.onChange(value);
+    // console.log(editor.getHTML())
+  };
   return (
     <ReactQuill
     value={body}
     // onBlur={onBlur}
-     onChange={handleQuill}
+     onChange={onChange}
     modules={Editor.modules}
     className="react-quill"
     theme="snow"
