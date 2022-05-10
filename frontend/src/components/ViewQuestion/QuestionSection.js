@@ -88,10 +88,10 @@ export default function Question(props) {
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
 
             <p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>
-            <svg aria-hidden="true" className="svg-Trueicon votes" color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
+           
             {isBookmarked? <BookmarkIcon className="votes" onClick={removeBookmark} style={{ color: "cea81c" }}/>:<BookmarkIcon className="votes" onClick={addBookmark} />}
-
-            <HistoryIcon className="votes" />
+ 
+            <HistoryIcon className="votes" style={{ "fontSize": "1.5rem" }} />
           </div>
         </div>
         <div className="question-answer" style={{ marginBottom: "10px" }}>

@@ -24,7 +24,7 @@ function MainQuestion() {
   //const params = new URLSearchParams(search);
  // const id = "627456028ee4459e04591bb0"//params.get("q");
   const { id } = useParams();
-
+  const [isSameUser, SetisSameUser] = useState(false);// this will use for indentify to user has permission to check accepted answer or not
   const [questionData, setQuestionData] = useState("");
   const [answer, setAnswer] = useState("");
   // const [show, setShow] = useState("");
@@ -45,6 +45,9 @@ function MainQuestion() {
           })
            .catch((err) => console.log(err));
     console.log("data",questionData)
+    if(questionData.userId===localStorage.getItem("userId")){
+      SetisSameUser(true)
+    }
   }, [id]);
 
   // useEffect(() => {
@@ -164,13 +167,13 @@ function MainQuestion() {
               textAlign: "left",
               fontSize: "1.3rem",
               // fontStyle:"bold",
-              fontWeight: "300",
+              fontWeight: "400",
             }}
           >
-            {questionData && questionData?.answers?.length?"Answers":""} 
+            {questionData && questionData?.answers?.length? questionData.answers.length +" Answers":""} 
           </p>
           { questionData?.answers && questionData?.answers.map((_q) => (
-            <Answer answer={_q} question_id={questionData.questionId}/>
+            <Answer answer={_q} question_id={questionData.questionId} question_author={isSameUser}/>
           
           ))}
         </div>

@@ -6,8 +6,9 @@ import ReactQuill from "react-quill";
 import Comments from "./Comments";
 
 export default function Answer(props) {
-  const { answer, question_id } = props;
+  const { answer, question_id, question_author } = props;
   const [answeredUser, SetansweredUser] = useState("");
+  const [isAcceptedAnswer, SetisAcceptedAnswer] = useState(answer.isAccepted);
   const [voteCount, setvoteCount] = useState(parseInt(answer?.upvotes) - parseInt(answer?.downvotes));
   // useEffect(() => {
   //   const body = {
@@ -28,6 +29,7 @@ export default function Answer(props) {
     }).catch(err => {
       console.log(err)
     });
+
   }, [answer]);
   const votePost = async (e) => {
     const body = {
@@ -37,15 +39,29 @@ export default function Answer(props) {
     }
     await axios.post(`http://localhost:3001/votePost`, body).then((res) => {
       console.log(res.data);
-      if( e.taregt.name==='Upvote'){
-        setvoteCount(voteCount+1)
+      if (e.taregt.name === 'Upvote') {
+        setvoteCount(voteCount + 1)
       }
-      else{
-        setvoteCount(voteCount-1)
+      else {
+        setvoteCount(voteCount - 1)
       }
     }).catch(err => {
       console.log(err)
     });
+  }
+  const handleAcceptAnswer = async (e) => {
+    if (question_author) {
+      const body = {
+        postId: answer._id,
+        voteType: e.taregt.name
+      }
+      await axios.post(`http://localhost:3001/votePost`, body).then((res) => {
+        console.log(res.data);
+        SetisAcceptedAnswer(false)
+      }).catch(err => {
+        console.log(err)
+      });
+    }
   }
   return (
     <>
@@ -64,7 +80,9 @@ export default function Answer(props) {
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
 
             <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
-            <svg aria-hidden="true" class="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
+            {isAcceptedAnswer ? <svg aria-hidden="true" className={!question_author ? "svg-Trueicon votes" : "svg-Trueicon"} color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg> :
+              <svg aria-hidden="true" fill="#00000040" className={!question_author ? "votes" : ""} color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>}
+            {/* <svg aria-hidden="true" class="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg> */}
             {/* <svg aria-hidden="true"  class="svg-icon iconBookmark" width="18" height="18" viewBox="0 0 18 18"><path d="M6 1a2 2 0 0 0-2 2v14l5-4 5 4V3a2 2 0 0 0-2-2H6Zm3.9 3.83h2.9l-2.35 1.7.9 2.77L9 7.59l-2.35 1.7.9-2.76-2.35-1.7h2.9L9 2.06l.9 2.77Z"></path></svg> */}
           </div>
         </div>
@@ -74,7 +92,7 @@ export default function Answer(props) {
             readOnly={true}
             theme={"bubble"}
           />
-          {/* {ReactHtmlParser(answer.description)} */}{console.log("answer ID",answer._id)}
+          {/* {ReactHtmlParser(answer.description)} */}{console.log("answer ID", answer._id)}
           <Comments comments={answer?.comments} isQuestionComment={false} question_id={answer._id} answer_id={answer._id} />
           {/* <div className="comments">
                     <div className="comment">
