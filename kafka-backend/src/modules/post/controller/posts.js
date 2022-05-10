@@ -101,7 +101,7 @@ class QuestionController {
     console.log("qid",questionId);
     const date = moment().format("MM-DD-YYYY");
     try {
-      const result = await Questions.updateOne(
+      const result = await Posts.updateOne(
         { _id: questionId },
         { $inc: { views: 1 } }
       );

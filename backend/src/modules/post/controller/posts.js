@@ -161,44 +161,20 @@ class QuestionController {
     }
   };
 
-  bookmark = async (req, res) => {
-    
-
-  };
-
-  removeBookmark = async (req, res) => {};
-
   votePost = async (req, res) => {
     //Get user id who posted answer
-    const { voteType, postType, questionId } = req.body;
+    const { voteType, postId } = req.body;
     let response;
 
     try {
-      if (postType == "Question") {
-        const filter = { _id: questionId };
+        const filter = { _id: postId };
         const update =
           voteType == "Upvote"
             ? { $inc: { upvotes: 1 } }
             : { $inc: { downvotes: 1 } };
 
-        response = await Questions.findOneAndUpdate(filter, update);
-      }
-
-      if (postType == "Answer") {
-        //update user activity
-        const _id = req.body.answerId;
-        const update =
-          voteType == "Upvote"
-            ? { $inc: { "answers.$[a].upvotes": 1 } }
-            : { $dec: { "answers.$[a].downvotes": 1 } };
-
-        response = await Questions.findOneAndUpdate(
-          { _id: questionId },
-          update,
-          { arrayFilters: [{ "a._id": _id }] }
-        );
-      }
-      res.status(200).send(response);
+        response = await Posts.findOneAndUpdate(filter, update);
+        res.status(200).send(response);
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
