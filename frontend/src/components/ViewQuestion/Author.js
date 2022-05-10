@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Avatar } from "@material-ui/core";
-import { stringAvatar } from "../../utils/Avatar";
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Box, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -14,7 +11,6 @@ export default function Author(props) {
   const {  createdTime,isQuestion } = props;
 
    const [author, setauthor] = useState({});
-   var aksedQuestionUser={}
    useEffect(() => {
     setauthor(props.author)
   }, [props.author]);

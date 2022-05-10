@@ -7,6 +7,7 @@ import Comments from "./Comments";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import HistoryIcon from "@material-ui/icons/History";
 import Author from "./Author";
+import TagList from "./TagList";
 export default function Question(props) {
   const { question } = props;
   const [aksedQuestionUser, setAksedQuestionUser] = useState();
@@ -102,6 +103,12 @@ export default function Question(props) {
             readOnly={true}
             theme={"bubble"}
           />
+         <div style={{ width: '100%',textAlign:"left",padding:"10px" }}>
+
+          {question?.tags&& question?.tags.map((tag)=>(
+               <TagList tag={tag}/>
+          ))}
+          </div>
           <Author author={aksedQuestionUser} createdTime={question?.createdTime} isQuestion={true}/>
 
           <Comments comments={question?.comments} isQuestionComment={true} question_id={question.questionId} answer_id={question.questionId} />

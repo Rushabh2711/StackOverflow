@@ -28,8 +28,8 @@ function MainQuestion() {
   const [questionData, setQuestionData] = useState("");
   const [answer, setAnswer] = useState("");
   // const [show, setShow] = useState("");
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  // const [comment, setComment] = useState("");
+  // const [comments, setComments] = useState([]);
   const user = ""//useSelector(selectUser);
 
   const handleQuill = (value) => {

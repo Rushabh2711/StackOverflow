@@ -15,7 +15,6 @@ import ImageUploader from "quill-image-uploader";
 Quill.register("modules/imageUploader", ImageUploader);
 function QuillEditor(props) {
   const [body, setBody] = React.useState(props.body);
-  console.log("text2",body)
 
     useEffect(() => {
       setBody(props.body);
