@@ -19,6 +19,9 @@ import UserActivityReputation from "./pages/UserActivityReputation";
 import UserEditProfile from "./pages/UserEditProfile";
 import ErrorPage from "./pages/ErrorPage";
 
+import UsersPage from "./pages/User/UserPage";
+import TagsPage from "./pages/Tags/TagPage";
+
 // Import Dependencies
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
@@ -53,7 +56,11 @@ export default function App() {
           />
           <Route
             path="/tags"
-            element={<Layout page={<Home />} sidebarTabValue={3} />}
+            element={<Layout page={<TagsPage />} sidebarTabValue={3} />}
+          />
+          <Route
+            path="/users"
+            element={<Layout page={<UsersPage />} sidebarTabValue={4} />}
           />
           <Route
             path="/login"
