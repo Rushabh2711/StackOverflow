@@ -50,25 +50,81 @@ class QuestionController {
     });
   };
 
-  fetchAllQuestions = async (req, res) => {
-    console.log("Inside question controller, about to make Kafka request");
-    const message = {};
-    message.path = req.route.path;
-    make_request("question", message, (err, results) => {
-      if (err) {
-        console.error(err);
-        res.json({
-          status: "Error",
-          msg: "System error, try again",
-        });
-      } else {
-        console.log("Fetch all questions with kafka-backend");
-        console.log(results);
-        res.json(results);
-        res.end();
-      }
-    });
-  };
+//   fetchAllQuestions = async (req, res) => {
+// <<<<<<< HEAD
+//       try {
+//         const results = await this.getAllQuestion();
+//         res.status(200).send(results);
+//       } catch (error) {
+//         console.error(err);
+//         res.status(400).send(err);
+//       }
+//   };
+
+//   getAllQuestion = async () => {
+//     let results = [];
+
+//     const computeTimeElapsed = (questionPostedDateString) => {
+//       const questionPostedDate = new Date(questionPostedDateString);
+//       const today = new Date();
+//       const difference = today.getTime() - questionPostedDate.getTime();
+//       let seconds = difference / 1000;
+//       let minutes = seconds / 60;
+//       let hours = minutes / 60;
+//       if (seconds < 60) {
+//         return Math.floor(seconds) + "s";
+//       } else if (minutes < 60) {
+//         return Math.floor(minutes) + "m";
+// =======
+//     console.log("Inside question controller, about to make Kafka request");
+//     const message = {};
+//     message.path = req.route.path;
+//     make_request("question", message, (err, results) => {
+//       if (err) {
+//         console.error(err);
+//         res.json({
+//           status: "Error",
+//           msg: "System error, try again",
+//         });
+// >>>>>>> a3da532caa127eb8a60c721e0d8e495b4bd7695d
+//       } else {
+//         console.log("Fetch all questions with kafka-backend");
+//         console.log(results);
+//         res.json(results);
+//         res.end();
+//       }
+// <<<<<<< HEAD
+//     };
+
+//     try {
+//       let questions = await Questions.find(
+//         {},
+//         { answers: 0, questionComments: 0, Activity: 0 }
+//       );
+
+//       questions.map((question) =>
+//         results.push({
+//           questionId: question._id,
+//           questionTitle: question.title,
+//           tags: question.tags,
+//           upvotes: question.upvotes,
+//           numberOfAnswers: question.numberOfAnswers,
+//           views: question.views,
+//           userId: question.userId,
+//           username: question.username,
+//           relativeTimePosted: computeTimeElapsed(question.addedAt),
+//         })
+//       );
+
+//      return results;
+//     } catch (err) {
+//       return err;
+//     }
+//   }
+// =======
+//     });
+//   };
+// >>>>>>> a3da532caa127eb8a60c721e0d8e495b4bd7695d
 
   fetchQuestionDetails = async (req, res) => {
     console.log("Inside question controller, about to make Kafka request");
