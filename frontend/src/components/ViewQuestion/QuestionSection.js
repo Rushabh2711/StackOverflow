@@ -32,7 +32,6 @@ export default function Question(props) {
 
   useEffect(() => {
     setText(question.description)
-    console.log("first", question.description)
     console.log("first", question)
   }, [props.question, question, question.description])
 
@@ -81,7 +80,7 @@ export default function Question(props) {
 
             <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
             <svg aria-hidden="true" className="svg-Trueicon votes" color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
-            <BookmarkIcon className="votes" onClick={addBookmark} />
+            <BookmarkIcon className="votes" onClick={addBookmark} style={{ color: "cea81c" }}/>
 
             <HistoryIcon className="votes" />
           </div>

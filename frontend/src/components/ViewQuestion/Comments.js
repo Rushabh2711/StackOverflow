@@ -44,7 +44,7 @@ export default function Comments(props) {
                 </span>{" "}
                 {"    "}
                 <small>
-                  {new Date(comment.created_date).toLocaleString()}
+                  {new Date(comment.postedOn).toLocaleString()}
                 </small>
               </p>
             ))}
