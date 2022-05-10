@@ -7,19 +7,24 @@ function UserSearch(props) {
     const inputText = props.inputText;
     const popular = props.popular;
 
-    var filteredData = users.filter((el) => {
-        if (inputText === '') {
-            return el;
-        } else {
-            return el.tagName.toLowerCase().includes(inputText);
-            // return el.text.toLowerCase().includes(props.input)
-        }
-    })
-
-    if(inputText!=="")
-    {
-        filteredData = filteredData.slice(0,5)
+    var filteredData = users;
+    if(inputText.length >= 3){
+      filteredData = users.filter((u) => u.userName.toLowerCase().includes(inputText.toLowerCase()));
+      filteredData = filteredData.slice(0,5);
     }
+    // var filteredData = users.filter((el) => {
+    //     if (inputText === '') {
+    //         return el;
+    //     } else {
+    //         return el.tagName.toLowerCase().includes(inputText);
+    //         // return el.text.toLowerCase().includes(props.input)
+    //     }
+    // })
+
+    // if(inputText!=="")
+    // {
+    //     filteredData = filteredData.slice(0,5)
+    // }
 
   return (
     <div>

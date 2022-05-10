@@ -9,7 +9,7 @@ function UserCard(props) {
             </div>
         </div>
         <div className='card-content'>
-            <a href='#' className='customLink'>{user.userId}</a>
+            <a href='#' className='customLink'>{user.userName}</a>
             <p className='margin0 score'>{user.score}</p>
             <p className='margin0 posts'>{user.posts}</p>
             <a href='#' className='customLink'>{user.tagName}</a>

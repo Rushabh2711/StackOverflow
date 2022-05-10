@@ -12,7 +12,7 @@ const theme = createTheme({
     palette: {
       secondary1: {
         main: '#3B4044',
-      },
+      }
     },
   });
 
@@ -21,48 +21,56 @@ export const UserPage = () => {
     const dummyUsers = [
         {
           "userId": 1001,
+          "userName": "Rushabh",
           "tagName": "python",
           "score": 25,
           "posts": 366
         },
         {
           "userId": 1002,
+          "userName": "Amika",
           "tagName": "pandas",
           "score": 12,
           "posts": 366
         },
         {
           "userId": 1003,
+          "userName": "Harsh",
           "tagName": "dataframe",
           "score": 433,
           "posts": 2313
         },
         {
           "userId": 1004,
+          "userName": "Harsha",
           "tagName": "numpy",
           "score": 12,
           "posts": 4
         },
         {
           "userId": 1005,
+          "userName": "Harshal",
           "tagName": "list",
           "score": 12,
           "posts": 431
         },
         {
           "userId": 1006,
+          "userName": "Harshil",
           "tagName": "python-3.x",
           "score": 543,
           "posts": 1222
         },
         {
           "userId": 1009,
+          "userName": "Harshavardhan",
           "tagName": "java",
           "score": 543,
           "posts": 366
         },
         {
           "userId": 1007,
+          "userName": "Harshadsfesfsedf",
           "tagName": "javascript",
           "score": 25,
           "posts": 366
@@ -79,6 +87,7 @@ export const UserPage = () => {
         }, [])
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
+        display: 'inline-block',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: alpha(theme.palette.common.white, 0.15),
         '&:hover': {
@@ -87,8 +96,10 @@ export const UserPage = () => {
         '&:focus':{
         border: '2px blue solid', 
         },
-        marginLeft: 0,
-        width: '100%',
+        marginTop: "5px",
+        marginRight: "5px",
+        marginBottom: "5px",
+        width: '60%',
         border: '2px lightgrey solid',
     }));
     
@@ -113,11 +124,11 @@ export const UserPage = () => {
       setPopular(e)
   }
   return (
-    <>
+    <div style={{ textAlign: "left"}}>
 
         <h1>Users</h1>
-        <div className='rowDiv'>
-            <div>
+        <div className='rowDiv' style={{ display: "flex"}}>
+            <div style={{ textAlign: "left", width: "40%"}}>
                 <Search>
                     <SearchIconWrapper>
                     <SearchIcon />
@@ -126,10 +137,12 @@ export const UserPage = () => {
                     value={searchText}
                     onChange={(e)=>setSearchText(e.target.value)}
                     placeholder="Filter by User"
+                    autoFocus
                     />
                 </Search>
+                
             </div>
-            <div>
+            <div style={{ textAlign: "right", width: "60%"}}>
                 <ThemeProvider theme={theme}>
                     <ButtonGroup color='secondary1' variant="outlined" aria-label="outlined button group">
                         <Button onClick={()=>{clickMe("Reputation")}}>Reputation</Button>
@@ -143,7 +156,7 @@ export const UserPage = () => {
         </div>
         {/* <UserCard/> */}
         <UserSearch users={users} inputText={searchText} popular={popular}/>
-    </>
+    </div>
   )
 }
 
