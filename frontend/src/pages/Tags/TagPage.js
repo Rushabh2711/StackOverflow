@@ -113,6 +113,8 @@ export default function TagPage() {
 
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
+        display: 'inline-block',
+        textAlign: 'left',
         borderRadius: theme.shape.borderRadius,
         backgroundColor: alpha(theme.palette.common.white, 0.15),
         '&:hover': {
@@ -121,8 +123,10 @@ export default function TagPage() {
         '&:focus':{
         border: '2px blue solid', 
         },
-        marginLeft: 0,
-        width: '100%',
+        marginTop: "5px",
+        marginRight: "5px",
+        marginBottom: "5px",
+        width: '60%',
         border: '2px lightgrey solid',
     }));
     
@@ -148,7 +152,7 @@ export default function TagPage() {
         
     }
   return (
-    <div>
+    <div style={{ textAlign: "left"}}>
     {/* //<Container> */}
     {/* <Layout /> */}
 
@@ -158,8 +162,8 @@ export default function TagPage() {
     <br></br>the right tags makes it easier for others to find and answer your question.</p>
     <a href="#" className='customLink'>Show all tag synonyms</a>
 
-    <div className='rowDiv'>
-        <div>
+    <div className='rowDiv' style={{ display: "flex"}}>
+        <div style={{ textAlign: "left", width: "40%"}}>
             <Search>
                 <SearchIconWrapper>
                 <SearchIcon />
@@ -168,12 +172,14 @@ export default function TagPage() {
                 value = {searchText}
                 onChange = {(e)=>setSearchText(e.target.value)}
                 placeholder="Filter by Tag name"
+                autoFocus
                 />
             </Search>
+            
         </div>
-        <div>
-            <ThemeProvider theme={theme}>
-                <ButtonGroup color='secondary1' variant="outlined" aria-label="outlined button group">
+        <div style={{ textAlign: "right", width:"60%"}}>
+        <ThemeProvider theme={theme}>
+                <ButtonGroup color='secondary1' variant="outlined" aria-label="outlined button group" style={{ textAlign: "right"}}>
                     <Button onClick={()=>{clickMe("Popular")}}>Popular</Button>
                     <Button onClick={()=>{clickMe("Name")}}>Name</Button>
                     <Button onClick={()=>{clickMe("New")}}>New</Button>
