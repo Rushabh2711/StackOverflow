@@ -232,7 +232,7 @@ export default function Navbar(props) {
           borderTop: "5px solid orange",
           backgroundColor: "white",
           paddingLeft: "0%",
-          paddingRight: "5%",
+          paddingRight: "0%",
           paddingTop: "0px",
           paddingBottom: "0px",
         }}

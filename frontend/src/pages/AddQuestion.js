@@ -18,28 +18,6 @@ import Navbar from "../components/Navbar/Navbar";
 Quill.register("modules/imageUploader", ImageUploader);
 function Ask() {
   //const user = useSelector(selectUser);
- 
-  const top100Films = [
-    'Node',
-    'React',
-    'HTML',
-    'JAVA',
-    'javascript',
-    "AWS",
-    'C#'
-  ];
-  const top100Films11 = [
-    { title: 'React', year: 1972 }
-  ];
-  const top100Films1 = [
-    { title: 'java', year: 1994 },
-    { title: 'React', year: 1972 },
-    { title: 'HTML', year: 1974 },
-    { title: 'C', year: 2008 },
-    { title: 'C++', year: 1957 },
-    { title: "AWS", year: 1993 },
-    { title: 'Node', year: 1994 }
-  ]
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
   const [tag, setTag] = useState([]);
@@ -60,6 +38,7 @@ function Ask() {
           })
            .catch((err) => console.log(err));
     console.log("data",tagList)
+    console.clear()
   }, []);
   
   const handleSubmit = async (e) => {

@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 export default function UserProfileNavbar(props) {
   const { page } = props;
   const { user } = props;
+
   const navigate = useNavigate();
 
   const theme = createTheme({
@@ -17,15 +18,15 @@ export default function UserProfileNavbar(props) {
   });
 
   const activityClickHandler = (e) => {
-    navigate("/users/activity/answers/" + user.user_id);
+    navigate("/users/activity/answers/" + user._id);
   };
 
   const profileClickHandler = (e) => {
-    navigate("/users/profile/" + user.user_id);
+    navigate("/users/profile/" + user._id);
   };
 
   const updateProfileClickHandler = (e) => {
-    navigate("/users/editprofile/" + user.user_id);
+    navigate("/users/editprofile/" + user._id);
   };
 
   return (

@@ -1,6 +1,6 @@
 import React from "react";
 import Typography from "@mui/material/Typography";
-import { Grid } from "@mui/material";
+import { Grid, List, ListItem } from "@mui/material";
 
 export default function UserAbout(props) {
   const { user } = props;
@@ -17,14 +17,37 @@ export default function UserAbout(props) {
           >
             About
           </Typography>
-          <Typography
-            sx={{ fontSize: 16, color: "#212121", align: "left" }}
-            color="text.secondary"
-            gutterBottom
-            align="left"
-          >
-            {user.About}
-          </Typography>
+          {user.about === "" ? (
+            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+              <ListItem
+                sx={{
+                  border: 1,
+                  borderColor: "#bdbdbd",
+                  bgcolor: "#eeeeee",
+                }}
+              >
+                {" "}
+                <Typography
+                  sx={{ fontSize: 13, color: "#212121", align: "left" }}
+                  color="text.secondary"
+                  gutterBottom
+                  align="left"
+                >
+                  Your about me section is currently blank. Would you like to
+                  add one? Edit profile
+                </Typography>
+              </ListItem>
+            </List>
+          ) : (
+            <Typography
+              sx={{ fontSize: 16, color: "#212121", align: "left" }}
+              color="text.secondary"
+              gutterBottom
+              align="left"
+            >
+              {user.about}
+            </Typography>
+          )}
         </Grid>
       </Grid>
     </div>

@@ -9,14 +9,27 @@ import UserBadges from "../components/UserProfile/UserBadges";
 import UserTopTags from "../components/UserProfile/UserTopTags";
 import UserTopPosts from "../components/UserProfile/UserTopPosts";
 import toppostsJson from "../dummydata/toppost.json";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router";
 
 export default function UserProfile() {
-  const [user, setUser] = useState(userJson.userData);
-
+  const [user, setUser] = useState("");
+  const { id } = useParams();
   const [posts, setPosts] = useState(toppostsJson);
+  let navigate = useNavigate();
 
   useEffect(() => {
-    setUser(userJson.userData);
+    axios
+      .get(`http://localhost:3001/user/` + id)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/errorpage");
+      });
+    console.log(user.tags);
   }, []);
 
   return (
@@ -25,7 +38,11 @@ export default function UserProfile() {
         <UserDetails user={user}></UserDetails>
       </div>
       <div className="userprofile-navbar-component">
-        <UserProfileNavbar page={"profile"} user={user}></UserProfileNavbar>
+        <UserProfileNavbar
+          page={"profile"}
+          user={user}
+          id={id}
+        ></UserProfileNavbar>
       </div>
       <br></br>
       <Grid container spacing={2}>
@@ -35,7 +52,7 @@ export default function UserProfile() {
             <UserStats user={user}></UserStats>
           </div>
         </Grid>
-        <Grid item xs={8}>
+        <Grid item xs={9}>
           {" "}
           <div className="userprofile-about-component">
             <UserAbout user={user}></UserAbout>

@@ -2,7 +2,7 @@ import { make_request } from "../../../../kafka/client.js";
 import Posts from "../../../db/models/mongo/posts.js";
 import Tags from "../../../db/models/mongo/tags.js";
 // const mongoose = require('mongoose');
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 class QuestionController {
   checkHealth = async (req, res) => {
@@ -138,10 +138,13 @@ class QuestionController {
     const { userId } = req.params;
     let results = [];
     try {
-      let answers = await Posts.find({ postType: "answer", userId: userId }, {parentId: 1, _id:0});
+      let answers = await Posts.find(
+        { postType: "answer", userId: userId },
+        { parentId: 1, _id: 0 }
+      );
       // console.log(answers);
       answers.map(async (answer) => {
-        console.log("parentId",answer.parentId);
+        console.log("parentId", answer.parentId);
         let questionDetails = await Posts.findOne({ _id: answer.parentId });
         console.log(questionDetails);
         results.push({
@@ -152,8 +155,8 @@ class QuestionController {
           modifiedTime: questionDetails.modifiedTime,
           tags: questionDetails.questionTags,
           votes: questionDetails.votes,
-        })
-      });     
+        });
+      });
       res.status(200).send(results);
     } catch (err) {
       console.error(err);
@@ -173,7 +176,9 @@ class QuestionController {
             ? { $inc: { upvotes: 1 } }
             : { $inc: { downvotes: 1 } };
 
-        response = await Posts.findOneAndUpdate(filter, update);
+        response = await Posts.findOneAndUpdate(filter, update,{
+          upsert: true, new: true
+        });
         res.status(200).send(response);
     } catch (err) {
       console.error(err);

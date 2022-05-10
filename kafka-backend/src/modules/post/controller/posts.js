@@ -67,13 +67,15 @@ class QuestionController {
 
       const result = {
         questionId: questionDetails._id,
-        questionTitle: questionDetails.title,
+        questionTitle: questionDetails.questionTitle,
         views: questionDetails.views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
         modifiedTime: questionDetails.modifiedTime,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
+        upvotes: questionDetails.upvotes,
+        downvotes: questionDetails.downvotes,
         comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,

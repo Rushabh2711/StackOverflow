@@ -46,7 +46,7 @@ export default function Layout(props) {
   return (
     <Box sx={{ display: "flex", flexGrow: 1 }}>
       <CssBaseline />
-      <Navbar setComponent={setComponent} />
+      {/* <Navbar setComponent={setComponent}/> */}
       {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
@@ -58,9 +58,8 @@ export default function Layout(props) {
         sx={{ display: "flex" }}
         style={{
           paddingLeft: "0%",
-          paddingRight: "10%",
+          paddingRight: "0%",
           justifyContent: "center",
-          width: "150%",
         }}
       >
         <Drawer
@@ -86,7 +85,12 @@ export default function Layout(props) {
         <Box
           component="main"
           sx={{ flexGrow: 1, p: 3 }}
-          style={{ width: "1175px", wordWrap: "wrap", wordBreak: "break-all" }}
+          style={{
+            width: "80vw",
+            wordWrap: "wrap",
+            paddingTop: "0px",
+            wordBreak: "break-all",
+          }}
         >
           <Toolbar />
           {props.page}
