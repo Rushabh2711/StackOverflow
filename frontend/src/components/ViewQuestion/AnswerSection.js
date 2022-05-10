@@ -8,6 +8,7 @@ import Comments from "./Comments";
 export default function Answer(props) {
   const { answer, question_id } = props;
   const [answeredUser, SetansweredUser] = useState("");
+  const [voteCount, setvoteCount] = useState(parseInt(answer?.upvotes) - parseInt(answer?.downvotes));
   // useEffect(() => {
   //   const body = {
   //     user_id: answer.user_id,
@@ -30,13 +31,18 @@ export default function Answer(props) {
   }, [answer]);
   const votePost = async (e) => {
     const body = {
-      question_id: question_id,
-      postType: "Answer",
+      postId: answer._id,
+      // postType: "answer",
       voteType: e.taregt.name
     }
-    await axios.post(`/api/votePost/`, body).then((res) => {
-      //setShow(false);
+    await axios.post(`http://localhost:3001/votePost`, body).then((res) => {
       console.log(res.data);
+      if( e.taregt.name==='Upvote'){
+        setvoteCount(voteCount+1)
+      }
+      else{
+        setvoteCount(voteCount-1)
+      }
     }).catch(err => {
       console.log(err)
     });
@@ -54,7 +60,8 @@ export default function Answer(props) {
           <div className="all-options">
             <p className="arrow votes" name="Upvote" onClick={votePost}>▲</p>
 
-            <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(answer?.upvotes) - parseInt(answer?.downvotes)}</p>
+            {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(answer?.upvotes) - parseInt(answer?.downvotes)}</p> */}
+            <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
 
             <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
             <svg aria-hidden="true" class="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>

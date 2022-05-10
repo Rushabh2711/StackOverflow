@@ -10,18 +10,9 @@ export default function Question(props) {
   const { question } = props;
   const [aksedQuestionUser, setAksedQuestionUser] = useState();
   const [isBookmarked, SetIsBookmarked] = useState(false);
-  //   const [text, setText] = React.useState(`<p>test 1 descriptiondfsfsdf asdsadas</p><p><img src="http://localhost:3001/download-file/node.png"></p><pre class="ql-syntax" spellcheck="false">public enum BookingStatus {
-  //     [Description("Pending")]
-  //     Pending = 0,
-  //     [Description("Booked")]
-  //     Booked = 1
-  // }  
-  // </pre>`);
+  const [voteCount, setvoteCount] = useState(parseInt(question?.upvotes) - parseInt(question?.downvotes));
   const [text, setText] = useState(props.question.description)
   useEffect(() => {
-    const body = {
-      userId: question.userId,
-    }
     axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
       console.log(res.data[0]);
       setAksedQuestionUser(res.data[0]);
@@ -36,14 +27,21 @@ export default function Question(props) {
   }, [props.question, question, question.description])
 
   const votePost = async (e) => {
+    console.log("vote",e.target.id);
+
     const body = {
-      question_id: question.question_id,
-      postType: "Question",
-      voteType: e.taregt.name
+      postId: question.questionId,
+      // postType: "Question",
+      voteType: e.target.id
     }
-    await axios.post(`/api/votePost/`, body).then((res) => {
-      //setShow(false);
+    await axios.put(`http://localhost:3001/votePost`, body).then((res) => {
       console.log(res.data);
+      if( e.target.id==='Upvote'){
+        setvoteCount(voteCount+1)
+      }
+      else{
+        setvoteCount(voteCount-1)
+      }
     }).catch(err => {
       console.log(err)
     });
@@ -84,11 +82,12 @@ export default function Question(props) {
       >
         <div className="all-questions-left">
           <div className="all-options">
-            <p className="arrow votes" name="Upvote" onClick={votePost}>▲</p>
+            <p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>
 
-            <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p>
+            {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p> */}
+            <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
 
-            <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
+            <p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>
             <svg aria-hidden="true" className="svg-Trueicon votes" color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
             {isBookmarked? <BookmarkIcon className="votes" onClick={removeBookmark} style={{ color: "cea81c" }}/>:<BookmarkIcon className="votes" onClick={addBookmark} />}
 

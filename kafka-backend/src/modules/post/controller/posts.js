@@ -67,7 +67,7 @@ class QuestionController {
 
       const result = {
         questionId: questionDetails._id,
-        questionTitle: questionDetails.title,
+        questionTitle: questionDetails.questionTitle,
         views: questionDetails.views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,

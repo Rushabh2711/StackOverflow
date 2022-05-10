@@ -173,7 +173,9 @@ class QuestionController {
             ? { $inc: { upvotes: 1 } }
             : { $inc: { downvotes: 1 } };
 
-        response = await Posts.findOneAndUpdate(filter, update);
+        response = await Posts.findOneAndUpdate(filter, update,{
+          upsert: true, new: true
+        });
         res.status(200).send(response);
     } catch (err) {
       console.error(err);
