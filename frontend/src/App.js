@@ -39,6 +39,7 @@ export default function App() {
     <div className="App">
       <Box sx={{ display: "flex" }}>
         <CssBaseline />
+        <Navbar />
 
         <Routes>
           <Route path="/" element={<LandingPage />} />

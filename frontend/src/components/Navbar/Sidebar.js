@@ -37,6 +37,10 @@ TabPanel.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   tabs: {
+    "& button:hover":{
+      backgroundColor:"white",
+      color: "#0C0D0E"
+    },
     "& .MuiTabs-indicator": {
       backgroundColor: "orange",
     },
@@ -65,9 +69,9 @@ const useStyles = makeStyles((theme) => ({
       color: "#0C0D0E",
       fontWeight: "bold",
     },
-    "& .nav-links .nav-links--link:hover": {
-      color: "#0C0D0E",
-    },
+    // "& .nav-links .nav-links--link:hover": {
+    //   color: "#0C0D0E",
+    // },
   },
   publicTab: {
     fontSize: "50px",
@@ -110,6 +114,10 @@ export default function Sidebar(props) {
         aria-label="Vertical tabs example"
         sx={{ borderRight: 0, borderColor: "divider", width: "150px" }}
         className={classes.tabs}
+        style={{
+          
+        }}
+        
       >
         <Tab label="Home" value={0} className="normalTab" {...a11yProps(0)} />
 
