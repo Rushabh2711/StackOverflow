@@ -6,6 +6,7 @@ import ReactQuill from "react-quill";
 import Comments from "./Comments";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import HistoryIcon from "@material-ui/icons/History";
+import Author from "./Author";
 export default function Question(props) {
   const { question } = props;
   const [aksedQuestionUser, setAksedQuestionUser] = useState();
@@ -101,9 +102,11 @@ export default function Question(props) {
             readOnly={true}
             theme={"bubble"}
           />
+          <Author author={aksedQuestionUser} createdTime={question?.createdTime} isQuestion={true}/>
+
           <Comments comments={question?.comments} isQuestionComment={true} question_id={question.questionId} answer_id={question.questionId} />
 
-          <div className="author">
+          {/* <div className="author">
             <small>
               asked {new Date(question?.createdTime).toLocaleString()}
             </small>
@@ -129,7 +132,7 @@ export default function Question(props) {
                 <span class="badge3"></span><span class="badgecount">11</span>
               </span>
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
