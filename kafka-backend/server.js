@@ -1,5 +1,8 @@
 import { ConnectionProvider } from "./kafka/connection.js";
-import handlePostRequest from "./services/posts.js";
+import handleQuestionRequest from "./services/questions.js";
+import mongoInit from "./src/db/config/mongo.config.js";
+
+mongoInit();
 
 const handleTopicRequest = (topic, functionName) => {
   const connection = new ConnectionProvider();
@@ -35,4 +38,4 @@ const handleTopicRequest = (topic, functionName) => {
   });
 };
 
-handleTopicRequest("post", handlePostRequest);
+handleTopicRequest("post", handleQuestionRequest);

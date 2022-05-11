@@ -1,13 +1,35 @@
 import express from "express";
-import PostController from "../controller/posts.js";
+import QuestionController from "../controller/posts.js";
 
-const postRouter = express.Router();
+const questionRouter = express.Router();
 
-const postController = new PostController();
+const questionController = new QuestionController();
 
-postRouter.post("/questions/ask", postController.create);
-postRouter.get("/questions", postController.getAllQuestions);
-postRouter.get("/questions/:questionId", postController.fetchQuestionDetails);
-postRouter.get("/user/questions", postController.getQuestionsAskedByUser);
+questionRouter.get("/checkHealth", questionController.checkHealth);
 
-export default postRouter;
+questionRouter.post("/questions/ask", questionController.postQuestion);
+questionRouter.get("/questions", questionController.fetchAllQuestions);
+questionRouter.post("/question/addView", questionController.addView);
+questionRouter.post("/question/bookmark", questionController.bookmark);
+questionRouter.post("/question/unbookmark", questionController.removeBookmark);
+questionRouter.put("/votePost", questionController.votePost);
+questionRouter.put("/question/postAnswer", questionController.postAnswer);
+questionRouter.put(
+  "/question/postComment",
+  questionController.postCommentToQuestion
+);
+questionRouter.put(
+  "/answer/postComment",
+  questionController.postCommentToAnswer
+);
+questionRouter.get(
+  "/questions/:questionId",
+  questionController.fetchQuestionDetails
+);
+questionRouter.get(
+  "/user/questions/:userId",
+  questionController.getQuestionsAskedByUser
+);
+questionRouter.get("/user/questionsAnswered/:userId", questionController.getQuestionsAnswered);
+
+export default questionRouter;

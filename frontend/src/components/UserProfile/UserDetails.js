@@ -4,15 +4,16 @@ import Typography from "@mui/material/Typography";
 import CakeIcon from "@mui/icons-material/Cake";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Moment from "react-moment";
+import axios from "axios";
 
 export default function UserDetails(props) {
-  const [image, setImage] = useState("");
   const { user } = props;
 
   return (
     <div className="userprofile-details-component">
-      <Grid container spacing={0}>
-        <Grid item xs={1.5}>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
           <br></br>
           <img
             style={{
@@ -20,12 +21,16 @@ export default function UserDetails(props) {
               height: "130px",
               width: "130px",
             }}
-            src={image ? image : "/images/userdefault.png"}
+            src={
+              user.profilePicture
+                ? user.profilePicture
+                : "/images/userdefault.png"
+            }
             className="card-img-top"
             alt="description of image"
           />
         </Grid>
-        <Grid item xs={6}>
+        <Grid item xs={8}>
           <br></br>
           <br></br>
           <Typography
@@ -47,14 +52,17 @@ export default function UserDetails(props) {
                 <CakeIcon />
               </Typography>
             </Grid>
-            <Grid item xs={3}>
+            <Grid item xs={3.5}>
               <Typography
                 color="text.secondary"
                 align="left"
                 sx={{ fontSize: 15, color: "#9e9e9e" }}
                 gutterBottom
               >
-                Member for
+                Member for{" "}
+                <Moment fromNow ago>
+                  {user.joiningDate}
+                </Moment>
               </Typography>
             </Grid>
             <Grid item xs={0.5}>
@@ -74,32 +82,37 @@ export default function UserDetails(props) {
                 sx={{ fontSize: 15, color: "#9e9e9e" }}
                 gutterBottom
               >
-                Last seen
+                Last seen <Moment fromNow>{user.visitedTime}</Moment>
               </Typography>
             </Grid>
           </Grid>
-          <Grid container spacing={0}>
-            <Grid item xs={0.5}>
-              <Typography
-                color="text.secondary"
-                align="left"
-                sx={{ fontSize: 15, color: "#9e9e9e" }}
-                gutterBottom
-              >
-                <LocationOnIcon />
-              </Typography>
+
+          {user.location !== undefined ? (
+            <Grid container spacing={0}>
+              <Grid item xs={0.5}>
+                <Typography
+                  color="text.secondary"
+                  align="left"
+                  sx={{ fontSize: 15, color: "#9e9e9e" }}
+                  gutterBottom
+                >
+                  <LocationOnIcon />
+                </Typography>
+              </Grid>
+              <Grid item xs={3}>
+                <Typography
+                  color="text.secondary"
+                  align="left"
+                  sx={{ fontSize: 15, color: "#9e9e9e" }}
+                  gutterBottom
+                >
+                  {user.location.city} {user.location.country}
+                </Typography>
+              </Grid>
             </Grid>
-            <Grid item xs={3}>
-              <Typography
-                color="text.secondary"
-                align="left"
-                sx={{ fontSize: 15, color: "#9e9e9e" }}
-                gutterBottom
-              >
-                {user.location}
-              </Typography>
-            </Grid>
-          </Grid>
+          ) : (
+            <div></div>
+          )}
         </Grid>
       </Grid>
     </div>

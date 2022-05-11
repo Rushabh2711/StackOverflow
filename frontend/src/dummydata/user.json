@@ -1,30 +1,32 @@
-{
-  "userData": {
-    "user_id": 1001,
-    "username": "mozway",
-    "email": "johndoe@gmail.com",
-    "account_type": "user",
-    "reputation": 66129,
-    "location": "San Jose",
-
-    "gold": [
-      "dataframe",
-      "python-3.x",
-      "pandas",
-      "numpy",
-      "Tag Editor",
-      "List"
-    ],
-    "silver": ["matplotlib", "dataframe", "editor"],
-    "bronze": ["vox populi", "arrays", "Quorum", "Excavator", "Informed"],
-    "profilepicture": "",
-    "joiningDate": "04/06/2022",
-    "visitedTime": "04/06/2022",
-    "bookMarkedQuestions": {},
-    "badges": {},
-    "questions_asked_count": 15,
-    "numberOfQuestionsAnswered": 567,
-    "questions_view_count": 14432,
-    "About": "python enthusiast If you would like to thank me you can buy me a coffee "
+[
+  {
+    "questionId": 123,
+    "activityType": "upvote",
+    "date": "2022-05-08T23:26:44.337+00:00",
+    "userId": 1
+  },
+  {
+    "questionId": 123,
+    "activityType": "upvote",
+    "date": "2022-05-08T23:26:44.337+00:00",
+    "userId": 1
+  },
+  {
+    "questionId": 122,
+    "activityType": "upvote",
+    "date": "2022-05-08T23:26:44.337+00:00",
+    "userId": 1
+  },
+  {
+    "questionId": 123,
+    "activityType": "upvote",
+    "date": "2022-05-07T23:26:44.337+00:00",
+    "userId": 1
+  },
+  {
+    "questionId": 123,
+    "activityType": "upvote",
+    "date": "2022-05-06T23:26:44.337+00:00",
+    "userId": 1
   }
-}
+]

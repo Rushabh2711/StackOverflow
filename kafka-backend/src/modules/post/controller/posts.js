@@ -1,36 +1,87 @@
-import Post from "../../../db/models/sql/Post.js";
+// import client from "../../../db/config/redis.config.js";
+import Posts from "../../../db/models/mongo/posts.js";
+import QuestionViews from "../../../db/models/mongo/questionViews.js";
+import UserDetails from "../../../db/models/mongo/userDetails.js";
+import moment from "moment";
 
-class PostController {
+class QuestionController {
   responseGenerator = (statusCode, message) => ({
     status: statusCode,
     response: message,
   });
 
+  fetchAllQuestions = async () => {
+    let results = [];
+
+    try {
+      let questions = await Posts.find({postType: "question"});
+
+      questions.map((question) =>
+        results.push({
+          questionId: question._id,
+          questionTitle: question.questionTitle,
+          tags: question.questionTags,
+          votes: question.votes,
+          numberOfAnswers: question.numberOfAnswers,
+          views: question.views,
+          userId: question.userId,
+          // username: question.username,
+          addedAt: question.addedAt,
+        })
+      );
+
+      return this.responseGenerator(200, results);
+    } catch (err) {
+      console.error(err);
+      return this.responseGenerator(
+        404,
+        "Error when fetching question details"
+      );
+    }
+  }
+
+  fetch10kQuestions = async () => {
+    try {
+      let questions = await Posts.find({postType: "question"});
+      client.set("test-questions", JSON.stringify(questions));
+      return this.responseGenerator(200, questions);
+    } catch (err) {
+      console.error(err);
+      return this.responseGenerator(
+        404,
+        "Error when fetching question details"
+      );
+    }
+  }
+
   fetchQuestionDetails = async (data) => {
     console.log(data);
     const questionId = data.questionId;
     try {
-      const questionDetails = await Post.find({ id: questionId });
-      console.log(JSON.stringify(questionDetails));
+      const questionDetails = await Posts.findById({ _id: questionId });
+      console.log("questionDetails",questionDetails);
+      const questionViews = await QuestionViews.find({
+        questionId: questionId,
+      });
+      console.log("questions",JSON.stringify(questionViews));
 
-      const answers = await Post.find({ parentId: questionId });
+      const userDetails = UserDetails.find({_id : data.userId});
       const result = {
-        acceptedAnswerId: questionDetails.acceptedAnswerId,
-        ownerId: questionDetails.ownerId,
-        creationDate: questionDetails.creationDate,
-        ownerName: questionDetails.ownerName,
-        modifiedDate: questionDetails.modifiedDate,
-        title: questionDetails.title,
-        content: questionDetails.content,
-        imageUrl: questionDetails.imageUrl,
-        tags: questionDetails.tags.split(","),
-        upvotes: questionDetails.upvotes,
-        downvotes: questionDetails.downvotes,
-        answerCount: questionDetails.answerCount,
-        views: questionDetails.views,
-        approvalstatus: questionDetails.approvalstatus,
-        isBookmarked: questionDetails.isBookmarked,
-        answers: answers,
+        questionId: questionDetails._id,
+        questionTitle: questionDetails.title,
+        views: questionViews.length ?? questionViews[0].views,
+        description: questionDetails.description,
+        createdTime: questionDetails.addedAt,
+        modifiedTime: questionDetails.modifiedTime,
+        tags: questionDetails.questionTags,
+        votes: questionDetails.votes,
+        numberOfAnswers: questionDetails.numberOfAnswers,
+        answers: questionDetails.answers,
+        questionComments: questionDetails.questionComments,
+        username: userDetails.username,
+        profilePicture: userDetails.profilePicture,
+        badges: userDetails.badges,
+        reputation: userDetails.reputation
       };
       return this.responseGenerator(200, result);
     } catch (err) {
@@ -41,6 +92,87 @@ class PostController {
       );
     }
   };
+
+  addView = async (data) => {
+    console.log(data);
+    const questionId = data.questionId;
+    console.log("qid",questionId);
+    const date = moment().format("MM-DD-YYYY");
+    try {
+      const result = await Questions.updateOne(
+        { _id: questionId },
+        { $inc: { views: 1 } }
+      );
+      console.log(result);
+
+      const res = await QuestionViews.updateOne(
+        { questionId: questionId, date: date },
+        {
+          $set: {
+            questionId: questionId,
+            date: date,
+          },
+          $inc: { views: 1 },
+        },
+        { upsert: true }
+      );
+      console.log(res);
+      return this.responseGenerator(200, res);
+    } catch (err) {
+      console.error("Error when adding view count to question view ", err);
+    }
+  };
+
+  postAnswer = async (data) => {
+    console.log("Add answer");
+    let time = new Date();
+    try {
+      const newPost = new Posts({
+        questionTitle: data.questionTitle,
+        postType: "answer",
+        parentId: data.questionId,
+        description: data.description,
+        questionTags: data.questionTags,
+        addedAt: time.toISOString(),
+        modifiedAt: time.toISOString(),
+        userId: data.userId,
+      });
+      const response = await newPost.save();
+      return this.responseGenerator(200, response);
+    } catch (err) {
+      console.error("Error when posting answer ", err);
+    }
+  };
+
+  postCommentToAnswer = async (data) => {
+    const questionId = data.questionId;
+    const time = new Date();
+
+    const comment = {
+      userId: data.userId,
+      description: data.description,
+      postedOn: time.toISOString(),
+    };
+
+    try {
+      const comments = await Questions.findOneAndUpdate(
+        {
+          _id: questionId,
+          'answers._id': data.answerId,
+        },
+        {
+          $push: { 'answers.$.comments': comment },
+        },
+        {
+          upsert: true
+        }
+      );
+      console.log(JSON.stringify(comments));
+      return this.responseGenerator(200, "Added new comment to answer");
+    } catch (err) {
+      console.error("Error when posting comment to answer ", err);
+    }
+  };
 }
 
-export default PostController;
+export default QuestionController;
