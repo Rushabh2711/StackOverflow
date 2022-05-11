@@ -14,12 +14,24 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Navbar from '../components/Navbar/Navbar';
 import Sidebar from '../components/Navbar/Sidebar';
+import axios from 'axios';
 
 const drawerWidth = 240;
 
 export default function Home() {
 
     console.log(document.getElementById("sidebar"));
+
+  React.useEffect(() => {
+    axios.get("http://localhost:3001/getQuestions").then((response) => {
+      console.log(response);
+    });
+    var search = "[java] user:12345 \"text\" is:question isaccepted:yes";
+    axios.get("http://localhost:3001/search/" + search).then((response) => {
+      console.log(response);
+    });
+  },[]);
+
   return (
     <Box sx={{ display: 'flex' }}>
     {/* <CssBaseline />

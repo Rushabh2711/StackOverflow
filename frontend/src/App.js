@@ -1,6 +1,6 @@
 // Import CSS
 import "./App.css";
-
+// import "./tags.css"
 // Import Pages
 
 import LandingPage from "./pages/LandingPage";
@@ -10,6 +10,8 @@ import Question from "./pages/Question";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
+import AdminHome from "./pages/admin/AdminHome";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserActivityAnswers from "./pages/UserActivityAnswers";
 import UserActivityQuestions from "./pages/UserActivityQuestions";
 import UserActivityTags from "./pages/UserActivityTags";
@@ -18,6 +20,9 @@ import UserActivityBookmarks from "./pages/UserActivityBookmarks";
 import UserActivityReputation from "./pages/UserActivityReputation";
 import UserEditProfile from "./pages/UserEditProfile";
 import ErrorPage from "./pages/ErrorPage";
+
+import UsersPage from "./pages/User/UserPage";
+import TagsPage from "./pages/Tags/TagPage";
 
 // Import Dependencies
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
@@ -32,6 +37,7 @@ import Add from "./pages/AddQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
 import Layout from "./pages/Layout";
+import SearchTag from "./pages/SearchTag";
 import MainQuestion from "./components/ViewQuestion/MainQuestion";
 
 export default function App() {
@@ -42,6 +48,8 @@ export default function App() {
         <Navbar />
 
         <Routes>
+          <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/" element={<LandingPage />} />
           <Route
             path="/home"
@@ -53,7 +61,11 @@ export default function App() {
           />
           <Route
             path="/tags"
-            element={<Layout page={<Home />} sidebarTabValue={3} />}
+            element={<Layout page={<TagsPage />} sidebarTabValue={3} />}
+          />
+          <Route
+            path="/users"
+            element={<Layout page={<UsersPage />} sidebarTabValue={4} />}
           />
           <Route
             path="/login"
@@ -63,7 +75,10 @@ export default function App() {
             path="/signup"
             element={<Layout page={<SignUp />} sidebarTabValue={4} />}
           />
-
+  <Route
+            path="/questions/tagged/:tagName"
+            element={<Layout page={<SearchTag />} sidebarTabValue={2} />}
+          />
           <Route
             path="/users/profile/:id"
             element={<Layout page={<UserProfile />} />}
