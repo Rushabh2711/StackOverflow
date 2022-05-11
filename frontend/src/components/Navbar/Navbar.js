@@ -227,17 +227,18 @@ setAnchorEl(event.currentTarget);
   return (
     <div>
       {/* <Box sx={{ flexGrow: 1 }}> */}
-        <AppBar
-        position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
-          style={{
-            borderTop: "5px solid orange",
-            backgroundColor: "white",
-            paddingLeft: "0%",
-            paddingRight: "0%",
-            paddingTop: "0px",
-            paddingBottom: "0px",
-          }}
-        >
+      <AppBar
+        position="fixed"
+        sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        style={{
+          borderTop: "5px solid orange",
+          backgroundColor: "white",
+          paddingLeft: "1%",
+          paddingRight: "1%",
+          paddingTop: "0px",
+          paddingBottom: "0px",
+        }}
+      >
           <Toolbar
             style={{
               paddingTop: "0px",
