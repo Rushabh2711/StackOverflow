@@ -24,12 +24,12 @@ function MainQuestion() {
   //const params = new URLSearchParams(search);
  // const id = "627456028ee4459e04591bb0"//params.get("q");
   const { id } = useParams();
-
+  const [isSameUser, SetisSameUser] = useState(false);// this will use for indentify to user has permission to check accepted answer or not
   const [questionData, setQuestionData] = useState("");
   const [answer, setAnswer] = useState("");
   // const [show, setShow] = useState("");
-  const [comment, setComment] = useState("");
-  const [comments, setComments] = useState([]);
+  // const [comment, setComment] = useState("");
+  // const [comments, setComments] = useState([]);
   const user = ""//useSelector(selectUser);
 
   const handleQuill = (value) => {
@@ -45,6 +45,9 @@ function MainQuestion() {
           })
            .catch((err) => console.log(err));
     console.log("data",questionData)
+    if(questionData.userId===localStorage.getItem("userId")){
+      SetisSameUser(true)
+    }
   }, [id]);
 
   // useEffect(() => {
@@ -75,7 +78,35 @@ function MainQuestion() {
   }
 
   // console.log(questionData);
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    console.log("body",answer)
+      if (answer !== "") {
+        const bodyJSON = {
+          description: answer,
+          questionId:questionData.questionId,
+          questionTitle:questionData.questionTitle,
+          questionTags:questionData.tags,
+          userId:"62763e62bfe0a2faeddf0270",//localStorage.getItem('userId')
+          username:"harsha"//localStorage.getItem('username')
+        };
+        await axios
+          .put("http://localhost:3001/question/postAnswer", bodyJSON)
+          .then((res) => {
+             console.log(res.data);
+             setAnswer("")
+            alert("Answer added successfully");
+            //history.push("/");
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      }
+      else{
+        alert("Please insert answer first!!!")
+      }
+  };
+  const handleSubmit1 = async () => {
     console.log(answer)
     // const body = {
     //   question_id: id,
@@ -102,7 +133,7 @@ function MainQuestion() {
     <div className="main">
       <div className="main-container">
         <div className="main-top">
-          <h2 className="main-question">{questionData?.title} </h2>
+          <h2 className="main-question">{questionData?.questionTitle} </h2>
           <Link to="/ask">
             <button>Ask Question</button>
           </Link>
@@ -111,13 +142,13 @@ function MainQuestion() {
           <div className="info">
             <p>
               Asked
-              <span>{new Date(questionData?.addedAt).toLocaleString()}</span>
+              <span>{new Date(questionData?.createdTime).toLocaleString()}</span>
             </p>
             <p>
               Active<span>today</span>
             </p>
             <p>
-              Viewed<span>43times</span>
+              Viewed<span>{questionData.views} times</span>
             </p>
           </div>
         </div>
@@ -136,13 +167,13 @@ function MainQuestion() {
               textAlign: "left",
               fontSize: "1.3rem",
               // fontStyle:"bold",
-              fontWeight: "300",
+              fontWeight: "400",
             }}
           >
-            {questionData && questionData?.answers?.length?"Answers":""} 
+            {questionData && questionData?.answers?.length? questionData.answers.length +" Answers":""} 
           </p>
           { questionData?.answers && questionData?.answers.map((_q) => (
-            <Answer answer={_q} question_id={questionData.question_id}/>
+            <Answer answer={_q} question_id={questionData.questionId} question_author={isSameUser}/>
           
           ))}
         </div>
@@ -161,6 +192,7 @@ function MainQuestion() {
         <QuillEditor
           body={answer}
           style={{ height: "200px" }}
+          onChange={setAnswer}
         />
 
       </div>

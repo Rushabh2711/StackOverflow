@@ -60,28 +60,32 @@ class QuestionController {
     try {
       const questionDetails = await Posts.findById({ _id: questionId });
       console.log("questionDetails",questionDetails);
-      const questionViews = await QuestionViews.find({
-        questionId: questionId,
-      });
-      console.log("questions",JSON.stringify(questionViews));
+
+      const answers = await Posts.find({parentId : questionId});
 
       const userDetails = UserDetails.find({_id : data.userId});
+
       const result = {
         questionId: questionDetails._id,
-        questionTitle: questionDetails.title,
-        views: questionViews.length ?? questionViews[0].views,
+        questionTitle: questionDetails.questionTitle,
+        views: questionDetails.views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
         modifiedTime: questionDetails.modifiedTime,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
+        upvotes: questionDetails.upvotes,
+        downvotes: questionDetails.downvotes,
+        comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
         questionComments: questionDetails.questionComments,
         username: userDetails.username,
         profilePicture: userDetails.profilePicture,
         badges: userDetails.badges,
-        reputation: userDetails.reputation
+        userId: questionDetails.userId,
+        reputation: userDetails.reputation,
+        answers : answers
       };
       return this.responseGenerator(200, result);
     } catch (err) {
@@ -99,7 +103,7 @@ class QuestionController {
     console.log("qid",questionId);
     const date = moment().format("MM-DD-YYYY");
     try {
-      const result = await Questions.updateOne(
+      const result = await Posts.updateOne(
         { _id: questionId },
         { $inc: { views: 1 } }
       );
@@ -145,32 +149,27 @@ class QuestionController {
   };
 
   postCommentToAnswer = async (data) => {
-    const questionId = data.questionId;
-    const time = new Date();
+    const { answerId, description, userId,username } = data;
+    let time = new Date();
 
     const comment = {
-      userId: data.userId,
-      description: data.description,
+      description: description,
+      userId: userId,
+      username:username,
       postedOn: time.toISOString(),
     };
 
     try {
-      const comments = await Questions.findOneAndUpdate(
-        {
-          _id: questionId,
-          'answers._id': data.answerId,
-        },
-        {
-          $push: { 'answers.$.comments': comment },
-        },
-        {
-          upsert: true
-        }
-      );
-      console.log(JSON.stringify(comments));
-      return this.responseGenerator(200, "Added new comment to answer");
+      const response = await Posts.findByIdAndUpdate(answerId, {
+        $push: { comments: comment },
+      }, {
+        upsert: true, new: true
+      });
+      console.log("comment successfully added to answer",answerId)
+      res.status(200).send(response.comments);
     } catch (err) {
-      console.error("Error when posting comment to answer ", err);
+      console.error(err);
+      res.status(400).send(err);
     }
   };
 }
