@@ -8,18 +8,18 @@ function UserCard(props) {
     const redirectLink = `profile/${userId}`
     const imageURL = `url(https://richhippos.com/wp-content/uploads/2021/12/jhik.jpeg)`
   return (
-    <div className='card'>
-        <div className='card-media'>
-            <div className='image-container' style={{backgroundImage: imageURL, "width": "68px", "height": "68px"}}>
+    <div className='tags-card'>
+        <div className='tags-card-media'>
+            <div className='tags-image-container' style={{backgroundImage: imageURL, "width": "68px", "height": "68px"}}>
             </div>
         </div>
-        <div className='card-content'>
-            <Link to={redirectLink} className='customLink'>{user.userName}</Link>
-            {/* <p className='margin0 score'>{user.score}</p> */}
-            <p className='margin0 score'>{user.location}</p>
-            <p className='margin0 posts'>{user.reputation}</p>
-            {/* <p className='margin0 posts'>{user.posts}</p> */}
-            <a href='#' className='customLink'>{user.tagName}</a>
+        <div className='tags-card-content'>
+            <Link to={redirectLink} className='tags-customLink'>{user.userName}</Link>
+            {/* <p className='tags-margin0 tags-score'>{user.score}</p> */}
+            <p className='tags-margin0 tags-score'>{user.location}</p>
+            <p className='tags-margin0 tags-posts'>{user.reputation}</p>
+            {/* <p className='tags-margin0 tags-posts'>{user.posts}</p> */}
+            <a href='#' className='tags-customLink'>{user.tagName}</a>
         </div>
     </div>
   )

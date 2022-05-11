@@ -143,7 +143,7 @@ export const UserPage = () => {
     <div style={{ textAlign: "left"}}>
 
         <h1>Users</h1>
-        <div className='rowDiv' style={{ display: "flex"}}>
+        <div className='tags-rowDiv' style={{ display: "flex"}}>
             <div style={{ textAlign: "left", width: "40%"}}>
                 <Search>
                     <SearchIconWrapper>
