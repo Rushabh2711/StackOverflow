@@ -5,7 +5,8 @@ import QuestionViews from "../../../db/models/mongo/questionViews.js";
 class SearchController {
 
     fetchSearchResult = async (req, res) => {
-        const text = "Signed";
+        const text = req.params.searchText;
+        console.log(req.params.searchText);
         // req.params.searchText;
         // "[java] user:12345 \"tex\" is:question isaccepted:yes";
         var results = [];
@@ -97,7 +98,7 @@ class SearchController {
                         }
                     })
                 }
-                console.log(results);
+                // console.log(results);
 
                 posts = [...results];
                 results = [];
@@ -110,6 +111,19 @@ class SearchController {
             res.status(400).send(err);
         }
     };
+
+
+    getAllQuestions = async (req, res) => {
+
+    try {
+        let questions = await Posts.find({postType: "question"});
+        questions.sort((a, b) => b.addedAt - a.addedAt);
+        res.status(200).send(questions);
+        } catch (err) {
+            console.error(err);
+            res.status(400).send(err);
+        }
+    }
 
 }
 
