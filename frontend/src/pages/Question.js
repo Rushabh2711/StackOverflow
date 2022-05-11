@@ -39,7 +39,7 @@ export default function Home() {
 
   return (
     <Box
-      style={{ position: "relative", width: "80%", paddingTop: "10px" }}
+      style={{ position: "relative", width: "100%", paddingTop: "10px" }}
       sx={{ display: "flex" }}
     >
       <Grid container spacing={2} style={{ marginBottom: "10px", marginTop: "0px" }}>
