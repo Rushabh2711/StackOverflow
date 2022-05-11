@@ -75,6 +75,39 @@ export default function Layout(props) {
         <Toolbar />
         {props.page}
         {/* <Typography paragraph>
+        <Drawer
+          variant="permanent"
+          sx={{
+            width: 174,
+            flexShrink: 0,
+            [`& .MuiDrawer-paper`]: {
+              width: 174,
+              boxSizing: "border-box",
+              marginLeft: "0%",
+            },
+          }}
+        >
+          <Toolbar />
+          <Box sx={{ overflow: "auto" }}>
+            <Sidebar
+              setComponent={setComponent}
+              tabValue={props.sidebarTabValue}
+            />
+          </Box>
+        </Drawer>
+        <Box
+          component="main"
+          sx={{ flexGrow: 1, p: 3 }}
+          style={{
+            width: "80vw",
+            wordWrap: "wrap",
+            paddingTop: "0px",
+            wordBreak: "break-all",
+          }}
+        >
+          <Toolbar/>
+          {props.page}
+          {/* <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
           tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
           enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
