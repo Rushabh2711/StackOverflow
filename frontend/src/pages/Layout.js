@@ -1,26 +1,26 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import Navbar from '../components/Navbar/Navbar';
-import Sidebar from '../components/Navbar/Sidebar';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import AppBar from "@mui/material/AppBar";
+import CssBaseline from "@mui/material/CssBaseline";
+import Toolbar from "@mui/material/Toolbar";
+import List from "@mui/material/List";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
+import ListItem from "@mui/material/ListItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import InboxIcon from "@mui/icons-material/MoveToInbox";
+import MailIcon from "@mui/icons-material/Mail";
+import Navbar from "../components/Navbar/Navbar";
+import Sidebar from "../components/Navbar/Sidebar";
 
 import { useNavigate } from "react-router";
 
 const drawerWidth = 240;
 
 export default function Layout(props) {
-    const [value, setValue] = React.useState(1);
+  const [value, setValue] = React.useState(1);
 
   let navigate = useNavigate();
   const setComponent = (value) => {
@@ -44,9 +44,9 @@ export default function Layout(props) {
     }
   };
   return (
-    <Box sx={{ display: 'flex', flexGrow: 1 }}>
+    <Box sx={{ display: "flex", flexGrow: 1 }}>
       <CssBaseline />
-    {/* <Navbar setComponent={setComponent}/> */}
+      {/* <Navbar setComponent={setComponent}/> */}
       {/* <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
@@ -54,15 +54,12 @@ export default function Layout(props) {
           </Typography>
         </Toolbar>
       </AppBar> */}
-      <Box sx={{ display: 'flex' }} style={{paddingLeft: "0%",
-            paddingRight: "0%", justifyContent:"center"}}>
-            
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: 174,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: 174, boxSizing: 'border-box', marginLeft:"0%" },
+      <Box
+        sx={{ display: "flex" }}
+        style={{
+          paddingLeft: "0%",
+          paddingRight: "0%",
+          justifyContent: "center",
         }}
       >
         <Toolbar />
@@ -134,8 +131,8 @@ export default function Layout(props) {
           eleifend. Commodo viverra maecenas accumsan lacus vel facilisis. Nulla
           posuere sollicitudin aliquam ultrices sagittis orci a.
         </Typography> */}
-    </Box>
-    </Box> 
+        </Box>
+      </Box>
     </Box>
   );
 }

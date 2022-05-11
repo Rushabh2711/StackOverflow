@@ -1,5 +1,5 @@
 import express from "express";
-import QuestionController from "../controller/questions.js";
+import QuestionController from "../controller/posts.js";
 
 const questionRouter = express.Router();
 
@@ -30,5 +30,6 @@ questionRouter.get(
   "/user/questions/:userId",
   questionController.getQuestionsAskedByUser
 );
+questionRouter.get("/user/questionsAnswered/:userId", questionController.getQuestionsAnswered);
 
 export default questionRouter;

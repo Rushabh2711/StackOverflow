@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const questionActivitySchema = new Schema({
+const postActivitySchema = new Schema({
   activityType: { type: String, required: true },
   userId: { type: Schema.Types.ObjectId, ref: "userDetails" },
   license: { type: String },
@@ -9,5 +9,5 @@ const questionActivitySchema = new Schema({
   time: { type: Date, required: true },
 });
 
-const QuestionActivities = mongoose.model("questionActivity", questionActivitySchema);
-export default QuestionActivities;
+const PostActivities = mongoose.model("postActivity", postActivitySchema);
+export default PostActivities;

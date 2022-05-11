@@ -36,7 +36,7 @@ export default function UserStats(props) {
               align="left"
               gutterBottom
             >
-              {user.questions_view_count}
+              {user.questionsViewCount}
             </Typography>
             <Typography
               sx={{ fontSize: 15, color: "#212121" }}
@@ -57,7 +57,7 @@ export default function UserStats(props) {
               align="left"
               gutterBottom
             >
-              {user.numberOfQuestionsAnswered}
+              {user.questionsAnsweredCount}
             </Typography>
             <Typography
               sx={{ fontSize: 15, color: "#212121" }}
@@ -75,7 +75,7 @@ export default function UserStats(props) {
               align="left"
               gutterBottom
             >
-              {user.questions_asked_count}
+              {user.questionsAskedCount}
             </Typography>
             <Typography
               sx={{ fontSize: 15, color: "#212121" }}
@@ -107,7 +107,7 @@ export default function UserStats(props) {
       </Grid>
       <Grid container spacing={0}>
         <Grid item xs={11} align="center">
-          <Box sx={{ width: 250 }}>
+          <Box sx={{ width: 200 }}>
             <Card variant="outlined">{card}</Card>
           </Box>
         </Grid>

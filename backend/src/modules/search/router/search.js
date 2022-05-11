@@ -9,5 +9,9 @@ searchRouter.get(
     "/search/:searchText",
     searchController.fetchSearchResult
   );
+  searchRouter.get(
+    "/getQuestions",
+    searchController.getAllQuestions
+  );
 
 export default searchRouter;
