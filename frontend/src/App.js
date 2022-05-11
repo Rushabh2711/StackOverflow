@@ -32,6 +32,7 @@ import Add from "./pages/AddQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
 import Layout from "./pages/Layout";
+import SearchTag from "./pages/SearchTag";
 import MainQuestion from "./components/ViewQuestion/MainQuestion";
 
 export default function App() {
@@ -63,7 +64,10 @@ export default function App() {
             path="/signup"
             element={<Layout page={<SignUp />} sidebarTabValue={4} />}
           />
-
+  <Route
+            path="/questions/tagged/:tagName"
+            element={<Layout page={<SearchTag />} sidebarTabValue={2} />}
+          />
           <Route
             path="/users/profile/:id"
             element={<Layout page={<UserProfile />} />}

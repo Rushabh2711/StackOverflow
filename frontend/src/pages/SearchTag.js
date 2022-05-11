@@ -1,19 +1,6 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import AppBar from '@mui/material/AppBar';
-import CssBaseline from '@mui/material/CssBaseline';
-import Toolbar from '@mui/material/Toolbar';
-import List from '@mui/material/List';
-import Typography from '@mui/material/Typography';
-import Divider from '@mui/material/Divider';
-import ListItem from '@mui/material/ListItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
-import Navbar from '../components/Navbar/Navbar';
-import Sidebar from '../components/Navbar/Sidebar';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 
 import QuestionAnswerCards from "../components/Cards/QuestionAnswerCards";
 import HomeFilter from "../components/Filters/HomeFilter";
@@ -21,6 +8,7 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
+import { useParams } from "react-router";
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
@@ -33,7 +21,8 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const drawerWidth = 240;
 
-export default function Home() {
+export default function SearchTag() {
+  let { tagName }= useParams();
   const [posts, setPosts] = React.useState("posts");
   const [tempPosts, setTempPosts] = React.useState(posts);
 
@@ -62,7 +51,7 @@ export default function Home() {
                     }}
                     textTransform="none"
                   >
-                    All Questions
+                    Questions tagged {tagName} 
                   </Typography>
                 </Item>
               </Grid>
@@ -85,6 +74,28 @@ export default function Home() {
                   >
                     Ask Question
                   </Button>
+                </Item>
+              </Grid>
+              <Grid item xs={12} sm={12} md={12} style={{ paddingTop: "0px" }}>
+                <Item>
+                <Typography
+                    variant="body1"
+                    
+                    component="div"
+                    sx={{
+                      display: { xs: "none", sm: "inline-block" },
+                      color: "#232629",
+                      fontFamily:
+                        '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif',
+                      marginRight: "0px",
+                      fontSize: "13px",
+                    wordWrap:"wrap",
+                    wordBreak: "break-all"
+                    }}
+                    textTransform="none"
+                  >
+                    Java is a high-level object oriented programming language. Use this tag when you're having problems using or understanding the language itself. This tag is frequently used alongside other tags for libraries and/or frameworks used by Java developers.
+                  </Typography>
                 </Item>
               </Grid>
             </Grid>
