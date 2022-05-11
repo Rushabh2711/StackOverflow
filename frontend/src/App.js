@@ -10,6 +10,8 @@ import Question from "./pages/Question";
 import SignUp from "./pages/SignUp";
 import Login from "./pages/Login";
 import UserProfile from "./pages/UserProfile";
+import AdminHome from "./pages/admin/AdminHome";
+import AdminDashboard from "./pages/admin/AdminDashboard";
 import UserActivityAnswers from "./pages/UserActivityAnswers";
 import UserActivityQuestions from "./pages/UserActivityQuestions";
 import UserActivityTags from "./pages/UserActivityTags";
@@ -43,6 +45,8 @@ export default function App() {
         <Navbar />
 
         <Routes>
+          <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/" element={<LandingPage />} />
           <Route
             path="/home"
