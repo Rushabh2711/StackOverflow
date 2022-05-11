@@ -7,10 +7,10 @@ export default function TagsSearch(props){
     const inputText = props.inputText;
     const popular = props.popular;
     
-    // if(popular==="Popular")
-    // {   
-    //     tags.sort((a, b) => parseFloat(b.Questions_asked_today) - parseFloat(a.Questions_asked_today));
-    // }
+    if(popular==="Popular")
+    {   
+        tags.sort((a, b) => parseFloat(b.Questions_asked_today) - parseFloat(a.Questions_asked_today));
+    }
    
     var filteredData = tags;
     if(inputText.length >= 3){

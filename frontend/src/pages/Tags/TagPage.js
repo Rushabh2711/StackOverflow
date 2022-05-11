@@ -8,6 +8,8 @@ import TagsSearch from './TagsSearch.js';
 import { Button, ButtonGroup } from '@mui/material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import "./tags.css"
+
 const theme = createTheme({
     palette: {
       secondary1: {
@@ -18,96 +20,94 @@ const theme = createTheme({
 export default function TagPage() {
 
     
-    var dummytags = [
-        {
-            "name": "java",
-            "tag_description": "Java tag",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 1
-        },
+    // var dummytags = [
+    //     {
+    //         "name": "java",
+    //         "tag_description": "Java tag",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 1
+    //     },
         
 
-        {
-            "name": "python",
-            "tag_description": "python tag",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 2
-        },
-        {
-            "name": "C++",
-            "tag_description": "C++ tag",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 3
-        },
+    //     {
+    //         "name": "python",
+    //         "tag_description": "python tag",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 2
+    //     },
+    //     {
+    //         "name": "C++",
+    //         "tag_description": "C++ tag",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 3
+    //     },
 
-        {
-            "name": "React",
-            "tag_description": "React tag qdsadasd dqwdqwfdcqd qwdqw",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 4
-        },
+    //     {
+    //         "name": "React",
+    //         "tag_description": "React tag qdsadasd dqwdqwfdcqd qwdqw",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 4
+    //     },
 
-        {
-            "name": "Redux",
-            "tag_description": "Redux tag",
-            "Questions_asked_today": 98,
-            "Questions_asked_this_week": 9,
-            "Total_questions_asked": 12,
-            "id": 5
-        },
-        {
-            "name": "OOPS",
-            "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 6
-        },
-        {
-            "name": "HTML",
-            "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 7
-        },
-        {
-            "name": "HADOOP",
-            "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 8
-        },
-        {
-            "name": "GRAPHICS",
-            "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
-            "Questions_asked_today": 100,
-            "Questions_asked_this_week": 10,
-            "Total_questions_asked": 120,
-            "id": 9
-        }
+    //     {
+    //         "name": "Redux",
+    //         "tag_description": "Redux tag",
+    //         "Questions_asked_today": 98,
+    //         "Questions_asked_this_week": 9,
+    //         "Total_questions_asked": 12,
+    //         "id": 5
+    //     },
+    //     {
+    //         "name": "OOPS",
+    //         "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 6
+    //     },
+    //     {
+    //         "name": "HTML",
+    //         "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 7
+    //     },
+    //     {
+    //         "name": "HADOOP",
+    //         "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 8
+    //     },
+    //     {
+    //         "name": "GRAPHICS",
+    //         "tag_description": "OOP tag qdsadasd dqwdqwfdcqd qwdqw",
+    //         "Questions_asked_today": 100,
+    //         "Questions_asked_this_week": 10,
+    //         "Total_questions_asked": 120,
+    //         "id": 9
+    //     }
 
 
-    ]
-  const [tags, setTags] = useState(dummytags)
+    // ]
+  const [tags, setTags] = useState([])
   const [searchText, setSearchText] = useState('') 
   const [popular, setPopular] = useState('')
 
   useEffect(() =>{
-    // fetch('http://localhost:8000/tags')
-    //     .then(res => res.json())
-    //     .then(data=> setTags(data))
-
-
+    fetch('http://localhost:3001/tags')
+        .then(res => res.json())
+        .then(data=> setTags(data))
   }, [])
 
 
@@ -150,11 +150,10 @@ export default function TagPage() {
     {
         setPopular(e)
         
+        
     }
   return (
     <div style={{ textAlign: "left"}}>
-    {/* //<Container> */}
-    {/* <Layout /> */}
 
     <h1>Tags</h1>
     <p>A tag is a keyword or label that categorizes your question with other, similar questions. 

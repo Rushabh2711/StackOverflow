@@ -7,6 +7,12 @@ function UserSearch(props) {
     const inputText = props.inputText;
     const popular = props.popular;
 
+
+    if(popular==="Reputation")
+    {   
+        users.sort((a, b) => parseFloat(b.reputation) - parseFloat(a.reputation));
+    }
+
     var filteredData = users;
     if(inputText.length >= 3){
       filteredData = users.filter((u) => u.userName.toLowerCase().includes(inputText.toLowerCase()));
