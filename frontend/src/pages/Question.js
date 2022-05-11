@@ -14,232 +14,123 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Navbar from '../components/Navbar/Navbar';
 import Sidebar from '../components/Navbar/Sidebar';
-import { IconButton } from '@mui/material';
-import { useNavigate } from 'react-router';
+
+import QuestionAnswerCards from "../components/Cards/QuestionAnswerCards";
+import HomeFilter from "../components/Filters/HomeFilter";
+import Grid from "@mui/material/Grid";
+import Paper from "@mui/material/Paper";
+import { styled } from "@mui/material/styles";
+import { Button } from "@mui/material";
+
+const Item = styled(Paper)(({ theme }) => ({
+  backgroundColor: theme.palette.mode === "dark" ? "#1A2027" : "#fff",
+  ...theme.typography.body2,
+  padding: theme.spacing(1),
+  color: theme.palette.text.secondary,
+  boxShadow: "none",
+  verticalAlign: "center",
+}));
 
 const drawerWidth = 240;
 
-export default function LandingPage() {
-    let navigate = useNavigate();
-    
-    const handleOnClick = (event) => {
-        
-        navigate("/question");
-    }
+export default function Home() {
+  const [posts, setPosts] = React.useState("posts");
+  const [tempPosts, setTempPosts] = React.useState(posts);
+
   return (
-    <Box sx={{ display: 'flex' }}>
-      {/* <CssBaseline />
-      <Navbar />
-      <Drawer
-        variant="permanent"
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box', marginLeft: "10%" },
-          marginLeft:"24px"
-        }}
-       
-      >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-          <Sidebar />
-        </Box>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} style={{ padding:"24px 10%"}}>
-        <Toolbar />
-        your component goes here */}
-    
-      <p style={{ position:"relative", width:"inherit", textAlign: "left"}}>
-        Rushabh Shetaausfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbddfsfdddddddddddddddddddddddddddddddddddddddddddddddddddddddsssssssssssssssssssfsdfsefefdsfvxdvcszdfwadeadfzdfsdefawfsef
-        <br />
-        <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              style={{
-                borderRadius: "0px",
-                marginTop: "0px",
-                marginBottom: "0px",
-              }}
-              sx={{
-                mr: 2,
-                "&:hover": {
-                  backgroundColor: "grey",
-                },
-              }}
-              onClick={handleOnClick}
-            >
-              I am question
-            </IconButton>
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        v vv v
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        vvv
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        v vv v
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        vvv
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        v vv v
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        vvv
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-      </p>
-      {/* </Box> */}
+    <Box
+      style={{ position: "relative", width: "80%", paddingTop: "10px" }}
+      sx={{ display: "flex" }}
+    >
+      <Grid container spacing={2} style={{ marginBottom: "10px", marginTop: "0px" }}>
+        <Grid item xs={12} sm={12} md={12} style={{ paddingTop: "0px" }}>
+          <Item style={{ textAlign: "left" }}>
+            <Grid container spacing={2} style={{ alignItems: "center", marginTop: "0px"}}>
+              <Grid item xs={6} sm={6} md={6} style={{ paddingTop: "0px" }}>
+                <Item>
+                  <Typography
+                    variant="body1"
+                    noWrap
+                    component="div"
+                    sx={{
+                      display: { xs: "none", sm: "inline-block" },
+                      color: "#232629",
+                      fontFamily:
+                        '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif',
+                      marginRight: "2px",
+                      fontSize: "27px",
+                    }}
+                    textTransform="none"
+                  >
+                    All Questions
+                  </Typography>
+                </Item>
+              </Grid>
+              <Grid item xs={6} sm={6} md={6} style={{ paddingTop: "0px" }}>
+                <Item style={{ textAlign: "right" }}>
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      minWidth: "100px",
+                      lineHeight: "2",
+                      textTransform: "none",
+                      color: "#FFFFFF",
+                      backgroundColor: "#0A95FF",
+                      borderColor: "#7AA7C7",
+                      "&:hover": {
+                        color: "#FFFFFF",
+                        backgroundColor: "#0074CC",
+                      },
+                    }}
+                  >
+                    Ask Question
+                  </Button>
+                </Item>
+              </Grid>
+            </Grid>
+          </Item>
+        </Grid>
+        <Grid item xs={12} sm={12} md={12} style={{ paddingTop: "0px" }}>
+          <Item>
+            <Grid container spacing={2} style={{ alignItems: "center", marginTop: "0px"}}>
+              <Grid item xs={6} sm={6} md={6} style={{ paddingTop: "0px" }}>
+                <Item style={{ textAlign: "left" }}>
+                  <Typography
+                    variant="body1"
+                    noWrap
+                    component="div"
+                    sx={{
+                      display: { xs: "none", sm: "inline-block" },
+                      color: "#232629",
+                      fontFamily:
+                        '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif',
+                      marginRight: "2px",
+                      fontSize: "17px",
+                    }}
+                    textTransform="none"
+                  >
+                    22,552,060 Questions
+                  </Typography>
+                </Item>
+              </Grid>
+              <Grid item xs={6} sm={6} md={6} style={{ paddingTop: "0px" }}>
+                <Item style={{ textAlign: "right" }}>
+                  <HomeFilter data={posts} setTempPosts={setTempPosts}/>
+                </Item>
+              </Grid>
+            </Grid>
+          </Item>
+        </Grid>
+        <Grid
+          item
+          xs={12}
+          sm={12}
+          md={12}
+          style={{ paddingTop: "0px", textAlign: "left" }}
+        >
+          <QuestionAnswerCards type="home" data="gridData" />
+        </Grid>
+      </Grid>
     </Box>
   );
 }
