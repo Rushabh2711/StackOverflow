@@ -159,9 +159,9 @@ export default function TagPage() {
     <p>A tag is a keyword or label that categorizes your question with other, similar questions. 
     Using
     <br></br>the right tags makes it easier for others to find and answer your question.</p>
-    <a href="#" className='customLink'>Show all tag synonyms</a>
+    <a href="#" className='tags-customLink'>Show all tag synonyms</a>
 
-    <div className='rowDiv' style={{ display: "flex"}}>
+    <div className='tags-rowDiv' style={{ display: "flex"}}>
         <div style={{ textAlign: "left", width: "40%"}}>
             <Search>
                 <SearchIconWrapper>

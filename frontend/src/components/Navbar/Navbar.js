@@ -231,8 +231,8 @@ export default function Navbar(props) {
         style={{
           borderTop: "5px solid orange",
           backgroundColor: "white",
-          paddingLeft: "0%",
-          paddingRight: "0%",
+          paddingLeft: "1%",
+          paddingRight: "1%",
           paddingTop: "0px",
           paddingBottom: "0px",
         }}
