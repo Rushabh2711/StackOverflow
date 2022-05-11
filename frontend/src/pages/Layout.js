@@ -62,16 +62,6 @@ export default function Layout(props) {
           justifyContent: "center",
         }}
       >
-        <Toolbar />
-        <Box sx={{ overflow: 'auto' }}>
-           <Sidebar setComponent={setComponent} tabValue={props.sidebarTabValue}/>
-        </Box>
-      </Drawer>
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }} style={{ width:"80vw", wordWrap: "wrap", paddingTop: "0px",
-          wordBreak: "break-all" }}>
-        <Toolbar />
-        {props.page}
-        {/* <Typography paragraph>
         <Drawer
           variant="permanent"
           sx={{
@@ -102,7 +92,7 @@ export default function Layout(props) {
             wordBreak: "break-all",
           }}
         >
-          <Toolbar/>
+          <Toolbar />
           {props.page}
           {/* <Typography paragraph>
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
