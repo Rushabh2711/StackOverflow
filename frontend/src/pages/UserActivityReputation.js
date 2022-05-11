@@ -9,6 +9,8 @@ import {
   AccordionDetails,
   AccordionSummary,
   Grid,
+  List,
+  ListItem,
   Typography,
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
@@ -24,6 +26,155 @@ export default function UserActivityReputation() {
 
   const { id } = useParams();
   let navigate = useNavigate();
+
+  let d = [
+    {
+      title: "May 8th 2022",
+      content: [
+        {
+          title: "122",
+          content: [
+            {
+              title: [
+                {
+                  questionId: 122,
+                  activityType: "upvote",
+                  date: "2022-05-08T23:26:44.337+00:00",
+                  userId: 1,
+                },
+              ],
+              content: [],
+            },
+          ],
+        },
+        {
+          title: "123",
+          content: [
+            {
+              title: [
+                {
+                  questionId: 123,
+                  activityType: "upvote",
+                  date: "2022-05-08T23:26:44.337+00:00",
+                  userId: 1,
+                },
+                {
+                  questionId: 123,
+                  activityType: "upvote",
+                  date: "2022-05-08T23:26:44.337+00:00",
+                  userId: 1,
+                },
+              ],
+              content: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "May 7th 2022",
+      content: [
+        {
+          title: "123",
+          content: [
+            {
+              title: [
+                {
+                  questionId: 123,
+                  activityType: "upvote",
+                  date: "2022-05-07T23:26:44.337+00:00",
+                  userId: 1,
+                },
+              ],
+              content: [],
+            },
+          ],
+        },
+      ],
+    },
+    {
+      title: "May 6th 2022",
+      content: [
+        {
+          title: "123",
+          content: [
+            {
+              title: [
+                {
+                  questionId: 123,
+                  activityType: "upvote",
+                  date: "2022-05-06T23:26:44.337+00:00",
+                  userId: 1,
+                },
+              ],
+              content: [],
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  function litem(d) {
+    return (
+      <ListItem
+        sx={{
+          border: 1,
+          borderColor: "#bdbdbd",
+          bgcolor: "#eeeeee",
+        }}
+      >
+        {" "}
+        <Typography
+          sx={{ fontSize: 13, color: "#212121", align: "left" }}
+          color="text.secondary"
+          gutterBottom
+          align="left"
+        >
+          {d}
+        </Typography>
+      </ListItem>
+    );
+  }
+
+  function recurr(d) {
+    console.log(d);
+    if (isArray(d.title)) {
+      {
+        return (
+          <div>
+            {" "}
+            <List sx={{ width: "100%", bgcolor: "background.paper" }}>
+              {d.title.map((reps) => litem(reps.activityType))}
+            </List>
+            <br></br>
+          </div>
+        );
+      }
+    } else {
+      return (
+        <Accordion>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header"
+          >
+            <Typography>{d.title}</Typography>
+          </AccordionSummary>
+          <Accordion>
+            <AccordionDetails
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1a-content"
+              id="panel1a-header"
+            >
+              {d.content.map((con) => recurr(con))}
+            </AccordionDetails>
+          </Accordion>
+        </Accordion>
+      );
+    }
+  }
+
   useEffect(() => {
     axios
       .get(`http://localhost:3001/user/` + id)
@@ -40,21 +191,36 @@ export default function UserActivityReputation() {
       (app) => _.groupBy(app, (i) => i.questionId)
     );
 
+    console.log(groupedDatesThatMatch);
+
+    const getObjects = (o, parent) =>
+      o && typeof o === "object" && !isArray(o)
+        ? Object.entries(o).map(([title, v]) => ({
+            title,
+            key,
+            content: getObjects(v, title),
+          }))
+        : [{ title: o, key, content: [] }];
+
+    var result = getObjects(groupedDatesThatMatch, "null");
+    console.log(result);
     var count = 0;
     var keyValue = [];
     var keyData = [];
-    console.log(dataKey.length);
     for (var key in groupedDatesThatMatch) {
       if (groupedDatesThatMatch.hasOwnProperty(key)) {
         keyValue[count] = key;
-        setData[count] = groupedDatesThatMatch[key];
-        console.log(key + " -> " + groupedDatesThatMatch[key]);
+        keyData[key] = groupedDatesThatMatch[key];
         count++;
       }
       setDataKey(keyValue);
       setData(keyData);
     }
   }, []);
+
+  function isArray(arr) {
+    return arr instanceof Array;
+  }
 
   return (
     <div>
@@ -83,28 +249,7 @@ export default function UserActivityReputation() {
           >
             Reputation
           </Typography>
-          {dataKey.length !== 0 ? (
-            dataKey.map((key) => (
-              <Accordion>
-                <AccordionSummary
-                  expandIcon={<ExpandMoreIcon />}
-                  aria-controls="panel1a-content"
-                  id="panel1a-header"
-                >
-                  <Typography>{key}</Typography>
-                </AccordionSummary>
-                <AccordionDetails>
-                  <Typography>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Suspendisse malesuada lacus ex, sit amet blandit leo
-                    lobortis eget.
-                  </Typography>
-                </AccordionDetails>
-              </Accordion>
-            ))
-          ) : (
-            <div></div>
-          )}
+          {d.map((du) => recurr(du))}
         </Grid>
       </Grid>
     </div>
