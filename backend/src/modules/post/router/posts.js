@@ -24,12 +24,36 @@ questionRouter.get(
   "/questions/:questionId",
   questionController.fetchQuestionDetails
 );
-questionRouter.get("/questions/tags/:tagId", questionController.getQuestionsByTagId);
+questionRouter.get(
+  "/questions/tags/:tagId",
+  questionController.getQuestionsByTagId
+);
+
+questionRouter.get("/user/posts/:userId", questionController.getPostsByUser);
 questionRouter.get(
   "/user/questions/:userId",
   questionController.getQuestionsAskedByUser
 );
-questionRouter.get("/user/questionsAnswered/:userId", questionController.getQuestionsAnswered);
+questionRouter.get(
+  "/user/answersAnswered/:userId",
+  questionController.getAnswersAnsweredByUser
+);
+
+questionRouter.get(
+  "/user/questionsAnswered/:userId",
+  questionController.getQuestionsAnswered
+);
+
+questionRouter.get(
+  "/user/bookmarkedQuestions/:userId",
+  questionController.getBookMarkedQuestionsforUser
+);
+
+questionRouter.put(
+  "/question/markAnswerAccepted",
+  questionController.markAnswerAsAccepted
+);
+// questionRouter.get("/user/questionsAnswered/:userId", questionController.getQuestionsAnswered);  ---   check if needed, commented because founded similar line
 // questionRouter.put("/question/markAnswerAccepted", questionController.markAnswerAsAccepted)
 
 export default questionRouter;
