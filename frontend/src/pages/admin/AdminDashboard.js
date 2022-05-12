@@ -12,7 +12,7 @@ export default function AdminDashboard() {
     <div>
     <Container maxWidth="md">
         <QusPerDay/>
-        <UserTopTags/>
+        {/* <UserTopTags/> */}
         <PopularTag/>
     </Container>
     </div>
