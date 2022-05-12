@@ -4,6 +4,10 @@ import Tags from "../../../db/models/mongo/tags.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
 // const mongoose = require('mongoose');
 import mongoose from "mongoose";
+import Votes from "../../../db/models/mongo/votes.js";
+import PostActivities from "../../../db/models/mongo/postActivity.js";
+import userActivities from "../../../db/models/mongo/userActivity.js";
+
 
 class QuestionController {
   checkHealth = async (req, res) => {
@@ -13,12 +17,14 @@ class QuestionController {
   postQuestion = async (req, res) => {
     console.log("Add post");
     let time = new Date();
+    let tags = req.body.tags;
     try {
       const newPost = new Posts({
         questionTitle: req.body.title,
         postType: "question",
-        questionTags: req.body.tags,
+        questionTags: tags,
         description: req.body.description,
+        shortdesc: req.body.shortdesc,
         addedAt: time.toISOString(),
         modifiedAt: time.toISOString(),
         status: req.body.description.includes('src="data:image/')
@@ -28,7 +34,36 @@ class QuestionController {
       });
 
       const response = await newPost.save();
-      let postId = response._id;
+      // let postId = response._id;
+      // tags.map(tag => {
+      //   let tagId = tag.tagId;
+      //   await Tags.findByIdAndUpdate(tagId, )
+      // })
+      
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+  editQuestion = async (req, res) => {
+    console.log("Add post");
+    const {  postId,isAdmin } = req.body;
+    let time = new Date();
+    var status=(req.body.description.includes('src="data:image/') || isAdmin) ?  "APPROVED":"PENDING";
+    try {
+      const filter = { _id: postId };
+      const update ={ 
+        questionTags: req.body.tags,
+        description: req.body.description,
+        questionTitle: req.body.title,
+        modifiedAt: time.toISOString(),
+        status: status,
+      };
+
+       const response = await Posts.findOneAndUpdate(filter, update,{
+        upsert: true, new: true
+      });
       //Trigger to update postId in tags
       res.status(200).send(response);
     } catch (err) {
@@ -238,22 +273,37 @@ class QuestionController {
   };
 
   votePost = async (req, res) => {
-    //Get user id who posted answer
-    const { voteType, postId } = req.body;
+    const { userId, voteType, postId} = req.body;
     let response;
-
+    let time = new Date();
     try {
-      const filter = { _id: postId };
-      const update =
-        voteType == "Upvote"
-          ? { $inc: { upvotes: 1 } }
-          : { $inc: { downvotes: 1 } };
+      const result = await Votes.find({userId: userId, postId: postId, voteType: voteType});
+      console.log(result);
+      if(result && result.length > 0)
+      {
+        res.status(200).send("User already performed" + voteType + "on this post" + postId);
+      }
+      else
+      {
+        const newVote = new Votes({
+          userId: userId,
+          voteType: voteType,
+          postId: postId,
+          creationDate: time.toISOString()
+        });
+  
+        const response = await newVote.save();
+        res.status(200).send(response);
+      }
+        // const filter = { _id: postId };
+        // const update =
+        //   voteType == "Upvote"
+        //     ? { $inc: { upvotes: 1 } }
+        //     : { $inc: { downvotes: 1 } };
 
-      response = await Posts.findOneAndUpdate(filter, update, {
-        upsert: true,
-        new: true,
-      });
-      res.status(200).send(response);
+        // response = await Posts.findOneAndUpdate(filter, update,{
+        //   upsert: true, new: true
+        // });
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
@@ -334,18 +384,22 @@ class QuestionController {
   };
 
   markAnswerAsAccepted = async (req, res) => {
-    const { questionId, answerId } = req.body;
-
+    const {questionId, answerId} = req.body;
+    
     try {
-      let question = await Posts.findOneAndUpdate(
-        { _id: questionId },
-        {
-          $set: { isAcceptedAnswerId: answerId, isAccepted: true },
-        },
-        { new: true }
-      );
-    } catch (error) {}
-  };
+      let question = await Posts.findOneAndUpdate({_id : questionId}, 
+          {
+            "$set" : {isAcceptedAnswerId : answerId, isAccepted : true }
+          },
+          {new : true}
+        );
+      res.status(200).send(question);
+      
+    } catch (error) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
 }
 
 export default QuestionController;

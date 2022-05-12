@@ -107,6 +107,16 @@ export class UserController {
     }
   };
 
+  getAllUsers = async (req, res) => {
+    try {
+      const response = await UserDetails.find({});
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+
   getuser = async (req, res) => {
     const { userId } = req.params;
     try {

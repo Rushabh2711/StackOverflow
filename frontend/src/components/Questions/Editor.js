@@ -97,10 +97,11 @@ function QuillEditor(props) {
   //   setBody(value);
   // };
 
-  const onChange = (value) => {
-       console.log("onchange event",value)
-     setBody(value);
-     props.onChange(value);
+  const onChange = (content, delta, source, editor) => {
+       //console.log("onchange event",value)
+     setBody(content);
+     props.onChange(content);
+     props.shortText(editor.getText())
     // console.log(editor.getHTML())
   };
   return (

@@ -6,6 +6,7 @@ const postSchema = new Schema({
   questionTitle: { type: String, required: true },
   postType: { type: String, required: true },
   parentId: { type: Schema.Types.ObjectId },
+  shortdesc: { type: String},
   description: { type: String, required: true },
   votes: { type: Number, default: 0 },
   upvotes: { type: Number, default: 0 },
