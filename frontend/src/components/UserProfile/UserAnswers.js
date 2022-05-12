@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import questionsJson from "../../dummydata/questions.json";
 import Moment from "react-moment";
+import TagList from "../ViewQuestion/TagList";
 
 export default function UserAnswers(props) {
   const { id } = useParams();
@@ -16,9 +17,15 @@ export default function UserAnswers(props) {
 
   useEffect(() => {
     console.log(id);
-    axios.get("http://localhost:3001/user/questions/" + id).then((response) => {
-      setAnswers(response.data.filter((x) => x.postType === "answer"));
-    });
+    axios
+      .get("http://localhost:3001/user/answersAnswered/" + id)
+      .then((response) => {
+        setAnswers(
+          response.data
+            .filter((x) => x.postType === "answer")
+            .sort((a, b) => b.votes - a.votes)
+        );
+      });
     console.log(answers);
   }, []);
 
@@ -79,11 +86,11 @@ export default function UserAnswers(props) {
                             <Grid container spacing={2}>
                               <Grid item xs={9}>
                                 <Stack direction="row" spacing={1}>
-                                  {answer.tags === undefined ? (
+                                  {answer.questionTags === undefined ? (
                                     <div></div>
                                   ) : (
-                                    answer.tags.map((tag) => (
-                                      <Chip label={tag.name} />
+                                    answer.questionTags.map((tag) => (
+                                      <TagList tag={tag} />
                                     ))
                                   )}{" "}
                                 </Stack>

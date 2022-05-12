@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import { useParams } from "react-router";
 import axios from "axios";
 import Moment from "react-moment";
+import TagList from "../ViewQuestion/TagList";
+import TagsList from "../Cards/TagsList";
 
 export default function UserQuestions(props) {
   const { id } = useParams();
@@ -15,7 +17,11 @@ export default function UserQuestions(props) {
   useEffect(() => {
     console.log(id);
     axios.get("http://localhost:3001/user/questions/" + id).then((response) => {
-      setQuestions(response.data.filter((x) => x.postType === "question"));
+      setQuestions(
+        response.data
+          .filter((x) => x.postType === "question")
+          .sort((a, b) => b.votes - a.votes)
+      );
     });
     console.log(questions);
   }, []);
@@ -99,11 +105,11 @@ export default function UserQuestions(props) {
                             <Grid container spacing={2}>
                               <Grid item xs={9}>
                                 <Stack direction="row" spacing={1}>
-                                  {question.tags === undefined ? (
+                                  {question.questionTags === undefined ? (
                                     <div></div>
                                   ) : (
-                                    question.tags.map((tag) => (
-                                      <Chip label={tag.name} />
+                                    question.questionTags.map((tag) => (
+                                      <TagList tag={tag} />
                                     ))
                                   )}{" "}
                                 </Stack>
