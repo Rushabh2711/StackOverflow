@@ -18,6 +18,11 @@ class QuestionController {
     console.log("Add post");
     let time = new Date();
     let tags = req.body.tags;
+    let type = req.body.type;
+    var modifiedAt={
+      type:type,
+      date:time.toISOString()
+    }
     try {
       const newPost = new Posts({
         questionTitle: req.body.title,
@@ -26,7 +31,7 @@ class QuestionController {
         description: req.body.description,
         shortdesc: req.body.shortdesc,
         addedAt: time.toISOString(),
-        modifiedAt: time.toISOString(),
+        modifiedAt: modifiedAt,
         status: req.body.description.includes('src="data:image/')
           ? "PENDING"
           : "APPROVED",
@@ -51,13 +56,18 @@ class QuestionController {
     const {  postId,isAdmin } = req.body;
     let time = new Date();
     var status=(req.body.description.includes('src="data:image/') || isAdmin) ?  "APPROVED":"PENDING";
+    let type = req.body.type;
+    var modifiedAt={
+      type:type,
+      date:time.toISOString()
+    }
     try {
       const filter = { _id: postId };
       const update ={ 
         questionTags: req.body.tags,
         description: req.body.description,
         questionTitle: req.body.title,
-        modifiedAt: time.toISOString(),
+        modifiedAt: modifiedAt,
         status: status,
       };
 

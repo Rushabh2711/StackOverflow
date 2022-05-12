@@ -12,8 +12,15 @@ export default function Question(props) {
   const { question } = props;
   const [aksedQuestionUser, setAksedQuestionUser] = useState();
   const [isBookmarked, SetIsBookmarked] = useState(false);
-  const [voteCount, setvoteCount] = useState(parseInt(question?.upvotes) - parseInt(question?.downvotes));
+  //const [arrayofUpvotes, setarrayofUpvotes] = useState(["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]);
+  //const [arrayofDownvotes, setarrayofDownvotes] = useState(["62763e54bfe0a2faeddf026e"]);
+  //const [voteCount, setvoteCount] = useState(parseInt(question?.upvotes) - parseInt(question?.downvotes));
   const [text, setText] = useState(props.question.description)
+  const userId="62763e6cbfe0a2faeddf0272";
+  var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
+var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
+const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
+
   useEffect(() => {
     axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
       console.log(res.data[0]);
@@ -26,6 +33,7 @@ export default function Question(props) {
   useEffect(() => {
     setText(question.description)
     console.log("first", question)
+     
   }, [props.question, question, question.description])
 
   const votePost = async (e) => {
@@ -40,6 +48,7 @@ export default function Question(props) {
       console.log(res.data);
       if( e.target.id==='Upvote'){
         setvoteCount(voteCount+1)
+        
       }
       else{
         setvoteCount(voteCount-1)
@@ -84,12 +93,13 @@ export default function Question(props) {
       >
         <div className="all-questions-left">
           <div className="all-options">
-            <p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>
+            {!arrayofUpvotes.includes(userId)?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
+            {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
 
-            <p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>
+            {/* {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:""} */}
            
             {isBookmarked? <BookmarkIcon className="votes" onClick={removeBookmark} style={{ color: "cea81c" }}/>:<BookmarkIcon className="votes" onClick={addBookmark} />}
  
