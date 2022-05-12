@@ -22,6 +22,7 @@ function Edit() {
   const [tag, setTag] = useState([]);
   const [isAdmin, setisAdmin] = useState(false);
   const [tagList, setTagList] = useState([]);
+  const [shortDesc, setShortDesc] = useState("");
 
   useEffect(() => {
     console.log("inside")
@@ -68,6 +69,7 @@ function Edit() {
         description: body,
         tags: transformed,
         postId: id,
+        type: "modified",
         isAdmin: isAdmin,
         userId: "62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
         username: "virag"//localStorage.getItem('username')
@@ -83,6 +85,12 @@ function Edit() {
         .catch((err) => {
           console.log(err);
         });
+    }
+    else if(title===""){
+      alert("Title can not be empty")
+    }
+    else if(body===""){
+      alert("Description can not be empty")
     }
   };
 
@@ -153,6 +161,8 @@ function Edit() {
                     body={body}
                     onBlur={setBody}
                     onChange={setBody}
+                    shortText={setShortDesc}
+
                   />
                 </div>
               </div>
@@ -190,19 +200,18 @@ function Edit() {
                 onChange={(event, tags) => {
                   console.log(event);
                   console.log(tags);
-                  setTag(tags)
+                  if(tag.length<5){
+                    //setTag();
+                    setTag(tags)
+                  }
+                  else{
+                    alert("You can add only 5 tags")
+                  }
                   // setTagsState(tags.at(-1))
                 }
                 }
-                //    if(tag.length<5){
-                //      setTag();
-                //      {tagId : "", name: ""}
-                //    }
-                //    else{
-                //      alert("You can add only 5 tags")
-                //    }
-                //    console.log(newValue)
-                //  }}
+                   
+                   
                 filterSelectedOptions
                 renderInput={(params) => (
                   <TextField

@@ -68,6 +68,7 @@ function Ask() {
           description: body,
           shortdesc: shortDesc.replace(/\s/g,' '),
           tags: tag,
+          type: "asked",
           userId:"62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
           username:"virag"//localStorage.getItem('username')
          // user: user,
