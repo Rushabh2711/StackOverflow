@@ -130,6 +130,11 @@ class QuestionController {
   postAnswer = async (data) => {
     console.log("Add answer");
     let time = new Date();
+    let type = data.type;
+    var modifiedAt={
+      type:type,
+      date:time.toISOString()
+    }
     try {
       const newPost = new Posts({
         questionTitle: data.questionTitle,
@@ -139,7 +144,7 @@ class QuestionController {
         shortdesc: data.shortdesc,
         questionTags: data.questionTags,
         addedAt: time.toISOString(),
-        modifiedAt: time.toISOString(),
+        modifiedAt: modifiedAt,
         userId: data.userId,
       });
       const response = await newPost.save();

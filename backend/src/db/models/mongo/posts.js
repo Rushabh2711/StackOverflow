@@ -13,7 +13,9 @@ const postSchema = new Schema({
   views: { type: Number, default: 0 },
   numberOfAnswers: { type: Number, default: 0 },
   addedAt: { type: Date, required: true },
-  modifiedAt: { type: Date, required: true },
+  //modifiedAt: { type: Date, required: true },
+  modifiedAt: {type:{ type:String},date:{type: Date}},
+
   isAcceptedAnswerId: { type: Schema.Types.ObjectId },
   status: { type: String },
   isAccepted: { type: Boolean, default: false },
