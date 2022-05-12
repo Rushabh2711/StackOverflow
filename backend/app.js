@@ -13,7 +13,6 @@ io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on("message", async (data) => {
     console.log(data);
-    // Create a message.
     const newMessage = { 
       // text: data,
       // createdAt: Date.now(), 
