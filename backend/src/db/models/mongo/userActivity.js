@@ -1,9 +1,11 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const userActivitySchema = new Schema({
-  questionId: { type: Schema.Types.ObjectId, ref: "question" },
+  postId: { type: Schema.Types.ObjectId, ref: "post" },
+  postTitle: {type: String, required: true},//check with utkarsh
   activityType: { type: String, required: true },
+  points: {type: Number, required: true},
   date: { type: Date, required: true },
   userId: {
     type: Schema.Types.ObjectId,

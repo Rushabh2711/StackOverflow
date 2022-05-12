@@ -7,6 +7,7 @@ import searchRouter from "./src/modules/search/router/search.js";
 import userRouter from "./src/modules/user/router/users.js";
 import testRouter from "./src/modules/test/router/test.js";
 import tagRouter from "./src/modules/tags/router/tags.js";
+import adminRouter from "./src/modules/admin/router/admin.js";
 
 //initialize db
 mongoInit();
@@ -16,7 +17,7 @@ app.use(tagRouter);
 app.use(searchRouter);
 app.use(userRouter);
 app.use(testRouter);
-app.use(tagRouter);
+app.use(adminRouter);
 
 //Storing documents/Images
 const storage = multer.diskStorage({

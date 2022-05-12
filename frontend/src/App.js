@@ -35,6 +35,7 @@ import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/Navbar/Navbar";
 import Add from "./pages/AddQuestion";
+import Edit from "./pages/EditQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
 import Layout from "./pages/Layout";
@@ -121,6 +122,8 @@ export default function App() {
             element={<Layout page={<UserActivityReputation />} />}
           />
           <Route path="/ask" element={<Add />} />
+          <Route path="/edit/:id" element={<Edit />} />
+
           <Route
             path="/view/:id"
             element={<Layout page={<MainQuestion />} sidebarTabValue={0} />}

@@ -110,10 +110,10 @@ class QuestionController {
       console.log(result);
 
       const res = await QuestionViews.updateOne(
-        { questionId: questionId, date: date },
+        { _id: questionId, date: date },
         {
           $set: {
-            questionId: questionId,
+            _id: questionId,
             date: date,
           },
           $inc: { views: 1 },

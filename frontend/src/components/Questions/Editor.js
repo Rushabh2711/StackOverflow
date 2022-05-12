@@ -98,7 +98,7 @@ function QuillEditor(props) {
   // };
 
   const onChange = (value) => {
-       console.log("onchange event",value)
+       //console.log("onchange event",value)
      setBody(value);
      props.onChange(value);
     // console.log(editor.getHTML())

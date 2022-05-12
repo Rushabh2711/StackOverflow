@@ -8,6 +8,7 @@ class TagController {
   addTag = async (req, res) => {
     console.log("Add tag");
     try {
+      // todo Check if user is admin
       const newTag = new Tags({
         name: req.body.name,
         description: req.body.description,
