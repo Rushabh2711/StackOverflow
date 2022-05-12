@@ -20,6 +20,7 @@ function Ask() {
   //const user = useSelector(selectUser);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
   const [tag, setTag] = useState([]);
   const [tagList, setTagList] = useState([]);
   const history = useNavigate();
@@ -45,11 +46,27 @@ function Ask() {
     e.preventDefault();
     console.log("title",title)
     console.log("body",body)
+    console.log("body",shortDesc)
     console.log("tag",tag)
+    // if(body){
+    //   var str2 = body.slice(body.indexOf("<img"),body.indexOf('"></p>')) 
+    //   console.log(str2)
+    //     var str3 = body.replaceAll(str2, "");
+    //       str3 = str3.replaceAll('<p>', "");
+    //       str3 = str3.replaceAll("</p>", "");
+    //       str3 = str3.replaceAll("<br>", "");
+    //       str3 = str3.replaceAll("<strong>", "");
+    //       str3 = str3.replaceAll('<pre class="ql-syntax" spellcheck="false">', "");
+    //      str3 = str3.replaceAll('</pre>', "");
+    //      //str3 = str3.slice(body.indexOf("<img"),body.indexOf('"></p>')) 
+
+    //     console.log("staring 3",str3)
+    // }
       if (title !== "" && body !== "") {
         const bodyJSON = {
           title: title,
           description: body,
+          shortdesc: shortDesc.replace(/\s/g,' '),
           tags: tag,
           userId:"62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
           username:"virag"//localStorage.getItem('username')
@@ -121,6 +138,7 @@ function Ask() {
                  body={body}
                  onBlur={setBody}
                  onChange={setBody}
+                 shortText={setShortDesc}
                 />
               </div>
             </div>
