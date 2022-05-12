@@ -302,22 +302,23 @@ class QuestionController {
     });
   };
 
-  // markAnswerAsAccepted = async (req, res) => {
-  //   const {questionId, answerId} = req.body;
+  markAnswerAsAccepted = async (req, res) => {
+    const {questionId, answerId} = req.body;
     
-  //   try {
-  //     let question = await Posts.findOneAndUpdate({_id : questionId}, 
-  //         {
-  //           "$set" : {isAcceptedAnswerId : answerId, isAccepted : true }
-  //         },
-  //         {new : true}
-  //       );
-
+    try {
+      let question = await Posts.findOneAndUpdate({_id : questionId}, 
+          {
+            "$set" : {isAcceptedAnswerId : answerId, isAccepted : true }
+          },
+          {new : true}
+        );
+      res.status(200).send(question);
       
-  //   } catch (error) {
-      
-  //   }
-  // }
+    } catch (error) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
 }
 
 export default QuestionController;
