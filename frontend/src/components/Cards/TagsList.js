@@ -8,7 +8,7 @@ export default function TagsList(props) {
     <Stack spacing={1} direction="row">
       {tags.map((tag) => (
         <Link
-          href={"/question/tagged/" + tag}
+          href={"/questions/tagged/" + tag}
           underline="none"
           sx={{
             padding: "2px 5px",
@@ -16,9 +16,9 @@ export default function TagsList(props) {
             backgroundColor: "#E1ECF4",
             borderRadius: "3px",
             "&:hover": {
-                color: "#2C5877",
-                backgroundColor:"#D0E3F1"
-              },
+              color: "#2C5877",
+              backgroundColor: "#D0E3F1",
+            },
           }}
         >
           <Typography

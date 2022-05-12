@@ -90,6 +90,8 @@ export class UserController {
       const newUser = new UserDetails({
         username: req.body.username,
         emailId: req.body.emailId,
+        password: req.body.password,
+        accountType: "user",
         joiningDate: time.toISOString(),
         visitedTime: time.toISOString(),
       });
@@ -97,7 +99,11 @@ export class UserController {
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
-      res.status(400).send(err);
+      if (err.code === 11000) {
+        res.status(200).end("Email already in use");
+      } else {
+        res.status(400).end(err);
+      }
     }
   };
 
@@ -113,40 +119,46 @@ export class UserController {
   };
 
   bookmarkQuestion = async (req, res) => {
-    const { userId , questionId} = req.body;
+    const { userId, questionId } = req.body;
     try {
-      const response = await UserDetails.findByIdAndUpdate(userId, {
-        $push: { bookmarkedQuestions: questionId },
-        }, {
-        upsert: true,
-        new: true
+      const response = await UserDetails.findByIdAndUpdate(
+        userId,
+        {
+          $push: { bookmarkedQuestions: questionId },
+        },
+        {
+          upsert: true,
+          new: true,
         }
-      )
-      console.log("bookmark questions added",response)      
+      );
+      console.log("bookmark questions added", response);
       res.status(200).send("bookmark added");
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
-  }
+  };
 
   removeBookmarkQuestion = async (req, res) => {
-    const { userId , questionId} = req.body;
+    const { userId, questionId } = req.body;
     try {
-
-      const response = await UserDetails.findByIdAndUpdate(userId, {
-          $pull: { bookmarkedQuestions:  questionId}
-      }, {
-        upsert: true,
-        new: true
-        });
-      console.log("bookmark questions removed",response)      
+      const response = await UserDetails.findByIdAndUpdate(
+        userId,
+        {
+          $pull: { bookmarkedQuestions: questionId },
+        },
+        {
+          upsert: true,
+          new: true,
+        }
+      );
+      console.log("bookmark questions removed", response);
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
-  }
+  };
 }
 
 export default UserController;
