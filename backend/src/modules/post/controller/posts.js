@@ -1,6 +1,9 @@
 import { make_request } from "../../../../kafka/client.js";
 import Posts from "../../../db/models/mongo/posts.js";
 import Tags from "../../../db/models/mongo/tags.js";
+import UserDetails from "../../../db/models/mongo/userDetails.js";
+// const mongoose = require('mongoose');
+import mongoose from "mongoose";
 import Votes from "../../../db/models/mongo/votes.js";
 import PostActivities from "../../../db/models/mongo/postActivity.js";
 import userActivities from "../../../db/models/mongo/userActivity.js";
@@ -15,15 +18,23 @@ class QuestionController {
     console.log("Add post");
     let time = new Date();
     let tags = req.body.tags;
+    let type = req.body.type;
+    var modifiedAt={
+      type:type,
+      date:time.toISOString()
+    }
     try {
       const newPost = new Posts({
         questionTitle: req.body.title,
         postType: "question",
         questionTags: tags,
         description: req.body.description,
+        shortdesc: req.body.shortdesc,
         addedAt: time.toISOString(),
-        modifiedAt: time.toISOString(),
-        status: req.body.description.includes('src="data:image/') ? "PENDING" : "APPROVED",
+        modifiedAt: modifiedAt,
+        status: req.body.description.includes('src="data:image/')
+          ? "PENDING"
+          : "APPROVED",
         userId: req.body.userId,
       });
 
@@ -45,13 +56,18 @@ class QuestionController {
     const {  postId,isAdmin } = req.body;
     let time = new Date();
     var status=(req.body.description.includes('src="data:image/') || isAdmin) ?  "APPROVED":"PENDING";
+    let type = req.body.type;
+    var modifiedAt={
+      type:type,
+      date:time.toISOString()
+    }
     try {
       const filter = { _id: postId };
       const update ={ 
         questionTags: req.body.tags,
         description: req.body.description,
         questionTitle: req.body.title,
-        modifiedAt: time.toISOString(),
+        modifiedAt: modifiedAt,
         status: status,
       };
 
@@ -132,33 +148,103 @@ class QuestionController {
     try {
       const { tagId } = req.params;
       let results = [];
-      let questionIds = await Tags.find({ _id: tagId}, {posts : 1});
-      questionIds.map(async questionId => {
-        let questionDetails = await Posts.findOne({ _id: questionId });
-        console.log(questionDetails);
-        if(questionDetails){
-          results.push({
-            questionId: questionDetails._id,
-            questionTitle: questionDetails.questionTitle,
-            description: questionDetails.description,
-            createdTime: questionDetails.addedAt,
-            modifiedTime: questionDetails.modifiedTime,
-            tags: questionDetails.questionTags,
-            votes: questionDetails.votes,
-          })
-        }
+      let questionIds = await Tags.find({ _id: tagId }, { posts: 1 });
+      console.log(questionIds);
+      if (questionIds[0].posts.length > 0) {
+        questionIds[0].posts.map(async (questionId) => {
+          let questionDetails = await Posts.findOne({ _id: questionId });
+          console.log(questionDetails);
+          if (questionDetails) {
+            results.push({
+              questionId: questionDetails._id,
+              questionTitle: questionDetails.questionTitle,
+              description: questionDetails.description,
+              createdTime: questionDetails.addedAt,
+              modifiedTime: questionDetails.modifiedTime,
+              tags: questionDetails.questionTags,
+              votes: questionDetails.votes,
+            });
+          }
+          res.status(200).send(results);
+        });
+      } else {
         res.status(200).send(results);
-      })
+      }
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
-  }
+  };
+
+  getBookMarkedQuestionsforUser = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      let results = [];
+      let questionIds = await UserDetails.find(
+        { _id: userId },
+        { bookmarkedQuestions: 1 }
+      );
+      console.log(questionIds[0].bookmarkedQuestions);
+      if (questionIds[0].bookmarkedQuestions.length > 0) {
+        questionIds[0].bookmarkedQuestions.map(async (questionId) => {
+          let questionDetails = await Posts.findOne({ _id: questionId });
+          console.log(questionDetails);
+          if (questionDetails) {
+            results.push({
+              questionId: questionDetails._id,
+              questionTitle: questionDetails.questionTitle,
+              description: questionDetails.description,
+              createdTime: questionDetails.addedAt,
+              modifiedTime: questionDetails.modifiedTime,
+              tags: questionDetails.questionTags,
+              votes: questionDetails.votes,
+            });
+          }
+          res.status(200).send(results);
+        });
+      } else {
+        res.status(200).send(results);
+      }
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+
+  getPostsByUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+      const response = await Posts.find({
+        userId: userId,
+      });
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
 
   getQuestionsAskedByUser = async (req, res) => {
     const { userId } = req.params;
     try {
-      const response = await Posts.find({ userId: userId, postType : "question"});
+      const response = await Posts.find({
+        userId: userId,
+        postType: "question",
+      });
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+
+  getAnswersAnsweredByUser = async (req, res) => {
+    const { userId } = req.params;
+    try {
+      const response = await Posts.find({
+        userId: userId,
+        postType: "answer",
+      });
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
@@ -256,24 +342,29 @@ class QuestionController {
   };
 
   postCommentToQuestion = async (req, res) => {
-    const { questionId, description, userId,username } = req.body;
+    const { questionId, description, userId, username } = req.body;
     let time = new Date();
-    console.log("comment successfully added",req.body)
+    console.log("comment successfully added", req.body);
 
     const comment = {
       description: description,
       userId: userId,
-      username:username,
+      username: username,
       postedOn: time.toISOString(),
     };
 
     try {
-      const response = await Posts.findByIdAndUpdate(questionId, {
-        $push: { comments: comment },
-      }, {
-        upsert: true, new: true
-      });
-      console.log("comment successfully added",response)
+      const response = await Posts.findByIdAndUpdate(
+        questionId,
+        {
+          $push: { comments: comment },
+        },
+        {
+          upsert: true,
+          new: true,
+        }
+      );
+      console.log("comment successfully added", response);
       res.status(200).send(response.comments);
     } catch (err) {
       console.error(err);

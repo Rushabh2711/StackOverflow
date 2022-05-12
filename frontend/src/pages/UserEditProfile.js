@@ -3,17 +3,60 @@ import userJson from "../dummydata/user.json";
 import UserDetails from "../components/UserProfile/UserDetails";
 import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
-import { Box, Card, Divider, Grid, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 import UserAnswers from "../components/UserProfile/UserAnswers";
 import UserEditSidebar from "../components/UserProfile/UserEditSidebar";
+import axios from "axios";
+import { useNavigate, useParams } from "react-router";
 
 export default function UserEditProfile() {
-  const [location, setLocation] = useState("");
   const [image, setImage] = useState("");
-  const [user, setUser] = useState(userJson.userData);
+  const [user, setUser] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
+  const [about, setabout] = useState("");
+  const [message, setMessage] = useState("");
+  const { id } = useParams();
+  let navigate = useNavigate();
+
+  //city change handler to update state variable with the text entered by the user
+  const cityChangeHandler = (e) => {
+    setMessage("");
+    setCity(e.target.value);
+  };
+
+  //country change handler to update state variable with the text entered by the user
+  const countryChangeHandler = (e) => {
+    setMessage("");
+    setCountry(e.target.value);
+  };
+
+  //about change handler to update state variable with the text entered by the user
+  const aboutChangeHandler = (e) => {
+    setMessage("");
+    setabout(e.target.value);
+  };
 
   useEffect(() => {
-    setUser(userJson.userData);
+    axios
+      .get(`http://localhost:3001/user/` + id)
+      .then((res) => {
+        console.log(res.data);
+        setUser(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/errorpage");
+      });
+    console.log(user.tags);
   }, []);
 
   return (
@@ -51,20 +94,82 @@ export default function UserEditProfile() {
           >
             Public Information
           </Typography>
-          <Box sx={{ border: 1 }}>
+          <Box sx={{ border: 1, width: 800 }}>
             <div>
-              <Card style={{ width: 200, height: 200 }}>
-                <img
-                  src={
-                    image
-                      ? image
-                      : "https://firebasestorage.googleapis.com/v0/b/etsy-lab1.appspot.com/o/blank-profile-picture-973460_1280.png?alt=media&token=7127f000-8f23-447d-8587-e7a803ee957e"
-                  }
-                  className="card-img-top"
-                  alt="description of image"
-                />
+              <Card
+                style={{
+                  border: 1,
+                  width: 750,
+                  height: 600,
+                  marginLeft: "20px",
+                }}
+                align="left"
+              >
                 <h6>Profile Image</h6>
                 <input type="file" name="myImage" />
+                <Typography
+                  sx={{
+                    fontSize: 16,
+                    fontWeight: "bold",
+                    color: "#212121",
+                  }}
+                  color="text.secondary"
+                  align="left"
+                  mt="4"
+                  gutterBottom
+                >
+                  City
+                </Typography>
+                <TextField
+                  id="city"
+                  type="text"
+                  value={city}
+                  onChange={cityChangeHandler}
+                  required
+                  sx={{ width: 500 }}
+                />
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: "bold", color: "#212121" }}
+                  color="text.secondary"
+                  align="left"
+                  gutterBottom
+                >
+                  Country
+                </Typography>
+                <TextField
+                  id="country"
+                  type="text"
+                  value={country}
+                  onChange={countryChangeHandler}
+                  required
+                  sx={{ width: 500 }}
+                />
+                <Typography
+                  sx={{ fontSize: 16, fontWeight: "bold", color: "#212121" }}
+                  color="text.secondary"
+                  align="left"
+                  gutterBottom
+                >
+                  About
+                </Typography>
+                <TextField
+                  id="about"
+                  type="text"
+                  value={about}
+                  onChange={aboutChangeHandler}
+                  multiline
+                  rows={4}
+                  required
+                  sx={{ width: 700 }}
+                  mb="3"
+                />
+                &nbsp;
+                <Button
+                  sx={{ fontSize: 15, width: 150, color: "#fafafa", mt: 4 }}
+                  variant="contained"
+                >
+                  Save profile
+                </Button>
               </Card>
             </div>
           </Box>

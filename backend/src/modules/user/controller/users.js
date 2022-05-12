@@ -115,40 +115,46 @@ export class UserController {
   };
 
   bookmarkQuestion = async (req, res) => {
-    const { userId , questionId} = req.body;
+    const { userId, questionId } = req.body;
     try {
-      const response = await UserDetails.findByIdAndUpdate(userId, {
-        $push: { bookmarkedQuestions: questionId },
-        }, {
-        upsert: true,
-        new: true
+      const response = await UserDetails.findByIdAndUpdate(
+        userId,
+        {
+          $push: { bookmarkedQuestions: questionId },
+        },
+        {
+          upsert: true,
+          new: true,
         }
-      )
-      console.log("bookmark questions added",response)      
+      );
+      console.log("bookmark questions added", response);
       res.status(200).send("bookmark added");
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
-  }
+  };
 
   removeBookmarkQuestion = async (req, res) => {
-    const { userId , questionId} = req.body;
+    const { userId, questionId } = req.body;
     try {
-
-      const response = await UserDetails.findByIdAndUpdate(userId, {
-          $pull: { bookmarkedQuestions:  questionId}
-      }, {
-        upsert: true,
-        new: true
-        });
-      console.log("bookmark questions removed",response)      
+      const response = await UserDetails.findByIdAndUpdate(
+        userId,
+        {
+          $pull: { bookmarkedQuestions: questionId },
+        },
+        {
+          upsert: true,
+          new: true,
+        }
+      );
+      console.log("bookmark questions removed", response);
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
-  }
+  };
 }
 
 export default UserController;

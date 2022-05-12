@@ -20,6 +20,7 @@ import UserActivityBookmarks from "./pages/UserActivityBookmarks";
 import UserActivityReputation from "./pages/UserActivityReputation";
 import UserEditProfile from "./pages/UserEditProfile";
 import ErrorPage from "./pages/ErrorPage";
+import Demo from "./pages/chat/Demo";
 
 import UsersPage from "./pages/User/UserPage";
 import TagsPage from "./pages/Tags/TagPage";
@@ -50,6 +51,7 @@ export default function App() {
 
         <Routes>
           <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/demo" element={<Demo />} />
           <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/" element={<LandingPage />} />
           <Route

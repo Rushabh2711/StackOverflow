@@ -19,7 +19,7 @@ export default function UserTopPosts() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/questions/` + id)
+      .get(`http://localhost:3001/user/posts/` + id)
       .then((res) => {
         setTopPosts(res.data);
         setPosts(res.data.sort((a, b) => b.votes - a.votes));
