@@ -21,6 +21,7 @@ class QuestionController {
         postType: "question",
         questionTags: tags,
         description: req.body.description,
+        shortdesc: req.body.shortdesc,
         addedAt: time.toISOString(),
         modifiedAt: time.toISOString(),
         status: req.body.description.includes('src="data:image/') ? "PENDING" : "APPROVED",

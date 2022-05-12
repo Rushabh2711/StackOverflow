@@ -136,6 +136,7 @@ class QuestionController {
         postType: "answer",
         parentId: data.questionId,
         description: data.description,
+        shortdesc: data.shortdesc,
         questionTags: data.questionTags,
         addedAt: time.toISOString(),
         modifiedAt: time.toISOString(),
