@@ -1,9 +1,7 @@
 import conn from "../../../db/config/mysql.config.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
-import Questions from "../../../db/models/mongo/question.js";
 import bcrypt from "bcrypt";
 import { v4 as uuidv4 } from "uuid";
-import Posts from "../../../db/models/mongo/posts.js";
 
 export class UserController {
   login = async (req, res) => {
@@ -113,6 +111,42 @@ export class UserController {
       res.status(400).send(err);
     }
   };
+
+  bookmarkQuestion = async (req, res) => {
+    const { userId , questionId} = req.body;
+    try {
+      const response = await UserDetails.findByIdAndUpdate(userId, {
+        $push: { bookmarkedQuestions: questionId },
+        }, {
+        upsert: true,
+        new: true
+        }
+      )
+      console.log("bookmark questions added",response)      
+      res.status(200).send("bookmark added");
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
+
+  removeBookmarkQuestion = async (req, res) => {
+    const { userId , questionId} = req.body;
+    try {
+
+      const response = await UserDetails.findByIdAndUpdate(userId, {
+          $pull: { bookmarkedQuestions:  questionId}
+      }, {
+        upsert: true,
+        new: true
+        });
+      console.log("bookmark questions removed",response)      
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
 }
 
 export default UserController;

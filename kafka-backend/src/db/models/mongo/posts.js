@@ -8,6 +8,8 @@ const postSchema = new Schema({
   parentId: { type: Schema.Types.ObjectId },
   description: { type: String, required: true },
   votes: { type: Number, default: 0 },
+  upvotes: { type: Number, default: 0 },
+  downvotes: { type: Number, default: 0 },
   views: { type: Number},
   numberOfAnswers: { type: Number},
   addedAt: { type: Date, required: true },

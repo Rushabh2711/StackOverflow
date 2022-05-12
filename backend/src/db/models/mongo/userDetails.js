@@ -31,7 +31,7 @@ const userDetailsSchema = new Schema({
       tagBased: { type: Boolean }
     }
   ],
-  bookmarkedQuestions: [{ type: Schema.Types.ObjectId, ref: "question" }],
+  bookmarkedQuestions: [{ type: Schema.Types.ObjectId, ref: "post" }],
   joiningDate: { type: Date, required: true },
   visitedTime: { type: Date, required: true },
   questionsAskedCount: { type: Number, default: 0 },

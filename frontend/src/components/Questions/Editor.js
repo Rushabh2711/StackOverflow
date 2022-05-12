@@ -5,7 +5,6 @@ import "react-quill/dist/quill.snow.css"; // ES6
 import "./index.css";
 import Editor from "react-quill/lib/toolbar";
 import axios from "axios";
-// import { TagsInput } from "react-tag-input-component";
 // import { selectUser } from "../../feature/userSlice";
 import { useHistory } from "react-router-dom";
 // import ChipsArray from "./TagsInput";
@@ -16,7 +15,6 @@ import ImageUploader from "quill-image-uploader";
 Quill.register("modules/imageUploader", ImageUploader);
 function QuillEditor(props) {
   const [body, setBody] = React.useState(props.body);
-  console.log("text2",body)
 
     useEffect(() => {
       setBody(props.body);
@@ -24,25 +22,26 @@ function QuillEditor(props) {
 
   // const user = useSelector(selectUser);
   var toolbarOptions = [
-    ["bold", "italic", "underline", "strike"], // toggled buttons
+    // ["bold", "italic", "underline", "strike"], // toggled buttons
+    ["bold", "italic"], // toggled buttons
     ["blockquote", "code-block"],
 
     [{ header: 1 }, { header: 2 }], // custom button values
     [{ list: "ordered" }, { list: "bullet" }],
-    [{ script: "sub" }, { script: "super" }], // superscript/subscript
+    // [{ script: "sub" }, { script: "super" }], // superscript/subscript
     [{ indent: "-1" }, { indent: "+1" }], // outdent/indent
-    [{ direction: "rtl" }], // text direction
+    // [{ direction: "rtl" }], // text direction
 
     [{ size: ["small", false, "large", "huge"] }], // custom dropdown
-    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    // [{ header: [1, 2, 3, 4, 5, 6, false] }],
 
-    [{ color: [] }, { background: [] }], // dropdown with defaults from theme
-    [{ font: [] }],
+    // [{ color: [] }, { background: [] }], // dropdown with defaults from theme
+    // [{ font: [] }],
     [{ align: [] }],
     ["link"],
     ["image"],
 
-    ["clean"], // remove formatting button
+    // ["clean"], // remove formatting button
   ];
   Editor.modules = {
     // syntax: false,
@@ -91,7 +90,6 @@ function QuillEditor(props) {
     "indent",
     "link",
     "image",
-    "video",
   ];
 
  
