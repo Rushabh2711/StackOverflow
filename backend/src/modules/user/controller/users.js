@@ -1,105 +1,97 @@
 import conn from "../../../db/config/mysql.config.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
+import User from "../../../db/models/sql/users.js"
 import bcrypt from "bcrypt";
-import { v4 as uuidv4 } from "uuid";
+import jwt from "jsonwebtoken";
+
 
 export class UserController {
   login = async (req, res) => {
     try {
-      console.log("Inside backend login", req.body);
-      let sql = "SELECT * FROM users WHERE emailId = ?";
-      const emailId = req.body.emailId;
-      const password = req.body.password;
+      const { emailId, password } = req.body;
+      const user = await User.findOne({ where: { emailId: emailId } });
+      console.log(user);
 
-      conn.query(sql, [emailId], function (err, result) {
-        if (err) throw err;
-        else if (result.length == 0) {
-          console.log("hii");
-          res.status(404).send({
-            message: "User not found",
-          });
-        } else {
-          if (bcrypt.compareSync(password, result[0].password)) {
-            res.status(200).send(result);
-          } else {
-            res.status(400).send({
-              message: "Invalid Credentials",
-            });
-          }
-        }
-      });
-    } catch (error) {
-      console.error(error);
+      if (user === null) {
+        return res.status(400).send({ errors: { email: { msg: `Email ${emailId} is not registered with us` } } }, null);
+      }
+      if (!bcrypt.compareSync(password, user.password)) {
+        return res.status(400).send({ errorMsg: "Incorrect password. Please try again!" });
+      }
+      
+      let response = {
+        emailId: emailId,
+        username: user.username,
+        accountType: user.accountType,
+        userId: user.userId
+      };
+      return res.status(200).send(response);
+      
     }
-  };
-
-  // signup = async (req, res) => {
-  //   try {
-  //     const { emailId, username, password, accountType } = req.body;
-  //     const hashpassword = await bcrypt.hash(password, 10);
-  //     console.log(emailId);
-  //     console.log(username);
-  //     console.log(password);
-  //     console.log(accountType);
-  //     let sql =
-  //       "INSERT INTO users (id, username, emailId, password, accountType) values ('" +
-  //       uuidv4() +
-  //       "','" +
-  //       username +
-  //       "','" +
-  //       emailId +
-  //       "','" +
-  //       hashpassword +
-  //       "','" +
-  //       accountType +
-  //       "')";
-  //     conn.query(
-  //       sql,
-
-  //       function (err, result) {
-  //         //   if (err) {
-  //         //     res.status(500);
-  //         //     console.log(err);
-  //         //     res.send("SQL error, Check log for more details");
-  //         //   }
-  //         //   else {
-  //         console.log("newuser");
-  //         const id = result.insertId;
-  //         const newuser = new UserDetails({
-  //           userId: id,
-  //           emailId: emailId,
-  //           username: username,
-  //           accountType: accountType,
-  //         });
-  //         console.log(newuser);
-  //         newuser.save();
-  //         res.status(200);
-  //         res.send({ message: "User Created" });
-  //         //   }
-  //       }
-  //     );
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+    catch (error) {
+        console.error(error);
+      }
+    }
+  
 
   signup = async (req, res) => {
-    console.log("Sign up");
-    let time = new Date();
-    try {
-      const newUser = new UserDetails({
-        username: req.body.username,
-        emailId: req.body.emailId,
-        joiningDate: time.toISOString(),
-        visitedTime: time.toISOString(),
-      });
-      const response = await newUser.save();
-      res.status(200).send(response);
-    } catch (err) {
-      console.error(err);
-      res.status(400).send(err);
-    }
-  };
+      const { emailId, username, password, accountType } = req.body;
+      const hashedPassword = await bcrypt.hash(password, 10);
+      let time = new Date();
+
+      const userObj = await User.findOne({where: { emailId: emailId}});
+     
+      console.log(userObj);
+      if (userObj !== null) {
+        return res.status(400).send({ errors: { email: { msg: `Email ${emailId} is already registered. Please login or use a different email` } } }, null);
+      }
+
+      const user = new UserDetails({
+            emailId: emailId,
+            username: username,
+            accountType: accountType,
+            joiningDate: time.toISOString(),
+            visitedTime: time.toISOString(),
+        });
+
+        // console.log(user._id.toISOString());
+
+        user.save().then(
+                () => {
+                  console.log(emailId),
+                  console.log(hashedPassword),
+                  console.log(username),
+                  console.log(accountType)
+                  // console.log(emailId),
+                  let userObject = {
+                    emailId: emailId,
+                    password: hashedPassword,
+                    username: username,
+                    accountType: accountType,
+                    userId: user._id.toString()
+                  };
+                  const newMember = new User(userObject).save();
+                
+                  const jwtPayload = { userObject };
+                  jwt.sign(jwtPayload, "virag02865490", (err, token) => {
+                    if (err) {
+                      console.error(err);
+                      res.status(500).send(err);
+                    }
+                    
+                    userObject.token = token;
+                    delete userObject.password;
+                    return res.status(200).send(userObject);
+                  });
+                }
+              ).catch(
+                      (error) => {
+                        res.status(500).json({
+                          error: error
+                        });
+                      }
+              );
+                    }
 
   getAllUsers = async (req, res) => {
     try {
