@@ -7,6 +7,7 @@ const questionController = new QuestionController();
 
 questionRouter.get("/checkHealth", questionController.checkHealth);
 questionRouter.post("/questions/ask", questionController.postQuestion);
+questionRouter.post("/questions/edit", questionController.editQuestion);
 questionRouter.get("/questions", questionController.fetchAllQuestions);
 questionRouter.post("/question/addView", questionController.addView);
 questionRouter.put("/votePost", questionController.votePost);

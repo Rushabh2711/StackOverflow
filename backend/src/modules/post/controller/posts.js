@@ -33,6 +33,31 @@ class QuestionController {
       res.status(400).send(err);
     }
   };
+  editQuestion = async (req, res) => {
+    console.log("Add post");
+    const {  postId,isAdmin } = req.body;
+    let time = new Date();
+    var status=(req.body.description.includes('src="data:image/') || isAdmin) ?  "APPROVED":"PENDING";
+    try {
+      const filter = { _id: postId };
+      const update ={ 
+        questionTags: req.body.tags,
+        description: req.body.description,
+        questionTitle: req.body.title,
+        modifiedAt: time.toISOString(),
+        status: status,
+      };
+
+       const response = await Posts.findOneAndUpdate(filter, update,{
+        upsert: true, new: true
+      });
+      //Trigger to update postId in tags
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
 
   addView = async (req, res) => {
     console.log("Inside question controller, about to make Kafka request");
