@@ -31,12 +31,12 @@ export default function TagCard({tags}){
             <div style={{display:'flex', justifyContent: 'space-between'}}>
 
                 <Typography variant="body2" sx={{fontWeight: 'bold', fontSize:12, color:'gray'}}>
-                {tags.posts.length} <br></br>Questions
+                {tags.posts.length} Questions
                 </Typography>
                 
                 <Typography variant="body2" sx={{fontWeight: 'bold', fontSize:12, color:'gray'}}>
-                {tags.Questions_asked_today} asked today,  
-                {tags.Questions_asked_this_week} this week 
+                {tags.posts.length} asked today,  <br/>
+                {tags.posts.length} this week 
                 </Typography>
 
             </div>
