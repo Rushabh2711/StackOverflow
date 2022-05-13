@@ -13,6 +13,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions";
 import { Navigate, useNavigate } from "react-router";
+import STRINGS from "../constant";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -57,19 +58,28 @@ export default function SignUp() {
       };
       console.log(data);
       axios
-        .post(`http://localhost:3001/user/signup`, data)
+        .post(STRINGS.url + `/user/signup`, data)
         .then((res) => {
           console.log("Status Code : ", res.status);
           if (res.data === "Email already in use") {
             setMessage("Email already in use");
           } else {
             console.log(res.data);
-            dispatch(login(res.data));
+            axios
+              .get(STRINGS.url + `/user/` + res.data.userId)
+              .then((res) => {
+                dispatch(login(res.data[0]));
+              })
+              .catch((err) => {
+                console.log(err);
+                navigate("/errorpage");
+              });
             navigate("/home");
           }
         })
-        .catch((err) => {
-          setMessage(err.res.data);
+        .catch((error) => {
+          console.log(error.response.data.errorMsg);
+          setMessage(error.response.data.errorMsg);
         });
     }
   };
@@ -155,7 +165,7 @@ export default function SignUp() {
     <Navigate to="/home" />
   ) : (
     <div className="signup-component">
-      <Toolbar/>
+      <Toolbar />
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
@@ -173,10 +183,8 @@ export default function SignUp() {
         <Grid item xs={3}>
           <Box sx={{ width: 350 }} align="right">
             <Card variant="outlined">{card}</Card>
-          </Box>
-          <div>
             <p>Already have an account?</p> <Link to={`/login`}>Log in</Link>
-          </div>
+          </Box>
         </Grid>
       </Grid>
     </div>

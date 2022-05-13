@@ -11,6 +11,7 @@ import UserTopPosts from "../components/UserProfile/UserTopPosts";
 import toppostsJson from "../dummydata/toppost.json";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router";
+import STRINGS from "../constant";
 
 export default function UserProfile() {
   const [user, setUser] = useState("");
@@ -20,7 +21,7 @@ export default function UserProfile() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url+`/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);

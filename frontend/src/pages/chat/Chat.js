@@ -3,76 +3,78 @@ import io from "socket.io-client";
 import { Grid, IconButton, TextField } from "@mui/material";
 import SendIcon from "@mui/icons-material/Send";
 import styled from "styled-components";
+import STRINGS from "../../constant";
 
-const socket = io('http://localhost:3001');
+const socket = io(STRINGS.url);
 
 export default function Chat(props) {
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState("");
 
-    const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState("");
+  socket.on("notify", (msg) => {
+    setMessages([...messages, ...msg]);
+    scrollToBottom();
+  });
 
-    socket.on("notify", (msg) => {
-        setMessages([...messages, ...msg]);
-        scrollToBottom();
+  // useEffect(() => {
+  //     setNewMessage("");
+  //   }, [messages]);
+
+  const scrollToBottom = () => {
+    const chat = document.getElementById("chat");
+    chat.scrollTop = chat.scrollHeight;
+  };
+
+  const handleSubmit = () => {
+    // Send the new message to the server.
+    socket.emit("message", {
+      text: newMessage,
+      //   id: selectedMessageId,
+      //   sender: memberId,
     });
 
-    // useEffect(() => {
-    //     setNewMessage("");
-    //   }, [messages]);
+    document.getElementById("outlined-basic").value = "";
+    // setNewMessage("");
+  };
 
-    const scrollToBottom = () => {
-        const chat = document.getElementById("chat");
-        chat.scrollTop = chat.scrollHeight;
-    };
-
-    const handleSubmit = () => {
-        // Send the new message to the server.
-        socket.emit("message", {
-          text: newMessage,
-        //   id: selectedMessageId,
-        //   sender: memberId,
-        });
-        
-        document.getElementById("outlined-basic").value = "";
-        // setNewMessage("");
-      };
-
-
-
-      return (
-        <ChatContainer>
-             <SelectedFeed>
-                <InputWrapper id="chat">
-                {messages.map((message) => (
-                    <MessageContainer>
-                    <Message>
-                        <div> {message.text}</div>
-                        <p>{message.createdAt}</p>
-                    </Message>
-                    </MessageContainer>
-                ))}
-                </InputWrapper>
-                <TextBox>
-                    <div style={{ gridColumn: 1 }}>
-                    {/* <CustomInput
+  return (
+    <ChatContainer>
+      <SelectedFeed>
+        <InputWrapper id="chat">
+          {messages.map((message) => (
+            <MessageContainer>
+              <Message>
+                <div> {message.text}</div>
+                <p>{message.createdAt}</p>
+              </Message>
+            </MessageContainer>
+          ))}
+        </InputWrapper>
+        <TextBox>
+          <div style={{ gridColumn: 1 }}>
+            {/* <CustomInput
                         value={newMessage}
                         onChange={(event) => setNewMessage(event.target.value)}
                         sx={{ width: "100%" }}
                     /> */}
-                    <TextField id="outlined-basic" label="Send Message" variant="outlined" onChange={(event) => setNewMessage(event.target.value)}
-                        sx={{ width: "100%" }} />
-                    </div>
-                    <div style={{ gridColumn: 2 }}>
-                    <IconButton color="primary" onClick={() => handleSubmit()}>
-                        <SendIcon />
-                    </IconButton>
-                    </div>
-                </TextBox>
-            </SelectedFeed>
-        </ChatContainer>
-      );
+            <TextField
+              id="outlined-basic"
+              label="Send Message"
+              variant="outlined"
+              onChange={(event) => setNewMessage(event.target.value)}
+              sx={{ width: "100%" }}
+            />
+          </div>
+          <div style={{ gridColumn: 2 }}>
+            <IconButton color="primary" onClick={() => handleSubmit()}>
+              <SendIcon />
+            </IconButton>
+          </div>
+        </TextBox>
+      </SelectedFeed>
+    </ChatContainer>
+  );
 }
-
 
 const ChatContainer = styled.div`
   display: grid;

@@ -8,6 +8,7 @@ import axios from "axios";
 import { useParams } from "react-router";
 import Moment from "react-moment";
 import { Link } from "react-router-dom";
+import STRINGS from "../../constant";
 
 export default function UserTopPosts(props) {
   const { id } = useParams();
@@ -22,7 +23,7 @@ export default function UserTopPosts(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/posts/` + id)
+      .get(STRINGS.url + `/user/posts/` + id)
       .then((res) => {
         setTopPosts(res.data);
         setPosts(res.data.sort((a, b) => b.votes - a.votes));
