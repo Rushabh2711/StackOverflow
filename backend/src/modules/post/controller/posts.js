@@ -414,12 +414,12 @@ class QuestionController {
   };
 
   markAnswerAsAccepted = async (req, res) => {
-    const {questionId, answerId} = req.body;
+    const {questionId, answerId, answerUserId} = req.body;
     
     try {
       let question = await Posts.findOneAndUpdate({_id : questionId}, 
           {
-            $set : {isAcceptedAnswerId : answerId, isAccepted : true }
+            $set : {isAcceptedAnswerId : answerId, isAccepted : true , isAcceptedUserId : answerUserId }
           },
           {new : true}
         );

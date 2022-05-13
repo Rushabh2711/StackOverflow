@@ -66,7 +66,7 @@ class QuestionController {
 
       let answers = await Posts.find({parentId : questionId});
 
-      // const userDetails = UserDetails.find({_id : data.userId});
+      const userDetailsQuestionPoster= UserDetails.find({_id : data.userId});
 
       // const votes = Votes.find({postId : questionId}).aggregate([
       //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
@@ -90,9 +90,11 @@ class QuestionController {
       {
         for(var answer of answers)
         {
-          const {questionTitle, postType, parentId, description, shortdesc, votes, 
+          let {questionTitle, postType, parentId, description, shortdesc, votes, 
                 views, numberOfAnswers,
                 addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
+          let userDetails = await UserDetails.findById({_id : userId});
+
           const obj = {
               questionTitle: questionTitle,
               postType: postType,
@@ -112,7 +114,11 @@ class QuestionController {
               isAccepted: isAccepted,
               userId: userId,
               comments: comments,
-              questionTags: questionTags
+              questionTags: questionTags,
+              username: userDetails.username,
+              profilePicture: userDetails.profilePicture,
+              badges: userDetails.badges,
+              reputation: userDetails.reputation,
           }
            answersModified.push(obj);
         }
@@ -137,11 +143,11 @@ class QuestionController {
         answers: questionDetails.answers,
         isAcceptedAnswerId: questionDetails.isAcceptedAnswerId,
         questionComments: questionDetails.questionComments,
-        // username: userDetails.username,
-        // profilePicture: userDetails.profilePicture,
-        // badges: userDetails.badges,
+        username: userDetailsQuestionPoster.username,
+        profilePicture: userDetailsQuestionPoster.profilePicture,
+        badges: userDetailsQuestionPoster.badges,
         userId: questionDetails.userId,
-        // reputation: userDetails.reputation,
+        reputation: userDetailsQuestionPoster.reputation,
         answers : answersModified
       };
       return this.responseGenerator(200, result);
