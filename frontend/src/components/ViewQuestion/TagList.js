@@ -29,7 +29,7 @@ export default function TagList(props) {
         to={"/questions/tagged/" + tag.name}
         style={{ textDecoration: "none", color: "#39739d" }}
       >
-        {tag}
+        {tag.name}
       </Link>
     </Box>
   );
