@@ -4,7 +4,7 @@ import io from "socket.io-client";
 import STRINGS from "../../constant";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-const socket = io("http://localhost:3001");
+const socket = io("http://54.183.182.209:3001");
 
 export default function Demo() {
   const { username } = useParams();
