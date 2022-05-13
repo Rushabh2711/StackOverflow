@@ -220,7 +220,7 @@ function MainQuestion() {
     <div className="main">
       <div className="main-container">
         <div className="main-top">
-          <h2 className="main-question">{questionData?.questionTitle} </h2>
+          <h2 className="main-question" style={{width:"700px"}}>{questionData?.questionTitle} </h2>
           <div>
             {isAdmin ? (
               <button onClick={approveQuestion} style={{ marginRight: "20px" }}>

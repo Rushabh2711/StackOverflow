@@ -270,6 +270,10 @@ class QuestionController {
       type: type,
       date: time.toISOString()
     }
+    var modifiedAt2 = {
+      type: "answered",
+      date: time.toISOString()
+    }
     try {
       const newPost = new Posts({
         questionTitle: data.questionTitle,
@@ -283,7 +287,7 @@ class QuestionController {
         userId: data.userId,
       });
       const response = await newPost.save();
-      const response2 = await Posts.findByIdAndUpdate(data.questionId,{$inc:{numberOfAnswers:1}});
+      const response2 = await Posts.findByIdAndUpdate(data.questionId,{$inc:{numberOfAnswers:1},modifiedAt:modifiedAt2});
        console.log(response2)
       return this.responseGenerator(200, response);
     } catch (err) {
