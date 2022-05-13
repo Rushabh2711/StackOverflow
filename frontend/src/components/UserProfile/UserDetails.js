@@ -99,7 +99,7 @@ export default function UserDetails(props) {
                   <LocationOnIcon />
                 </Typography>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={8}>
                 <Typography
                   color="text.secondary"
                   align="left"

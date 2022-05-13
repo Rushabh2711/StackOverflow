@@ -76,7 +76,7 @@ export default function UserActivityBadges() {
                     gutterBottom
                     align="left"
                   >
-                    You currently have no badges
+                    No badges earnt yet.
                   </Typography>
                 </ListItem>
               </List>

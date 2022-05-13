@@ -191,6 +191,7 @@ export default function UserActivityReputation() {
       (app) => _.groupBy(app, (i) => i.questionId)
     );
 
+    console.log("here");
     console.log(groupedDatesThatMatch);
 
     const getObjects = (o, parent) =>

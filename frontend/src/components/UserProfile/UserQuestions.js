@@ -10,6 +10,7 @@ import axios from "axios";
 import Moment from "react-moment";
 import TagList from "../ViewQuestion/TagList";
 import TagsList from "../Cards/TagsList";
+import { Link } from "react-router-dom";
 
 export default function UserQuestions(props) {
   const { id } = useParams();
@@ -44,7 +45,7 @@ export default function UserQuestions(props) {
               gutterBottom
               align="left"
             >
-              You currently have asked no questions
+              No questions asked.
             </Typography>
           </ListItem>
         </List>
@@ -100,7 +101,12 @@ export default function UserQuestions(props) {
                             )}
                             &nbsp;{question.views} views
                           </div>
-                          <div>{question.questionTitle}</div>
+                          <Link
+                            to={"/view/" + question._id}
+                            style={{ textDecoration: "none" }}
+                          >
+                            {question.questionTitle}
+                          </Link>
                           <div>
                             <Grid container spacing={2}>
                               <Grid item xs={9}>
