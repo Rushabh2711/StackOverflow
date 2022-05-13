@@ -433,12 +433,14 @@ class QuestionController {
     let results = [];
     try {
       const activities = await PostActivities.find({_id : postId}, {postId : 0});
-
       activities.map(async (activity) => {
+        let userId = activity.userId;
+        let username = await UserDetails.findById({_id : userId});
+        activity.username = username;
         results.push(activity);
-      });
-
-      console.log("user activity", results);
+      })
+     
+      console.log("post activity", results);
       res.status(200).send(results);
     } catch (err) {
       console.error(err);

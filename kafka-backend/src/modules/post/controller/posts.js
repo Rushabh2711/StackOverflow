@@ -66,8 +66,8 @@ class QuestionController {
 
       const userDetails = UserDetails.find({_id : data.userId});
 
-      const questionVotes = Votes.find({_id : questionId})
-
+      const questionVotes = Votes.find({_id : questionId});
+      
       const result = {
         questionId: questionDetails._id,
         questionTitle: questionDetails.questionTitle,
