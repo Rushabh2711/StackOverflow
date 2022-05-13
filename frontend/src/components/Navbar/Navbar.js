@@ -168,20 +168,7 @@ export default function Navbar(props) {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const setLogout = () => {
-    let time = new Date();
-    const data = {
-      _id: user._id,
-      visitedTime: time.toISOString(),
-    };
-    axios
-      .put(STRINGS.url + "/user/updatevisitedtime", data)
-      .then((res) => {
-        console.log(res.data);
-        dispatch(logout());
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(logout());
   };
 
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
