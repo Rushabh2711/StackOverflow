@@ -19,6 +19,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const loggedInUser = useSelector((state) => state.LoggedInUser);
+  // const loggedInUser = useSelector((state) => state.LoggedInUser);
 
   const dispatch = useDispatch();
   let navigate = useNavigate();
@@ -117,10 +118,14 @@ export default function Login() {
   );
 
   return loggedInUser !== 0 ? (
-    <Navigate to="/home" />
+    loggedInUser.accountType === "admin" ? (
+      <Navigate to="/adminHome" />
+    ) : (
+      <Navigate to="/home" />
+    )
   ) : (
     <div className="login-component">
-      <Toolbar/>
+      <Toolbar />
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
