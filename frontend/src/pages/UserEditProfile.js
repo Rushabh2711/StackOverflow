@@ -69,7 +69,7 @@ export default function UserEditProfile() {
   };
 
   useEffect(() => {
-    console.log(loggedInUser.userId);
+    console.log(loggedInUser._id);
     axios
       .get(STRINGS.url + `/user/` + id)
       .then((res) => {

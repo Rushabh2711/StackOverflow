@@ -81,7 +81,7 @@ export default function UserTopTags(props) {
                           }}
                         >
                           <Link
-                            to={"/questions/tagged/" + tag.name}
+                            to={"/question/tagged/" + tag.name}
                             style={{ textDecoration: "none", color: "#757575" }}
                           >
                             {tag.name}

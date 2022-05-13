@@ -20,8 +20,8 @@ const userDetailsSchema = new Schema({
     {
       tagId: { type: Schema.Types.ObjectId },
       name: { type: String },
-      score: { type: Number },
-      posts: { type: Number },
+      score: { type: Number, default: 0 },
+      posts: { type: Number , default: 0},
     },
   ],
   badges: [

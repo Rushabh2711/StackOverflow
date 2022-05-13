@@ -45,7 +45,7 @@ function Edit() {
   useEffect(() => {
     var body = {
       questionId: id,
-      userId: LoggedInUser?.userId ? LoggedInUser.userId : "",
+      userId: LoggedInUser?._id ? LoggedInUser._id : "",
     };
     axios
       .post(STRINGS.url + `/fetch/questions`, body)
@@ -87,7 +87,7 @@ function Edit() {
         shortdesc: shortDesc.replace(/\s/g, " "),
         type: "modified",
         isAdmin: false,
-        userId: LoggedInUser?.userId, //localStorage.getItem('userId')
+        userId: LoggedInUser?._id, //localStorage.getItem('userId')
         username: LoggedInUser.username, //localStorage.getItem('username')
         // user: user,
       };
@@ -96,7 +96,7 @@ function Edit() {
         .then((res) => {
           console.log(res.data);
           alert("Question updated successfully");
-          history(`question/view/${id}`);
+          history(`/question/view/${id}`);
         })
         .catch((err) => {
           console.log(err);

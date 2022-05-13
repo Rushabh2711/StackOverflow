@@ -49,7 +49,7 @@ export default function QusPerDay() {
           gutterBottom
           align="left"
         >
-          Number of questions posted per day
+         <b> Number of questions posted per day </b>
         </Typography>
       <BarChart width={730} height={250} data={graphdata}>
         <CartesianGrid strokeDasharray="3 3" />

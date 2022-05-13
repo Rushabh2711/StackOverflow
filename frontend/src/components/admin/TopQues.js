@@ -29,7 +29,7 @@ export default function TopQues(props) {
 
   return (
     <div>
-      <p>Top 10 most viewed questions.</p>
+      <b>Top 10 most viewed questions.</b>
       {questions === "" || questions.length === 0 ? (
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           <ListItem
@@ -61,7 +61,7 @@ export default function TopQues(props) {
                       primary={
                         <div>
                           <div>&nbsp;{question.views} views</div>
-                          <Link to={"/view/" + question._id}>
+                          <Link to={"/question/view/" + question._id}>
                             {question.questionTitle}
                           </Link>
                           <div></div>

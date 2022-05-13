@@ -54,8 +54,12 @@ export default function Login() {
           console.log("Status Code : ", response.status);
           console.log(response.data);
           dispatch(login(response.data));
-          navigate("/home");
-          console.log(response.data);
+          console.log(response.data.accountType);
+          if (response.data.accountType === "admin") {
+            navigate("/adminHome");
+          } else {
+            navigate("/home");
+          }
         })
         .catch((error) => {
           console.log(error.response.data.errorMsg);

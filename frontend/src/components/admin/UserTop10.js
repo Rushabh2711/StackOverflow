@@ -20,8 +20,9 @@ export const UserTop10 = () => {
 
   return (
     <div>
-      <p>Top 10 users with highest reputation</p>
       <br />
+      <b>Top 10 users with highest reputation</b>
+      <br /><br/><br/>
 
       <Grid container spacing={3} flexGrow={1}>
         {users
@@ -33,8 +34,9 @@ export const UserTop10 = () => {
             </Grid>
           ))}
       </Grid>
-      <p>Top 10 users with lowest reputation</p>
       <br />
+      <b><p>Top 10 users with lowest reputation</p></b>
+      <br /><br/><br/>
 
       <Grid container spacing={3} flexGrow={1}>
         {users
