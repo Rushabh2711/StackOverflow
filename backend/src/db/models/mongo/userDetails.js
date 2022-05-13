@@ -13,8 +13,8 @@ const userDetailsSchema = new Schema({
   accountType: { type: String, required: true },
   reputation: { type: Number, default: 1 },
   location: {
-    city: { type: String },
-    country: { type: String },
+    city: { type: String, default: "" },
+    country: { type: String, default: "" },
   },
   tags: [
     {

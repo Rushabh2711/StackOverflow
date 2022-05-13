@@ -1,39 +1,46 @@
 import { Grid, Typography } from '@mui/material';
 import React, {useState, useEffect} from 'react';
 import { BarChart, Bar, Tooltip, Legend, XAxis, YAxis, CartesianGrid } from "recharts";
-
-const data = [
-  {
-    name: "21 April",
-    questions: 2400,
-  },
-  {
-    name: "22 April",
-    questions: 1398,
-  },
-  {
-    name: "23 April",
-    questions: 9800,
-  },
-  {
-    name: "24 April",
-    questions: 3908,
-  },
-  {
-    name: "25 April",
-    questions: 4800,
-  },
-  {
-    name: "26 April",
-    questions: 3800,
-  },
-  {
-    name: "27 April",
-    questions: 4300,
-  },
-];
+import STRING from "../../constant";
+import axios from 'axios';
 
 export default function QusPerDay() {
+
+  const [graphdata,setGraphdata] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(STRING.url + "/getQuestions")
+      .then((res) => {
+        // console.log(res.data);
+        calData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  const calData = (questions) => {
+    var data = [];
+    for(var i = 6; i >= 0; i--) {
+      var date = new Date(Date.now() - i * 24 * 60 * 60 * 1000)  
+      var count = 0;
+      // console.log(date);
+
+      questions.forEach(q => {
+          if(new Date(q.addedAt).getDate() === date.getDate()) {
+            count++;
+          }
+      });
+      data.push({
+        name: date.getMonth() +"/"+ date.getDate(),
+        questions: count
+      })
+    }
+    setGraphdata(data)
+    console.log(data);
+  }
+  
   return (
     <Grid container spacing={1}>
         <Typography
@@ -44,7 +51,7 @@ export default function QusPerDay() {
         >
           Number of questions posted per day
         </Typography>
-      <BarChart width={730} height={250} data={data}>
+      <BarChart width={730} height={250} data={graphdata}>
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis dataKey="name" />
         <YAxis />

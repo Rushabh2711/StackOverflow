@@ -3,6 +3,10 @@ import UserTopTags from '../../components/UserProfile/UserTopTags';
 import QusPerDay from '../../components/admin/QuePerDay';
 import PopularTag from '../../components/admin/PopularTag';
 import { Container } from '@mui/material';
+import Toolbar from "@mui/material/Toolbar";
+import TopQues from '../../components/admin/TopQues';
+import UserTop10 from '../../components/admin/UserTop10';
+import SidebarAdmin from '../../components/admin/SidebarAdmin';
 
 export default function AdminDashboard() {
 
@@ -10,10 +14,12 @@ export default function AdminDashboard() {
 
   return (
     <div>
+    <Toolbar/>
     <Container maxWidth="md">
         <QusPerDay/>
-        {/* <UserTopTags/> */}
         <PopularTag/>
+        <TopQues/>
+        <UserTop10/>
     </Container>
     </div>
   );

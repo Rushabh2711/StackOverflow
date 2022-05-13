@@ -33,8 +33,7 @@ export default function UserAbout(props) {
                   gutterBottom
                   align="left"
                 >
-                  Your about me section is currently blank. Would you like to
-                  add one? Edit profile
+                  {user.username}'s' about me section is currently blank.
                 </Typography>
               </ListItem>
             </List>

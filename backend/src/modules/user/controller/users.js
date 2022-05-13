@@ -27,12 +27,14 @@ export class UserController {
           .send({ errorMsg: "Incorrect password. Please try again!" });
       }
 
-      let response = {
-        emailId: emailId,
-        username: user.username,
-        accountType: user.accountType,
-        userId: user.userId,
-      };
+      try {
+        const response = await UserDetails.findOne({ emailId: emailId });
+        res.status(200).send(response);
+      } catch (err) {
+        console.error(err);
+        res.status(400).send(err);
+      }
+      let response = response;
       return res.status(200).send(response);
     } catch (error) {
       console.error(error);
@@ -109,7 +111,7 @@ export class UserController {
   getAllUsers = async (req, res) => {
     try {
       const response = await UserDetails.find({});
-      console.log(response)
+      console.log(response);
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
@@ -121,6 +123,23 @@ export class UserController {
     const { userId } = req.params;
     try {
       const response = await UserDetails.find({ _id: userId });
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+
+  editUser = async (req, res) => {
+    const { _id, about, city, country } = req.body;
+    const data = { city: city, country: country };
+    console.log(data);
+    try {
+      const response = await UserDetails.findByIdAndUpdate(_id, {
+        location: data,
+        about: about,
+      });
+      console.log("user profile updated", response);
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
