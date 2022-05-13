@@ -140,9 +140,10 @@ export class UserController {
 
   updatelastVisitedTime = async (req, res) => {
     const { _id, visitedTime } = req.body;
+    let time = new Date();
     try {
       const response = await UserDetails.findByIdAndUpdate(_id, {
-        visitedTime: visitedTime,
+        visitedTime: time.toISOString(),
       });
       console.log("last visited time updated", response);
       res.status(200).send(response);

@@ -414,7 +414,7 @@ export default function UserTopPosts(props) {
                           gutterBottom
                         >
                           <Link
-                            to={"/view/" + post._id}
+                            to={"/question/view/" + post._id}
                             style={{ textDecoration: "none" }}
                           >
                             {post.questionTitle}

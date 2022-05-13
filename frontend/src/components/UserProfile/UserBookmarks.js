@@ -79,7 +79,7 @@ export default function UserBookmarks(props) {
                             {question.votes} votes{" "}
                           </div>
                           <Link
-                            to={"/view/" + question._id}
+                            to={"/question/view/" + question._id}
                             style={{ textDecoration: "none" }}
                           >
                             {question.questionTitle}

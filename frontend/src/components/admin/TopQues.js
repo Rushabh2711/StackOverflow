@@ -61,7 +61,7 @@ export default function TopQues(props) {
                       primary={
                         <div>
                           <div>&nbsp;{question.views} views</div>
-                          <Link to={"/view/" + question._id}>
+                          <Link to={"/question/view/" + question._id}>
                             {question.questionTitle}
                           </Link>
                           <div></div>
