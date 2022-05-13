@@ -206,6 +206,7 @@ function MainQuestion() {
         .then((res) => {
           console.log(res.data);
           alert("Question approved");
+          history("/adminHome");
         })
         .catch((err) => {
           console.log(err);
