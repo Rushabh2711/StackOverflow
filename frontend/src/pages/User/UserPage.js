@@ -18,89 +18,100 @@ const theme = createTheme({
 
 export const UserPage = () => {
 
-    const dummyUsers = [
-        {
-          "userId": 1001,
-          "userName": "Rushabh",
-          "tagName": "python",
-          "score": 25,
-          "posts": 366,
-          "location": "Warsaw, Poland",
-          "reputation": 568 
-        },
-        {
-          "userId": 1002,
-          "userName": "Amika",
-          "tagName": "pandas",
-          "score": 12,
-          "posts": 366,
-          "location": "Warsaw, Poland",
-          "reputation": 568 
-        },
-        {
-          "userId": 1003,
-          "userName": "Harsh",
-          "tagName": "dataframe",
-          "score": 433,
-          "posts": 2313,
-          "location": "Warsaw, Poland",
-          "reputation": 568 
-        },
-        {
-          "userId": 1004,
-          "userName": "Harsha",
-          "tagName": "numpy",
-          "score": 12,
-          "posts": 4,
-          "location": "Warsaw, Poland",
-          "reputation": 568 
-        },
-        {
-          "userId": 1005,
-          "userName": "Harshal",
-          "tagName": "list",
-          "score": 12,
-          "posts": 431,
-          "location": "Warsaw, Poland",
-          "reputation": 568 
-        },
-        {
-          "userId": 1006,
-          "userName": "Harshil",
-          "tagName": "python-3.x",
-          "score": 543,
-          "posts": 1222,
-          "location": "Warsaw, Poland",
-          "reputation": 568 
-        },
-        {
-          "userId": 1009,
-          "userName": "Harshavardhan",
-          "tagName": "java",
-          "score": 543,
-          "posts": 366,
-          "location": "Warsaw, Poland",
-          "reputation": 568 
-        },
-        {
-          "userId": 1007,
-          "userName": "Harshadsfesfsedf",
-          "tagName": "javascript",
-          "score": 25,
-          "posts": 366,
-          "location": "Warsaw, Poland",
-          "reputation": 569 
-        }
-      ]
-    const [users, setUsers] = useState(dummyUsers)
+    // const dummyUsers = [
+    //     {
+    //       "userId": 1001,
+    //       "userName": "Rushabh",
+    //       "tagName": "python",
+    //       "score": 25,
+    //       "posts": 366,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 568 
+    //     },
+    //     {
+    //       "userId": 1002,
+    //       "userName": "Amika",
+    //       "tagName": "pandas",
+    //       "score": 12,
+    //       "posts": 366,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 568 
+    //     },
+    //     {
+    //       "userId": 1003,
+    //       "userName": "Harsh",
+    //       "tagName": "dataframe",
+    //       "score": 433,
+    //       "posts": 2313,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 568 
+    //     },
+    //     {
+    //       "userId": 1004,
+    //       "userName": "Harsha",
+    //       "tagName": "numpy",
+    //       "score": 12,
+    //       "posts": 4,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 568 
+    //     },
+    //     {
+    //       "userId": 1005,
+    //       "userName": "Harshal",
+    //       "tagName": "list",
+    //       "score": 12,
+    //       "posts": 431,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 568 
+    //     },
+    //     {
+    //       "userId": 1006,
+    //       "userName": "Harshil",
+    //       "tagName": "python-3.x",
+    //       "score": 543,
+    //       "posts": 1222,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 568 
+    //     },
+    //     {
+    //       "userId": 1009,
+    //       "userName": "Harshavardhan",
+    //       "tagName": "java",
+    //       "score": 543,
+    //       "posts": 366,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 568 
+    //     },
+    //     {
+    //       "userId": 1007,
+    //       "userName": "Harshadsfesfsedf",
+    //       "tagName": "javascript",
+    //       "score": 25,
+    //       "posts": 366,
+    //       "location": "Warsaw, Poland",
+    //       "reputation": 569 
+    //     }
+    //   ]
+    // const [users, setUsers] = useState(dummyUsers)
+    const [users, setUsers] = useState([])
     const [searchText, setSearchText] = useState('') 
     const [popular, setPopular] = useState('')
     
-    useEffect(() =>{
-        // fetch('http://localhost:8000/tags')
-        //   .then(res => res.json())
-        //   .then(data=> setUsers(data))
-        }, [])
+    // useEffect(() =>{
+    //     // fetch('http://localhost:8000/tags')
+    //     //   .then(res => res.json())
+    //     //   .then(data=> setUsers(data))
+    //     }, [])
+
+        useEffect(() =>{
+          fetch('http://localhost:3001/users')
+            .then(res => res.json())
+            .then(data=>{ setUsers(data)
+              console.log("data",data)
+            }).catch((err)=>{
+              console.log("data",err)
+            })
+          }, [])
     const Search = styled('div')(({ theme }) => ({
         position: 'relative',
         display: 'inline-block',

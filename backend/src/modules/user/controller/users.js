@@ -109,6 +109,7 @@ export class UserController {
   getAllUsers = async (req, res) => {
     try {
       const response = await UserDetails.find({});
+      console.log(response)
       res.status(200).send(response);
     } catch (err) {
       console.error(err);

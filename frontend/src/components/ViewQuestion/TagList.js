@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function TagList(props) {
   const [tag, setTag] = React.useState(props.tag);
+  console.log("Tag"+tag);
   useEffect(() => {
     setTag(props.tag);
   }, [props.tag]);
