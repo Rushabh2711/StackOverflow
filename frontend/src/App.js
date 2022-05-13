@@ -34,6 +34,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/Navbar/Navbar";
+import Activity from "./components/Activity/activity";
 import Add from "./pages/AddQuestion";
 import Edit from "./pages/EditQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
@@ -78,7 +79,7 @@ export default function App() {
             path="/signup"
             element={<Layout page={<SignUp />} sidebarTabValue={4} />}
           />
-  <Route
+          <Route
             path="/questions/tagged/:tagName"
             element={<Layout page={<SearchTag />} sidebarTabValue={2} />}
           />
@@ -128,7 +129,10 @@ export default function App() {
             path="/view/:id"
             element={<Layout page={<MainQuestion />} sidebarTabValue={0} />}
           />
-
+          <Route
+            path="/activity/:id"
+            element={<Layout page={<Activity />} sidebarTabValue={2} />}
+          />
           <Route path="/errorpage" element={<Layout page={<ErrorPage />} />} />
         </Routes>
       </Box>

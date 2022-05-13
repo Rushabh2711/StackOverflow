@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 // import ChipsArray from "./TagsInput";
 import ImageUploader from "quill-image-uploader";
 import Navbar from "../components/Navbar/Navbar";
+import { useSelector } from "react-redux";
 //import ImageResize from "quill-image-resize-module-react";
 
 // #2 register module
@@ -24,6 +25,7 @@ function Ask() {
   const [tag, setTag] = useState([]);
   const [tagList, setTagList] = useState([]);
   const history = useNavigate();
+  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
 
   const handleQuill = (value) => {
     setBody(value);
@@ -48,21 +50,12 @@ function Ask() {
     console.log("body",body)
     console.log("body",shortDesc)
     console.log("tag",tag)
-    // if(body){
-    //   var str2 = body.slice(body.indexOf("<img"),body.indexOf('"></p>')) 
-    //   console.log(str2)
-    //     var str3 = body.replaceAll(str2, "");
-    //       str3 = str3.replaceAll('<p>', "");
-    //       str3 = str3.replaceAll("</p>", "");
-    //       str3 = str3.replaceAll("<br>", "");
-    //       str3 = str3.replaceAll("<strong>", "");
-    //       str3 = str3.replaceAll('<pre class="ql-syntax" spellcheck="false">', "");
-    //      str3 = str3.replaceAll('</pre>', "");
-    //      //str3 = str3.slice(body.indexOf("<img"),body.indexOf('"></p>')) 
-
-    //     console.log("staring 3",str3)
-    // }
-      if (title !== "" && body !== "") {
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+      if (title !== "" && body !== "" && tag?.length>0) {
         const bodyJSON = {
           title: title,
           description: body,
@@ -84,6 +77,17 @@ function Ask() {
             console.log(err);
           });
       }
+      else if(title===""){
+         alert("title is required")
+      }
+      else if(body===""){
+        alert("description is required")
+     }
+      else if(tag?.length>0){
+      alert("tag is required")
+   }
+
+    }
   };
  
 

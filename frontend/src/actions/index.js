@@ -5,8 +5,16 @@ export const login = (user) => {
   };
 };
 
+export const bestAnswerUpdated = (flag) => {
+  return {
+    type: "BEST_ANSWER_UPDATED",
+    payload:flag
+  };
+};
+
 export const logout = () => {
   return {
-    type: "LOGOUT",
+    type: "LOGOUT"
+ 
   };
 };

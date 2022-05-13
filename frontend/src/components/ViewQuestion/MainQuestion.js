@@ -2,7 +2,10 @@ import { Avatar } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 // import Editor from "react-quill/lib/toolbar";
+import { bestAnswerUpdated } from "../../actions/index";
 import axios from "axios";
+import { useNavigate } from "react-router";
+
 // import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
 import "./index.css";
@@ -17,22 +20,24 @@ import 'react-quill/dist/quill.snow.css'
 import 'react-quill/dist/quill.bubble.css'
 import Answer from "./AnswerSection";
 import Question from "./QuestionSection";
+import { useDispatch, useSelector } from "react-redux";
 
 
 function MainQuestion() {
   //let search = window.location.search;
   //const params = new URLSearchParams(search);
  // const id = "627456028ee4459e04591bb0"//params.get("q");
+ const dispatch=useDispatch();
   const { id } = useParams();
   const [isSameUser, SetisSameUser] = useState(false);// this will use for indentify to user has permission to check accepted answer or not
   const [questionData, setQuestionData] = useState("");
   const [answer, setAnswer] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [allAnswers, setAllAnswers] = useState([]);
-  // const [show, setShow] = useState("");
-  // const [comment, setComment] = useState("");
-  // const [comments, setComments] = useState([]);
-  const user = ""//useSelector(selectUser);
+  const bestAnswerUpdated1=useSelector((state)=>state.bestAnswerUpdated)
+  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
+  const LoggedInUser=useSelector((state)=>state.LoggedInUser)
+  const history = useNavigate();
 
   const handleQuill = (value) => {
     setAnswer(value);
@@ -45,29 +50,37 @@ function MainQuestion() {
             console.log(res.data.response); 
             setQuestionData(res.data.response)
            setAllAnswers(res.data.response.answers)
-           var str2 = res.data.response.description.slice(res.data.response.description.indexOf("<img"),res.data.response.description.indexOf('">')) 
-           console.log(str2)
-     
-             var str3 = res.data.response.description.replace(str2, "");
-             //  str3 = str3.replace("<p>", "");
-             //  str3 = str3.replace("</p>", "");
-             //  str3 = str3.replace("<br>", "");
-             //  str3 = str3.replace("<strong>", "");
-             //  str3 = str3.replace('<pre class="ql-syntax">', "");
-             //  str3 = str3.replace('</pre>', "");
-             console.log("output",str3)
+           if(res.data.response.userId===LoggedInUser.userId){
+            SetisSameUser(true)
+          }
           })
            .catch((err) => console.log(err));
-    console.log("data",questionData)
+    // console.log("data",questionData)
     //Change this code for Owner of the question
-    if(questionData.userId===localStorage.getItem("userId")){
-      SetisSameUser(true)
-    }
-    SetisSameUser(true)
 
+    console.log(LoggedInUser.userId); 
+    console.log(questionData.userId); 
+
+    console.log(questionData.userId===LoggedInUser.userId)
+    
+   // SetisSameUser(true)
+   
   }, [id]);
 
-
+  useEffect(() => {
+    console.log("inside dispatch")
+    axios
+     .get(`http://localhost:3001/questions/${id}`)
+     .then((res) => {
+      console.log(res.data.response); 
+    //  setQuestionData(res.data.response)
+       setAllAnswers(res.data.response.answers)
+       dispatch(bestAnswerUpdated(false))
+    
+    })
+     .catch((err) => console.log(err));
+    // console.log("data",questionData)
+  }, [bestAnswerUpdated1]);
   // useEffect(() => {
   //   async function getFunctionDetails() {
   //     await axios
@@ -113,6 +126,11 @@ function MainQuestion() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("body",answer)
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
       if (answer !== "") {
         const bodyJSON = {
           description: answer,
@@ -121,8 +139,8 @@ function MainQuestion() {
           questionTags:questionData.tags,
           shortdesc: shortDesc.replace(/\s/g,' '),
           type: "answered",
-          userId:"62763e62bfe0a2faeddf0270",//localStorage.getItem('userId')
-          username:"harsha"//localStorage.getItem('username')
+          userId:LoggedInUser.userId,//localStorage.getItem('userId')
+          username:LoggedInUser.username//localStorage.getItem('username')
         };
         await axios
           .put("http://localhost:3001/question/postAnswer", bodyJSON)
@@ -142,6 +160,8 @@ function MainQuestion() {
       else{
         alert("Please insert answer first!!!")
       }
+    }
+     
   };
  
 
@@ -194,7 +214,7 @@ function MainQuestion() {
             {questionData && allAnswers? questionData.answers.length +" Answers":""} 
           </p>
           { questionData?.answers &&  allAnswers.map((_q) => (
-            <Answer answer={_q} question_id={questionData.questionId} question_author={true} isAcceptedAnswerId={questionData.isAcceptedAnswerId}/>
+            <Answer answer={_q} question_id={questionData.questionId} question_author={isSameUser} isAcceptedAnswerId={questionData.isAcceptedAnswerId}/>
           
           ))}
         </div>

@@ -131,6 +131,7 @@ class QuestionController {
         comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
+        isAcceptedAnswerId: questionDetails.isAcceptedAnswerId,
         questionComments: questionDetails.questionComments,
         username: userDetails.username,
         profilePicture: userDetails.profilePicture,
