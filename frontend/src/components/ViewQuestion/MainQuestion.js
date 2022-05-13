@@ -31,6 +31,7 @@ function MainQuestion() {
   const { id } = useParams();
   const [isSameUser, SetisSameUser] = useState(false);// this will use for indentify to user has permission to check accepted answer or not
   const [questionData, setQuestionData] = useState("");
+  const [isAcceptedAnswerId, setisAcceptedAnswerId] = useState(questionData.isAcceptedAnswerId);
   const [answer, setAnswer] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [allAnswers, setAllAnswers] = useState([]);
@@ -65,11 +66,6 @@ function MainQuestion() {
       .catch((err) => console.log(err));
     // console.log("data",questionData)
     //Change this code for Owner of the question
-
-    console.log(LoggedInUser.userId);
-    console.log(questionData.userId);
-
-    console.log(questionData.userId === LoggedInUser.userId)
 
     // SetisSameUser(true)
     if (LoggedInUser?.accountType === "admin") {
@@ -145,12 +141,15 @@ function MainQuestion() {
     // });
   }, []);
 
+   useEffect(() => {
+    setisAcceptedAnswerId(questionData.isAcceptedAnswerId)
+   
+   }, [allAnswers]);
 
-  async function getUpdatedAnswer() {
-    await axios
-      .get(`/api/question/${id}`)
-      .then((res) => setQuestionData(res.data[0]))
-      .catch((err) => console.log(err));
+   function acceptedAnswers(value) {
+     console.log("inside")
+     setisAcceptedAnswerId(value)
+   //setAllAnswers(allAnswers)
   }
 
   // console.log(questionData);
@@ -179,7 +178,7 @@ function MainQuestion() {
             console.log(res.data.response);
             setAnswer("")
             var response = res.data.response
-            var res1={...response,username:"virag"}
+            var res1={...response,username:LoggedInUser?.username,profilePicture:""}
             allAnswers.push(res1)
             //setAllAnswers(allAnswers.push(res.data.response))
             alert("Answer added successfully");
@@ -269,7 +268,7 @@ function MainQuestion() {
             {questionData && allAnswers ? questionData.answers.length + " Answers" : ""}
           </p>
           {questionData?.answers && allAnswers.map((_q) => (
-            <Answer answer={_q} question_id={questionData.questionId} question_author={isSameUser} isAcceptedAnswerId={questionData.isAcceptedAnswerId} />
+            <Answer answer={_q} question_id={questionData.questionId} question_author={isSameUser} isAcceptedAnswerId={isAcceptedAnswerId} OnAcceptedAnswers={acceptedAnswers}/>
 
           ))}
         </div>

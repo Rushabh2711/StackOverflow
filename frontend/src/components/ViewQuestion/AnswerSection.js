@@ -54,17 +54,18 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
   //     setdownvoteFlag(answer.downvoteFlag) 
   // }, [answer]);
  
-  // useEffect(() => {
-  //   console.log("answer2222",isAcceptedAnswerId)
-  //  if(isAcceptedAnswerId===answer._id){
-  //   SetisAcceptedAnswer(true)
-  //  }
-  // }, [ props.isAcceptedAnswerId]);
+   useEffect(() => {
+     if(isAcceptedAnswerId===answer._id){
+       SetisAcceptedAnswer(true)
+      }
+      console.log("answer2222",isAcceptedAnswerId)
+   }, [ isAcceptedAnswerId]);
 
   useEffect(() => {
     setupvoteFlag(answer.upvoteFlag)   
     setdownvoteFlag(answer.downvoteFlag)   
-  }, [props.question])
+    setisAcceptedAnswerId(props.isAcceptedAnswerId)
+  }, [props.question,props.isAcceptedAnswerId],)
 
   const votePost = async (e) => {
     const body = {
@@ -105,7 +106,7 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
         questionId: question_id,
         postType:!isAcceptedAnswer?"Accepted":"Removed"
       }
-      if(isLoggedIn){
+      if(!isLoggedIn){
         console.log("insidde login")
         history("/login");
       }
@@ -116,7 +117,8 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
             dispatch(bestAnswerUpdated(true))
             SetisAcceptedAnswer(true)
             setisAcceptedAnswerId(answer._id)
-            
+            props.OnAcceptedAnswers(answer._id)
+            window.location.reload()
           }
           else{
             SetisAcceptedAnswer(false)
