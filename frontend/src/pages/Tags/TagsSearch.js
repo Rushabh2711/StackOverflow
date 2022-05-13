@@ -38,7 +38,7 @@ export default function TagsSearch(props){
          <Grid container spacing={3} flexGrow={1}> 
       {
         filteredData.map(tags =>(
-          <Grid item key ={tags.id} xs={3} md={3}>
+          <Grid item key ={tags._id} xs={3} md={3}>
           {/* <Paper>
             {tags.name}
           </Paper> */}

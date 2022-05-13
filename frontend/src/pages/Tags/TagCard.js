@@ -31,7 +31,7 @@ export default function TagCard({tags}){
             <div style={{display:'flex', justifyContent: 'space-between'}}>
 
                 <Typography variant="body2" sx={{fontWeight: 'bold', fontSize:12, color:'gray'}}>
-                {tags.Total_questions_asked} <br></br>Questions
+                {tags.posts.length} <br></br>Questions
                 </Typography>
                 
                 <Typography variant="body2" sx={{fontWeight: 'bold', fontSize:12, color:'gray'}}>

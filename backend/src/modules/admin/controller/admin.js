@@ -31,7 +31,7 @@ class AdminController {
 
   top10MostViewedQuestions = async (req, res) => {
     try {
-      const response = await Posts.find({postType : "question"}, {views : 1}).sort({views:-1}).limit(10)
+      const response = await Posts.find({postType : "question"}, {views : 1, questionTitle: 1 }).sort({views:-1}).limit(10)
       console.log("top 10 most viewed",response)
       res.status(200).send(response);
     } catch (err) {

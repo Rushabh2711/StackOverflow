@@ -11,5 +11,6 @@ userRouter.get("/users", userController.getAllUsers);
 userRouter.put("/user/question/bookmark", userController.bookmarkQuestion);
 userRouter.put("/user/question/removebookmark", userController.removeBookmarkQuestion);
 userRouter.get("/useractivity", userController.fetchUserActivity);
+userRouter.put("/user/editprofile", userController.editUser);
 
 export default userRouter;

@@ -62,7 +62,7 @@ export default function UserBadges(props) {
                 gutterBottom
                 align="left"
               >
-                You currently have no badges
+                {user.username} currently have no badges
               </Typography>
             </ListItem>
           </List>
@@ -122,7 +122,6 @@ export default function UserBadges(props) {
                           <Box
                             component="div"
                             sx={{
-                              width: 100,
                               bgcolor: "#eeeeee",
                               border: 1,
                               borderColor: "#bdbdbd",
@@ -193,7 +192,6 @@ export default function UserBadges(props) {
                               borderColor: "#bdbdbd",
                               color: "#757575",
                               fontSize: 15,
-                              width: 100,
                               mb: 1,
                             }}
                           >
@@ -259,7 +257,6 @@ export default function UserBadges(props) {
                               borderColor: "#bdbdbd",
                               color: "#757575",
                               fontSize: 15,
-                              width: 100,
                               mb: 1,
                             }}
                           >

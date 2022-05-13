@@ -15,7 +15,7 @@ function UserSearch(props) {
 
     var filteredData = users;
     if(inputText.length >= 3){
-      filteredData = users.filter((u) => u.userName.toLowerCase().includes(inputText.toLowerCase()));
+      filteredData = users.filter((u) => u.username.toLowerCase().includes(inputText.toLowerCase()));
       filteredData = filteredData.slice(0,5);
     }
     // var filteredData = users.filter((el) => {

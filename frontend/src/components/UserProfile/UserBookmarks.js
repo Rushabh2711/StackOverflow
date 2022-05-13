@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import Moment from "react-moment";
 import TagList from "../ViewQuestion/TagList";
+import { Link } from "react-router-dom";
 
 export default function UserBookmarks(props) {
   const { id } = useParams();
@@ -41,7 +42,7 @@ export default function UserBookmarks(props) {
               gutterBottom
               align="left"
             >
-              You currently have no questions bookmarked
+              No questions bookmarked
             </Typography>
           </ListItem>
         </List>
@@ -76,7 +77,12 @@ export default function UserBookmarks(props) {
                             {"  "}
                             {question.votes} votes{" "}
                           </div>
-                          <div>{question.questionTitle}</div>
+                          <Link
+                            to={"/view/" + question._id}
+                            style={{ textDecoration: "none" }}
+                          >
+                            {question.questionTitle}
+                          </Link>
                           <div>
                             <Grid container spacing={2}>
                               <Grid item xs={9}>

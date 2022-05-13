@@ -34,7 +34,7 @@ class TagController {
 
   getTags = async (req, res) => {
     try {
-      const response = await Tags.find({});
+      const response = await Tags.find();
       res.status(200).send(response);
     } catch (err) {
       console.error(err);

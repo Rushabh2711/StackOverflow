@@ -1,24 +1,43 @@
 import { Grid } from "@mui/material";
-import React, { useCallback, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { Typography } from "@mui/material";
-
-const data = [
-  { name: "Tag A", value: 400 },
-  { name: "Tag B", value: 300 },
-  { name: "Tag C", value: 300 },
-  { name: "Tag D", value: 200 },
-  { name: "Tag E", value: 400 },
-  { name: "Tag F", value: 300 },
-  { name: "Tag G", value: 300 },
-  { name: "Tag H", value: 200 },
-  { name: "Tag I", value: 300 },
-  { name: "Tag J", value: 200 }
-];
+import STRING from "../../constant";
+import axios from 'axios';
 
 const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 export default function PopularTag() {
+
+  const [graphdata,setGraphdata] = useState([]);
+
+  useEffect(() => {
+    axios
+      .get(STRING.url + "/tags")
+      .then((res) => {
+        console.log(res.data);
+        calData(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+
+  const calData = (res) => {
+    var data = [];
+    res.sort((a, b) => b.posts.length - a.posts.length);
+    res = res.slice(0, 10);
+    res.forEach(element => {
+      data.push({
+        name: element.name,
+        value: element.posts.length + 1 
+      })
+    });
+    setGraphdata(data)
+    // console.log(data);
+  }
+
   return (
     <Grid container spacing={1}>
     <Typography
@@ -32,7 +51,7 @@ export default function PopularTag() {
             <PieChart width={600} height={600}>
             <Pie
             
-                data={data}
+                data={graphdata}
                 dataKey="value"
                 nameKey="name"
                 cx="50%"
@@ -43,7 +62,7 @@ export default function PopularTag() {
                 fill="#82ca9d"
                 label
             >
-                {data.map((entry, index) => (
+                {graphdata.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
                 

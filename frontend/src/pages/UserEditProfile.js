@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import userJson from "../dummydata/user.json";
 import UserDetails from "../components/UserProfile/UserDetails";
 import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
+import { useSelector } from "react-redux";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import {
   Box,
@@ -13,9 +14,10 @@ import {
   Typography,
 } from "@mui/material";
 import UserAnswers from "../components/UserProfile/UserAnswers";
+import validator from "validator";
 import UserEditSidebar from "../components/UserProfile/UserEditSidebar";
 import axios from "axios";
-import { useNavigate, useParams } from "react-router";
+import { Navigate, useNavigate, useParams } from "react-router";
 
 export default function UserEditProfile() {
   const [image, setImage] = useState("");
@@ -26,6 +28,7 @@ export default function UserEditProfile() {
   const [message, setMessage] = useState("");
   const { id } = useParams();
   let navigate = useNavigate();
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
 
   //city change handler to update state variable with the text entered by the user
   const cityChangeHandler = (e) => {
@@ -46,11 +49,18 @@ export default function UserEditProfile() {
   };
 
   useEffect(() => {
+    console.log(loggedInUser.userId);
     axios
       .get(`http://localhost:3001/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);
+        console.log(res.data[0].city);
+        console.log(res.data[0].country);
+        setCity(res.data[0].location.city);
+        setImage(res.data[0].proFilePicture);
+        setCountry(res.data[0].location.country);
+        setabout(res.data[0].about);
       })
       .catch((err) => {
         console.log(err);
@@ -59,7 +69,30 @@ export default function UserEditProfile() {
     console.log(user.tags);
   }, []);
 
-  return (
+  const handleSubmit = (e) => {
+    console.log("here");
+    e.preventDefault();
+    const data = {
+      _id: id,
+      city: city,
+      about: about,
+      country: country,
+    };
+    console.log(data);
+    axios
+      .put(`http://localhost:3001/user/editprofile`, data)
+      .then((res) => {
+        setMessage("Your profile has been updated");
+        console.log(res);
+      })
+      .catch((err) => {
+        setMessage(err.res.data);
+      });
+  };
+
+  return loggedInUser === null || loggedInUser._id !== id ? (
+    <Navigate to="/errorpage" />
+  ) : (
     <div>
       <div className="userprofile-details-component">
         <UserDetails user={user}></UserDetails>
@@ -105,6 +138,17 @@ export default function UserEditProfile() {
                 }}
                 align="left"
               >
+                <img
+                  style={{
+                    position: "sticky",
+                    height: "130px",
+                    width: "130px",
+                  }}
+                  src={image ? image : "/images/userdefault.png"}
+                  className="card-img-top"
+                  alt="description of image"
+                  margin-top="2"
+                />
                 <h6>Profile Image</h6>
                 <input type="file" name="myImage" />
                 <Typography
@@ -167,9 +211,22 @@ export default function UserEditProfile() {
                 <Button
                   sx={{ fontSize: 15, width: 150, color: "#fafafa", mt: 4 }}
                   variant="contained"
+                  onClick={handleSubmit}
                 >
                   Save profile
                 </Button>
+                <Typography
+                  sx={{
+                    fontSize: 16,
+                    color: "#212121",
+                    fontWeight: "bold",
+                    m: "2",
+                  }}
+                  color="text.secondary"
+                  gutterBottom
+                >
+                  {message}
+                </Typography>
               </Card>
             </div>
           </Box>
