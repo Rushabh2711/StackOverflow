@@ -8,18 +8,25 @@ import BookmarkIcon from "@material-ui/icons/Bookmark";
 import HistoryIcon from "@material-ui/icons/History";
 import Author from "./Author";
 import TagList from "./TagList";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 export default function Question(props) {
   const { question } = props;
   const [aksedQuestionUser, setAksedQuestionUser] = useState();
   const [isBookmarked, SetIsBookmarked] = useState(false);
+  const [downvoteFlag, setdownvoteFlag] = useState(false);
+  const [upvoteFlag, setupvoteFlag] = useState(false);
+  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
+  const LoggedInUser=useSelector((state)=>state.LoggedInUser)
   //const [arrayofUpvotes, setarrayofUpvotes] = useState(["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]);
   //const [arrayofDownvotes, setarrayofDownvotes] = useState(["62763e54bfe0a2faeddf026e"]);
-  //const [voteCount, setvoteCount] = useState(parseInt(question?.upvotes) - parseInt(question?.downvotes));
+  const [voteCount, setvoteCount] = useState(parseInt(question?.upvotes) - parseInt(question?.downvotes));
   const [text, setText] = useState(props.question.description)
   const userId="62763e6cbfe0a2faeddf0272";
   var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
 var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
-const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
+//const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
+const history = useNavigate();
 
   useEffect(() => {
     axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
@@ -31,9 +38,9 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
   }, [question]);
 
   useEffect(() => {
-    setText(question.description)
-    console.log("first", question)
-     
+    setText(question.description)  
+    setupvoteFlag(question.upvoteFlag)   
+    setdownvoteFlag(question.downvoteFlag)   
   }, [props.question, question, question.description])
 
   const votePost = async (e) => {
@@ -41,45 +48,69 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
 
     const body = {
       postId: question.questionId,
+      userId:LoggedInUser?LoggedInUser.userId:"",
       // postType: "Question",
       voteType: e.target.id
     }
-    await axios.put(`http://localhost:3001/votePost`, body).then((res) => {
-      console.log(res.data);
-      if( e.target.id==='Upvote'){
-        setvoteCount(voteCount+1)
-        
-      }
-      else{
-        setvoteCount(voteCount-1)
-      }
-    }).catch(err => {
-      console.log(err)
-    });
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+
+      await axios.put(`http://localhost:3001/votePost`, body).then((res) => {
+        console.log(res.data);
+        if( e.target.id==='Upvote'){
+          setvoteCount(voteCount+1)
+          setdownvoteFlag(false)
+          setupvoteFlag(true)
+        }
+        else{
+          setvoteCount(voteCount-1)
+          setupvoteFlag(false)
+          setdownvoteFlag(true)
+
+        }
+      }).catch(err => {
+        console.log(err)
+      });
+    }
   }
   const addBookmark = async () => {
     const body = {
       questionId: question.questionId,
-      userId: "62763e62bfe0a2faeddf0270",//localStorage.getItem("userId")
+      userId: LoggedInUser.userId,//localStorage.getItem("userId")
     };
-    await axios.put(`http://localhost:3001/user/question/bookmark`, body).then((res) => {
-      console.log(res.data);
-      SetIsBookmarked(true)
-    }).catch(err => {
-      console.log(err)
-    });
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+      await axios.put(`http://localhost:3001/user/question/bookmark`, body).then((res) => {
+        console.log(res.data);
+        SetIsBookmarked(true)
+      }).catch(err => {
+        console.log(err)
+      });
+    }
   };
   const removeBookmark = async () => {
     const body = {
       questionId: question.questionId,
-      userId: "62763e62bfe0a2faeddf0270",//localStorage.getItem("userId")
+      userId: LoggedInUser.userId,//localStorage.getItem("userId")
     };
-    await axios.put(`http://localhost:3001/user/question/removebookmark`, body).then((res) => {
-      console.log(res.data);
-      SetIsBookmarked(false)
-    }).catch(err => {
-      console.log(err)
-    });
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+      await axios.put(`http://localhost:3001/user/question/removebookmark`, body).then((res) => {
+        console.log(res.data);
+        SetIsBookmarked(false)
+      }).catch(err => {
+        console.log(err)
+      });
+    }
 
   };
   return (
@@ -93,11 +124,11 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
       >
         <div className="all-questions-left">
           <div className="all-options">
-            {!arrayofUpvotes.includes(userId)?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
+            {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
-            {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
+            {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
 
             {/* {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:""} */}
            

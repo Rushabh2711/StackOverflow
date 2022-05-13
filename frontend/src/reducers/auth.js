@@ -19,3 +19,13 @@ export const loginStatusReducer = (state = false, action) => {
       return state;
   }
 };
+
+
+export const bestAnswerUpdatedReducer = (state = false, action) => {
+  switch (action.type) {
+    case "BEST_ANSWER_UPDATED":
+      return action.payload;
+    default:
+      return state;
+  }
+};

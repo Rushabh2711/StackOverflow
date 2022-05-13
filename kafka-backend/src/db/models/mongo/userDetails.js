@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 
 const userDetailsSchema = new Schema({
   username: { type: String, required: true },
-  emailId: { type: String, required: true },
+  emailId: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
   profilePicture: {
     type: String,
     default:
@@ -25,13 +26,13 @@ const userDetailsSchema = new Schema({
     },
   ],
   badges: [
-    { 
+    {
       name: { type: String },
-      type: { type: String } ,
-      tagBased: { type: Boolean }
-    }
+      type: { type: String },
+      tagBased: { type: Boolean },
+    },
   ],
-  bookmarkedQuestions: [{ type: Schema.Types.ObjectId, ref: "question" }],
+  bookmarkedQuestions: [{ type: Schema.Types.ObjectId, ref: "post" }],
   joiningDate: { type: Date, required: true },
   visitedTime: { type: Date, required: true },
   questionsAskedCount: { type: Number, default: 0 },

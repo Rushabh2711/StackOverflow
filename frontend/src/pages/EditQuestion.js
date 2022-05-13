@@ -48,10 +48,8 @@ function Edit() {
         setBody(res.data.response.description)
       })
       .catch((err) => console.log(err));
-    if (localStorage.getItem("userType") === "admin") {
-      setisAdmin(true)
-    }
-  }, [id, isAdmin]);
+
+  }, [id]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -70,7 +68,7 @@ function Edit() {
         tags: transformed,
         postId: id,
         type: "modified",
-        isAdmin: isAdmin,
+        isAdmin: false,
         userId: "62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
         username: "virag"//localStorage.getItem('username')
         // user: user,
@@ -225,7 +223,7 @@ function Edit() {
           </div>
 
           <button onClick={handleSubmit} className="button">
-            {isAdmin?"Approve":"Update"}
+            Update
           </button>
         </div>
       </div>

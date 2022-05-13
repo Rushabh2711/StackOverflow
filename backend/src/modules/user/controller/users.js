@@ -3,6 +3,8 @@ import UserDetails from "../../../db/models/mongo/userDetails.js";
 import User from "../../../db/models/sql/users.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import UserActivities from "../../../db/models/mongo/userActivity.js";
+import Posts from "../../../db/models/mongo/posts.js";
 
 export class UserController {
   login = async (req, res) => {
@@ -131,13 +133,14 @@ export class UserController {
   };
 
   editUser = async (req, res) => {
-    const { _id, about, city, country } = req.body;
+    const { _id, about, city, country, image } = req.body;
     const data = { city: city, country: country };
     console.log(data);
     try {
       const response = await UserDetails.findByIdAndUpdate(_id, {
         location: data,
         about: about,
+        profilePicture: image,
       });
       console.log("user profile updated", response);
       res.status(200).send(response);
@@ -188,6 +191,27 @@ export class UserController {
       res.status(400).send(err);
     }
   };
+
+  fetchUserActivity = async (req, res) => {
+    const { userId } = req.params;
+    let results = [];
+    try {
+      const activities = await UserActivities.find({_id : userId}, {userId : 0});
+
+      activities.map(async (activity) => {
+        let postId = activity.postId;
+        let title = await Posts.findById({_id : postId});
+        activity.title = title;
+        results.push(activity);
+      });
+
+      console.log("user activity", response);
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
 }
 
 export default UserController;
