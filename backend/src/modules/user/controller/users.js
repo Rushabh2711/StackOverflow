@@ -14,14 +14,7 @@ export class UserController {
       console.log(user);
 
       if (user === null) {
-        return res.status(400).send(
-          {
-            errors: {
-              email: { msg: `Email ${emailId} is not registered with us` },
-            },
-          },
-          null
-        );
+        return res.status(400).send({ errorMsg: "Email not registered with us" });
       }
       if (!bcrypt.compareSync(password, user.password)) {
         return res
