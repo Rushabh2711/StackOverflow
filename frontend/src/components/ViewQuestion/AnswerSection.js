@@ -8,26 +8,31 @@ import Comments from "./Comments";
 import Author from "./Author";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
+import STRINGS from "../../constant";
 
 export default function Answer(props) {
   const history = useNavigate();
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
   const { answer, question_id, question_author } = props;
   const [answeredUser, SetansweredUser] = useState("");
   const [isAcceptedAnswer, SetisAcceptedAnswer] = useState(false);
-  const [isAcceptedAnswerId, setisAcceptedAnswerId] = useState(props.isAcceptedAnswerId);
- const [voteCount, setvoteCount] = useState(parseInt(answer?.upvotes) - parseInt(answer?.downvotes));
- const LoggedInUser=useSelector((state)=>state.LoggedInUser)
-  const userId="62763e6cbfe0a2faeddf0272";
+  const [isAcceptedAnswerId, setisAcceptedAnswerId] = useState(
+    props.isAcceptedAnswerId
+  );
+  const [voteCount, setvoteCount] = useState(
+    parseInt(answer?.upvotes) - parseInt(answer?.downvotes)
+  );
+  const LoggedInUser = useSelector((state) => state.LoggedInUser);
+  const userId = "62763e6cbfe0a2faeddf0272";
   // const isLoggedIn=false;
-  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
-   //const [arrayofUpvotes, setarrayofUpvotes] = useState(["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  //const [arrayofUpvotes, setarrayofUpvotes] = useState(["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]);
   //const [arrayofDownvotes, setarrayofDownvotes] = useState(["62763e54bfe0a2faeddf026e"]);
-//  var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
-//var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
-//const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
-const [downvoteFlag, setdownvoteFlag] = useState(false);
-const [upvoteFlag, setupvoteFlag] = useState(false);
+  //  var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
+  //var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
+  //const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
+  const [downvoteFlag, setdownvoteFlag] = useState(false);
+  const [upvoteFlag, setupvoteFlag] = useState(false);
   // useEffect(() => {
   //   const body = {
   //     user_id: answer.user_id,
@@ -41,19 +46,22 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
   //   });
   // }, [answer,question_id]);
   useEffect(() => {
-    axios.get(`http://localhost:3001/user/${answer.userId}`).then((res) => {
-      // console.log(res.data[0]);
-      SetansweredUser(res.data[0]);
-    }).catch(err => {
-      console.log(err)
-    });
-    if(isAcceptedAnswerId===answer._id){
-         SetisAcceptedAnswer(true)
-      }
-      setupvoteFlag(answer.upvoteFlag)   
-      setdownvoteFlag(answer.downvoteFlag) 
+    axios
+      .get(STRINGS.url + `/user/${answer.userId}`)
+      .then((res) => {
+        // console.log(res.data[0]);
+        SetansweredUser(res.data[0]);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    if (isAcceptedAnswerId === answer._id) {
+      SetisAcceptedAnswer(true);
+    }
+    setupvoteFlag(answer.upvoteFlag);
+    setdownvoteFlag(answer.downvoteFlag);
   }, [answer]);
- 
+
   // useEffect(() => {
   //   console.log("answer2222",isAcceptedAnswerId)
   //  if(isAcceptedAnswerId===answer._id){
@@ -61,67 +69,66 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
   //  }
   // }, [ props.isAcceptedAnswerId]);
 
-  
   const votePost = async (e) => {
     const body = {
       postId: answer._id,
-      userId:LoggedInUser?LoggedInUser.userId:"",
+      userId: LoggedInUser ? LoggedInUser.userId : "",
       // postType: "answer",
-      voteType: e.target.id
-    }
-    if(!isLoggedIn){
-      console.log("insidde login")
+      voteType: e.target.id,
+    };
+    if (!isLoggedIn) {
+      console.log("insidde login");
       history("/login");
+    } else {
+      await axios
+        .put(STRINGS.url + `/votePost`, body)
+        .then((res) => {
+          console.log(res.data);
+          if (e.target.id === "Upvote") {
+            setvoteCount(voteCount + 1);
+            setdownvoteFlag(false);
+            setupvoteFlag(true);
+          } else {
+            setvoteCount(voteCount - 1);
+            setupvoteFlag(false);
+            setdownvoteFlag(true);
+          }
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-    else{
-      await axios.put(`http://localhost:3001/votePost`, body).then((res) => {
-        console.log(res.data);
-        if (e.target.id === 'Upvote') {
-          setvoteCount(voteCount + 1)
-          setdownvoteFlag(false)
-          setupvoteFlag(true)
-        }
-        else {
-          setvoteCount(voteCount - 1)
-          setupvoteFlag(false)
-          setdownvoteFlag(true)
-        }
-      }).catch(err => {
-        console.log(err)
-      });
-    }
-
-  }
+  };
   const handleAcceptAnswer = async (e) => {
     if (question_author) {
-      console.log("inside accpeted answer")
+      console.log("inside accpeted answer");
       const body = {
         answerId: answer._id,
         questionId: question_id,
-        postType:!isAcceptedAnswer?"Accepted":"Removed"
-      }
-      if(isLoggedIn){
-        console.log("insidde login")
+        postType: !isAcceptedAnswer ? "Accepted" : "Removed",
+      };
+      if (isLoggedIn) {
+        console.log("insidde login");
         history("/login");
-      }
-      else{
-        await axios.put(`http://localhost:3001/question/markAnswerAccepted`, body).then((res) => {
-          console.log("responce",res.data);
-          if(res.data){
-            dispatch(bestAnswerUpdated(true))
-            SetisAcceptedAnswer(true)
-            setisAcceptedAnswerId(answer._id)
-            
-          }
-          else{
-            SetisAcceptedAnswer(false)
-          }
-        }).catch(err => {
-          console.log(err)
-        });
+      } else {
+        await axios
+          .put(STRINGS.url + `/question/markAnswerAccepted`, body)
+          .then((res) => {
+            console.log("responce", res.data);
+            if (res.data) {
+              dispatch(bestAnswerUpdated(true));
+              SetisAcceptedAnswer(true);
+              setisAcceptedAnswerId(answer._id);
+            } else {
+              SetisAcceptedAnswer(false);
+            }
+          })
+          .catch((err) => {
+            console.log(err);
+          });
       }
     }
-  }
+  };
   return (
     <>
       <div
@@ -133,21 +140,66 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
       >
         <div className="all-questions-left">
           <div className="all-options">
-          {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
-           
+            {!upvoteFlag ? (
+              <p className="arrow votes" id="Upvote" onClick={votePost}>
+                ▲
+              </p>
+            ) : (
+              <p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>
+                ▲
+              </p>
+            )}
+
             {/* <p className="arrow votes" id="Upvote" onClick={votePost}>▲</p> */}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(answer?.upvotes) - parseInt(answer?.downvotes)}</p> */}
-            <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
-            {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
+            <p className="arrow" style={{ fontSize: "1.3rem" }}>
+              {voteCount}
+            </p>
+            {!downvoteFlag ? (
+              <p className="arrow votes" id="Downvote" onClick={votePost}>
+                ▼
+              </p>
+            ) : (
+              <p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>
+                ▼
+              </p>
+            )}
 
             {/* <p className="arrow votes" id="Downvote" onClick={votePost}>▼</p> */}
-            {question_author?
-              isAcceptedAnswer ? <svg aria-hidden="true" onClick={handleAcceptAnswer} className={question_author ? "svg-Trueicon votes" : "svg-Trueicon"} color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg> :
-            <svg aria-hidden="true" fill="#00000040" onClick={handleAcceptAnswer} className={question_author ? "votes" : ""} color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>
-            :""
-            }
-            
+            {question_author ? (
+              isAcceptedAnswer ? (
+                <svg
+                  aria-hidden="true"
+                  onClick={handleAcceptAnswer}
+                  className={
+                    question_author ? "svg-Trueicon votes" : "svg-Trueicon"
+                  }
+                  color="red"
+                  width="36"
+                  height="36"
+                  viewBox="0 0 36 36"
+                >
+                  <path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path>
+                </svg>
+              ) : (
+                <svg
+                  aria-hidden="true"
+                  fill="#00000040"
+                  onClick={handleAcceptAnswer}
+                  className={question_author ? "votes" : ""}
+                  color="red"
+                  width="36"
+                  height="36"
+                  viewBox="0 0 36 36"
+                >
+                  <path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path>
+                </svg>
+              )
+            ) : (
+              ""
+            )}
+
             {/* <svg aria-hidden="true" class="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg> */}
             {/* <svg aria-hidden="true"  class="svg-icon iconBookmark" width="18" height="18" viewBox="0 0 18 18"><path d="M6 1a2 2 0 0 0-2 2v14l5-4 5 4V3a2 2 0 0 0-2-2H6Zm3.9 3.83h2.9l-2.35 1.7.9 2.77L9 7.59l-2.35 1.7.9-2.76-2.35-1.7h2.9L9 2.06l.9 2.77Z"></path></svg> */}
           </div>
@@ -158,10 +210,19 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
             readOnly={true}
             theme={"bubble"}
           />
-          <Author author={answeredUser} createdTime={answer?.addedAt} isQuestion={false}/>
+          <Author
+            author={answeredUser}
+            createdTime={answer?.addedAt}
+            isQuestion={false}
+          />
 
           {/* {ReactHtmlParser(answer.description)} */}
-          <Comments comments={answer?.comments} isQuestionComment={false} question_id={answer._id} answer_id={answer._id} />
+          <Comments
+            comments={answer?.comments}
+            isQuestionComment={false}
+            question_id={answer._id}
+            answer_id={answer._id}
+          />
           {/* <div className="comments">
                     <div className="comment">
                       {console.log("virag", _q?.comments)}
@@ -224,6 +285,5 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
         </div>
       </div>
     </>
-
   );
 }

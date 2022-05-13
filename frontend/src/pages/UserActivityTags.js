@@ -7,6 +7,7 @@ import { Grid, Typography } from "@mui/material";
 import UserTopTags from "../components/UserProfile/UserTopTags";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
+import STRINGS from "../constant";
 
 export default function UserActivityTags() {
   const [user, setUser] = useState("");
@@ -14,7 +15,7 @@ export default function UserActivityTags() {
   let navigate = useNavigate();
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url + `/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);

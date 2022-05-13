@@ -5,6 +5,7 @@ import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import CircleIcon from "@mui/icons-material/Circle";
 import { Box, Grid, List, ListItem, Typography } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
+import STRINGS from "../constant";
 import axios from "axios";
 
 export default function UserActivityBadges() {
@@ -17,7 +18,7 @@ export default function UserActivityBadges() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url + `/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);
