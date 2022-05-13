@@ -4,10 +4,10 @@ import io from "socket.io-client";
 import STRINGS from "../../constant";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-const socket = io(STRINGS.url);
+const socket = io("http://54.183.182.209:3001");
 
 export default function Demo() {
-  const { id } = useParams();
+  const { username } = useParams();
   const user = useSelector((state) => state.LoggedInUser);
   const isLogin = useSelector((state) => state.isLoggedIn);
 
@@ -62,7 +62,7 @@ export default function Demo() {
     <div>
       <Launcher
         agentProfile={{
-          teamName: "popup-chat-react",
+          teamName: "Connect To The Talent",
           imageUrl:
             "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png",
         }}
@@ -70,13 +70,13 @@ export default function Demo() {
         messageList={state.messageList}
         newMessagesCount={state.newMessagesCount}
         onClick={onClick}
-        isOpen={state.isOpen}
+        isOpen={true}
         showEmoji
         pinMessage={{
           imageUrl:
             "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png",
-          title: "title",
-          text: "text",
+          title: username,
+          text: "",
         }}
         placeholder="placeholder"
       />
