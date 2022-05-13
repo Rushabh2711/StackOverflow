@@ -28,7 +28,7 @@ class SearchController {
                 // console.log(tagData);
                 if (tagData.posts && tagData.posts.length > 0) {
                     for(var i =0; i < tagData.posts.length; i++ ) {
-                        let questionDetails = await Posts.findOne({ _id: tagData.posts[i] });
+                        let questionDetails = await Posts.findOne({ _id: tagData.posts[i] }); // postType:"question" filter here
                         results.push(questionDetails);
                     }
                     finalResult.questions = [...results]

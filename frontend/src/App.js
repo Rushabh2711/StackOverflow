@@ -41,6 +41,7 @@ import Edit from "./pages/EditQuestion";
 
 import Layout from "./pages/Layout";
 import SearchTag from "./pages/SearchTag";
+import SearchResults from "./pages/SearchResults";
 import MainQuestion from "./components/ViewQuestion/MainQuestion";
 
 export default function App() {
@@ -82,6 +83,10 @@ export default function App() {
   <Route
             path="/question/tagged/:tagName"
             element={<Layout page={<SearchTag />} />}
+          />
+          <Route
+            path="/search/:searchText"
+            element={<Layout page={<SearchResults />} />}
           />
           <Route
             path="/users/profile/:id"

@@ -6,7 +6,7 @@ export default function TagsList(props) {
   const tags = props.tags;
   return (
     <Stack spacing={1} direction="row">
-      {tags.map((tag) => (
+      {tags ? tags.map((tag) => (
         <Link
           href={"/question/tagged/" + tag.name}
           underline="none"
@@ -38,7 +38,7 @@ export default function TagsList(props) {
             {tag.name}
           </Typography>
         </Link>
-      ))}
+      )): null}
     </Stack>
   );
 }

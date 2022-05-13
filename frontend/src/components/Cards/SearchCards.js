@@ -22,12 +22,12 @@ const Item = styled(Paper)(({ theme }) => ({
   verticalAlign: "center",
 }));
 
-export default function QuestionAnswerCards(props) {
+export default function SearchCards(props) {
 
   const p = props.data;
   // console.log(p);
   let postId = p._id;
-  
+  let postType = p.postType;
   let votes = (p.upvotes - p.downvotes);
   let formatted_votes = votes > 0 ? roundOffNumber(votes) : votes;
 
@@ -221,7 +221,7 @@ export default function QuestionAnswerCards(props) {
                 >
                   <Grid item xs={4} sm={4} md={4} style={{ paddingTop: "0px" }}>
                     <Item>
-                      <Link href={"/question/view/" + postId } underline="none" color="#0074CC" sx={{ "& :hover": { color: "#0A95FF" }}}>
+                      <Link href={postType == "question" ? ("/question/view/" + postId) : ("/question/view/" + p.parentId)} underline="none" color="#0074CC" sx={{ "& :hover": { color: "#0A95FF" }}}>
                       <Typography
                         variant="body1"
                         
@@ -238,7 +238,7 @@ export default function QuestionAnswerCards(props) {
                         }}
                         textTransform="none"
                       >
-                        {questionTitle}
+                        {postType == "question" ?  ("Q: " + questionTitle) : ("A: " + questionTitle)}
                       </Typography>
                       </Link>
                     </Item>
