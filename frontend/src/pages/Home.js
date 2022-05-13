@@ -72,7 +72,7 @@ export default function Home() {
 
   const interestingFilterFunction = (data) => {
     console.log(data);
-    return data.sort((a,b) => new Date(b.modifiedAt.time).getTime() - new Date(a.modifiedAt.time).getTime());
+    return data.sort((a,b) => new Date(b.modifiedAt.date).getTime() - new Date(a.modifiedAt.date).getTime());
   }
 
   const hotFilterFunction = async (data) => {

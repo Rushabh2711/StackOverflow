@@ -16,17 +16,27 @@ export default function HomeFilter(props){
       const interestingFilterFunction = (data) => {
         console.log(data);
         // var d = data.sort((a,b) => new Date(a.askedOn).getTime() - new Date(b.askedOn).getTime());
+        return data.sort((a,b) => new Date(b.modifiedAt.date).getTime() - new Date(a.modifiedAt.date).getTime());
       }
+
+      const scoreFilterFunction = (data) => {
+        console.log(data)
+        return data.sort((a,b) => (a.upvotes-a.downvotes) - (b.upvotes,b.downvotes));  
+      }
+
+
 
       const clickMe = (e, s) => {
         console.log(e.target.id);
 
         switch(e.target.id){
             case "interestingFilter": props.setTempPosts(interestingFilterFunction(p));break;
-            case "hotFilter": props.setTempPosts("hot");break;
-            case "scoreFilter": props.setTempPosts("score");break;
-            case "unansweredFilter": props.setTempPosts("unanswered");break;
-            default: props.setTempPosts("interestingFilter");break;
+            // case "hotFilter": props.setTempPosts("hot");break;
+            // case "scoreFilter": props.setTempPosts("score");break;
+            // case "unansweredFilter": props.setTempPosts("unanswered");break;
+            // default: props.setTempPosts("interestingFilter");break;
+            case "scoreFilter": props.setTempPosts(scoreFilterFunction(p));break;
+            default: props.setTempPosts(interestingFilterFunction(p));break;
         }
         console.log(s);
     

@@ -85,7 +85,7 @@ function a11yProps(index) {
   };
 }
 
-export default function SidebarAdmin(props) {
+export default function Sidebar(props) {
   const classes = useStyles();
   const [value, setValue] = React.useState(props.tabValue);
 
@@ -125,7 +125,7 @@ export default function SidebarAdmin(props) {
           label="PUBLIC"
           value={1}
           className="publicTab"
-          {...a11yProps(4)}
+          {...a11yProps(1)}
           disabled
         />
         <Tab
@@ -134,7 +134,7 @@ export default function SidebarAdmin(props) {
           className="normalTab"
           icon={<PublicIcon />}
           iconPosition="start"
-          {...a11yProps(1)}
+          {...a11yProps(2)}
         />
         <Tab
           label="Tags"
@@ -142,7 +142,7 @@ export default function SidebarAdmin(props) {
           className="normalTab"
           icon={<PublicIcon style={{ visibility: "hidden" }} />}
           iconPosition="start"
-          {...a11yProps(2)}
+          {...a11yProps(3)}
         />
         <Tab
           label="Users"
@@ -150,7 +150,15 @@ export default function SidebarAdmin(props) {
           className="normalTab"
           icon={<PublicIcon style={{ visibility: "hidden" }} />}
           iconPosition="start"
-          {...a11yProps(3)}
+          {...a11yProps(4)}
+        />
+        <Tab
+          label="DashBoard"
+          value={5}
+          className="normalTab"
+          icon={<PublicIcon style={{ visibility: "hidden" }} />}
+          iconPosition="start"
+          {...a11yProps(5)}
         />
       </Tabs>
       {/* <Divider flexItem orientation="vertical"/> */}
