@@ -19,6 +19,7 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const loggedInUser = useSelector((state) => state.LoggedInUser);
+  // const loggedInUser = useSelector((state) => state.LoggedInUser);
 
   const dispatch = useDispatch();
   let navigate = useNavigate();
