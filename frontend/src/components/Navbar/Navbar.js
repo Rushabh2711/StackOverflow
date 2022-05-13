@@ -172,9 +172,9 @@ export default function Navbar(props) {
 
   const loggedInUser = useSelector((state) => state.LoggedInUser);
   
-  const goldCount = loggedInUser.badges.filter((x) => x.type === "gold");
-  const silverCount = loggedInUser.badges.filter((x) => x.type === "silver");
-  const bronzeCount = loggedInUser.badges.filter((x) => x.type === "bronze");
+  const goldCount = loggedInUser.badges.filter((x) => x.type === "gold") ? loggedInUser?.badges?.filter((x) => x.type === "gold").length : 0;
+  const silverCount = loggedInUser.badges.filter((x) => x.type === "silver") ? loggedInUser?.badges?.filter((x) => x.type === "silver").length : 0;
+  const bronzeCount = loggedInUser.badges.filter((x) => x.type === "bronze") ? loggedInUser?.badges?.filter((x) => x.type === "bronze").length : 0;
   
 
   const [anchorEl, setAnchorEl] = React.useState(null);
