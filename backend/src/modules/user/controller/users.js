@@ -145,6 +145,20 @@ export class UserController {
     }
   };
 
+  updatelastVisitedTime = async (req, res) => {
+    const { _id, visitedTime } = req.body;
+    try {
+      const response = await UserDetails.findByIdAndUpdate(_id, {
+        visitedTime: visitedTime,
+      });
+      console.log("last visited time updated", response);
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send("last visited time not updated");
+    }
+  };
+
   bookmarkQuestion = async (req, res) => {
     const { userId, questionId } = req.body;
     try {
