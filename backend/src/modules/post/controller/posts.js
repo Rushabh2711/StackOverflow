@@ -312,15 +312,18 @@ class QuestionController {
   votePost = async (req, res) => {
     const { userId, voteType, postId} = req.body;
     let response;
-    let query;
+    
     let time = new Date();
     console.log("result", req.body);
 
     try {
       const result = await Votes.find({userId: userId, postId: postId});
-
+      let updateScoreResponse;
+      let query = (voteType == "Upvote") ? {$inc : {"tags.$.score" : 1}} : {$inc : {"tags.$.score" : -1}};
       let post = await Posts.find({_id : postId});
-      console.log("post", post);
+
+      let tags = post[0].questionTags;
+
       if(result.length == 0)
       {
           const newVote = new Votes({
@@ -333,7 +336,12 @@ class QuestionController {
           });
 
           response = await newVote.save();
-          // query = voteType == "Upvote" ? { $inc: { upvotesCount: 1 }} : { $inc: { downVotesCount: 1 }};
+          
+          for(var tag of tags)
+          {
+            await UserDetails.updateOne({_id : userId, "tags.tagId": tag.tagId}, query);
+          }
+
           console.log(response);
       }
       else if(voteType == "Upvote")
@@ -347,7 +355,10 @@ class QuestionController {
                 {$set: {voteType : "Upvote"}}
              );
           } 
-          // query = { $and: [ { $inc: { upvotesCount: 1 }}, { $inc: { downVotesCount: -1 }} ] }
+          for(var tag of tags)
+          {
+            await UserDetails.updateOne({_id : userId, "tags.tagId": tag.tagId}, {$inc : {"tags.$.score" : 1}} );
+          }
       }
 
       else if(voteType == "Downvote")
@@ -360,9 +371,11 @@ class QuestionController {
                 {$set: {voteType : "Downvote"}}
              );
           }
-          // query = { $and: [ { $inc: { upvotesCount: -1 }}, { $inc: { downVotesCount: 1 }} ] }  
+          for(var tag of tags)
+          {
+            await UserDetails.updateOne({_id : userId, "tags.tagId": tag.tagId}, {$inc : {"tags.$.score" : -1}});
+          }
       }
-      // const userDetailsUpdateResponse = await UserDetails.updateOne({_id : userId},  query) 
       res.status(200).send(response);
     } catch (err) {
       console.error(err);

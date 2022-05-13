@@ -226,6 +226,49 @@ export class UserController {
       res.status(400).send(err);
     }
   };
+
+  fetchTagBadges = async (req, res) => {
+    const { userId } = req.params;
+    let user = await UserDetails.findById({ _id: userId });
+    let badges = user.badges;
+
+    try {
+        const tags = user.tags;
+        let tagBadge;
+        for(var tag of tags)
+        {
+           if(tag.score < 10)
+           {
+              tagBadge = {
+                name: tag.name,
+                type: "Bronze",
+                tagBased: true
+              }
+           }
+           else if(tag.score > 10 && tag.score < 15)
+           {
+              tagBadge = {
+                name: tag.name,
+                type: "Silver",
+                tagBased: true
+              }
+           }
+           else if(tag.score > 20)
+           {
+              tagBadge = {
+                name: tag.name,
+                type: "Gold",
+                tagBased: true
+              }
+           }
+           badges.push(tagBadge);
+        }
+        res.status(200).send(badges);
+    } catch (error) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
 }
 
 export default UserController;
