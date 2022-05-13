@@ -301,7 +301,7 @@ export default function Navbar(props) {
                 backgroundColor: "grey",
               },
             }}
-            onClick={() => { navigate('/')}}
+            onClick={() => { isLoggedIn ? navigate('/home'): navigate('/')}}
           >
             <img
               src="https://stackoverflow.design/assets/img/logos/so/logo-stackoverflow.png"
