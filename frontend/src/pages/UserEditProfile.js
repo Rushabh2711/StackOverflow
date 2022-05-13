@@ -89,25 +89,31 @@ export default function UserEditProfile() {
   }, []);
 
   const handleSubmit = (e) => {
-    console.log("here");
     e.preventDefault();
-    const data = {
-      _id: id,
-      city: city,
-      about: about,
-      country: country,
-      image: image,
-    };
-    console.log(data);
-    axios
-      .put(`http://localhost:3001/user/editprofile`, data)
-      .then((res) => {
-        setMessage("Your profile has been updated");
-        console.log(res);
-      })
-      .catch((err) => {
-        setMessage(err.res.data);
-      });
+    console.log("here");
+    if (!validator.isAlpha(city, "en-US", { ignore: " " })) {
+      setMessage("City can have only letters");
+    } else if (!validator.isAlpha(country, "en-US", { ignore: " " })) {
+      setMessage("Country can have only letters");
+    } else {
+      const data = {
+        _id: id,
+        city: city,
+        about: about,
+        country: country,
+        image: image,
+      };
+      console.log(data);
+      axios
+        .put(`http://localhost:3001/user/editprofile`, data)
+        .then((res) => {
+          setMessage("Your profile has been updated");
+          console.log(res);
+        })
+        .catch((err) => {
+          setMessage(err.res.data);
+        });
+    }
   };
 
   return loggedInUser === null || loggedInUser._id !== id ? (
@@ -191,6 +197,7 @@ export default function UserEditProfile() {
                   id="city"
                   type="text"
                   value={city}
+                  size="30"
                   onChange={cityChangeHandler}
                   required
                   sx={{ width: 500 }}
@@ -207,6 +214,7 @@ export default function UserEditProfile() {
                   id="country"
                   type="text"
                   value={country}
+                  size="30"
                   onChange={countryChangeHandler}
                   required
                   sx={{ width: 500 }}

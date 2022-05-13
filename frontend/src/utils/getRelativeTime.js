@@ -22,7 +22,7 @@ var getOutput = (d1, d2) => {
 // test-list of dates to compare with current date
 
 
-export function getRelativeTime(a, b) {
+export default function getRelativeTime(a, b) {
  
     
       var d1 = new Date(a)

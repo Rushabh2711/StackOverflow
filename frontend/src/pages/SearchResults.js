@@ -24,14 +24,14 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const drawerWidth = 240;
 
-export default function SearchTag() {
-  let { tagName }= useParams();
+export default function SearchResults() {
+  let { searchText }= useParams();
   const [posts, setPosts] = React.useState([]);
   const [tempPosts, setTempPosts] = React.useState([]);
 
   let navigate = useNavigate();
   useEffect(() => {
-    axios.get(STRINGS.url + "/search/"+ tagName).then((response) => {
+    axios.get(STRINGS.url + "/search/"+ searchText).then((response) => {
       setPosts(response.data);
       setTempPosts(response.data);
       
@@ -64,7 +64,7 @@ export default function SearchTag() {
                     }}
                     textTransform="none"
                   >
-                    Questions tagged [{tagName}]
+                    Search Results for : {searchText}
                   </Typography>
                 </Item>
               </Grid>
@@ -90,7 +90,7 @@ export default function SearchTag() {
                   </Button>
                 </Item>
               </Grid>
-              <Grid item xs={12} sm={12} md={12} style={{ paddingTop: "0px" }}>
+              {/* <Grid item xs={12} sm={12} md={12} style={{ paddingTop: "0px" }}>
                 <Item>
                 <Typography
                     variant="body1"
@@ -111,7 +111,7 @@ export default function SearchTag() {
                     Java is a high-level object oriented programming language. Use this tag when you're having problems using or understanding the language itself. This tag is frequently used alongside other tags for libraries and/or frameworks used by Java developers.
                   </Typography>
                 </Item>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Item>
         </Grid>

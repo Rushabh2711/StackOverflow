@@ -66,7 +66,7 @@ class QuestionController {
 
       let answers = await Posts.find({parentId : questionId});
 
-      // const userDetails = UserDetails.find({_id : data.userId});
+      const userDetailsQuestionPoster= UserDetails.find({_id : data.userId});
 
       // const votes = Votes.find({postId : questionId}).aggregate([
       //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
@@ -90,9 +90,12 @@ class QuestionController {
       {
         for(var answer of answers)
         {
-          const {questionTitle, postType, parentId, description, shortdesc, votes, 
-                views, numberOfAnswers,
-                addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
+          let { questionTitle, postType, parentId, description, shortdesc, 
+                views, numberOfAnswers, addedAt, modifiedAt, isAcceptedAnswerId, 
+                status, isAccepted, userId, comments, questionTags 
+              } = answer;
+          let userDetails = await UserDetails.findById({_id : userId});
+
           const obj = {
               questionTitle: questionTitle,
               postType: postType,
@@ -101,8 +104,8 @@ class QuestionController {
               shortdesc: shortdesc,
               upvotes: (await this.fetchVoteCount(answer._id, "Upvote")),
               downvotes:(await this.fetchVoteCount(answer._id, "Downvote")),
-              upvoteFlag: (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
-              downvoteFlag: (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
+              upvoteFlag: userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+              downvoteFlag: userId.length == 0 ? false :(await this.fetchVoteFlag(answer._id, "Downvote", userId)),
               views: views,
               numberOfAnswers: numberOfAnswers,
               addedAt: addedAt,
@@ -112,7 +115,11 @@ class QuestionController {
               isAccepted: isAccepted,
               userId: userId,
               comments: comments,
-              questionTags: questionTags
+              questionTags: questionTags,
+              username: userDetails.username,
+              profilePicture: userDetails.profilePicture,
+              badges: userDetails.badges,
+              reputation: userDetails.reputation,
           }
            answersModified.push(obj);
         }
@@ -137,11 +144,11 @@ class QuestionController {
         answers: questionDetails.answers,
         isAcceptedAnswerId: questionDetails.isAcceptedAnswerId,
         questionComments: questionDetails.questionComments,
-        // username: userDetails.username,
-        // profilePicture: userDetails.profilePicture,
-        // badges: userDetails.badges,
+        username: userDetailsQuestionPoster.username,
+        profilePicture: userDetailsQuestionPoster.profilePicture,
+        badges: userDetailsQuestionPoster.badges,
         userId: questionDetails.userId,
-        // reputation: userDetails.reputation,
+        reputation: userDetailsQuestionPoster.reputation,
         answers : answersModified
       };
       return this.responseGenerator(200, result);
@@ -158,7 +165,6 @@ class QuestionController {
   fetchVoteCount = async (id, type) => {
       let count=0;
       let votes = await Votes.find({postId : id});
-      // console.log("votes", votes);
       for(var vote of votes)
       {
           if(vote.voteType == type)  count++;
@@ -175,7 +181,7 @@ class QuestionController {
     }
     else
     {
-      votes = await Votes.find({postId : id, userId : userId});
+        votes = await Votes.find({postId : id, userId : userId});
     }
     console.log("votes", votes);
     for(var vote of votes)
@@ -199,10 +205,10 @@ class QuestionController {
       console.log(result);
 
       const res = await QuestionViews.updateOne(
-        { _id: questionId, date: date },
+        { questionId: questionId, date: date },
         {
           $set: {
-            _id: questionId,
+            questionId: questionId,
             date: date,
           },
           $inc: { views: 1 },

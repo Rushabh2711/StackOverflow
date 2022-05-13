@@ -289,22 +289,25 @@ class QuestionController {
 
     try {
       const result = await Votes.find({userId: userId, postId: postId});
-      console.log("result", result);
+
+      let post = await Posts.find({_id : postId});
+      console.log("post", post);
       if(result.length == 0)
       {
           const newVote = new Votes({
             userId: userId,
             voteType: voteType,
             postId: postId,
+            postType: post[0].postType,
+            postOwnerId: post[0].userId,
             creationDate: time.toISOString()
           });
 
           response = await newVote.save();
-          query = voteType == "Upvote" ? { $inc: { upvotesCount: 1 }} : { $inc: { downVotesCount: 1 }};
-          console.log(result);
+          // query = voteType == "Upvote" ? { $inc: { upvotesCount: 1 }} : { $inc: { downVotesCount: 1 }};
+          console.log(response);
       }
-
-      if(voteType == "Upvote")
+      else if(voteType == "Upvote")
       {
           let isDownVotePresent = result[0].voteType == "Downvote";
     
@@ -315,10 +318,10 @@ class QuestionController {
                 {$set: {voteType : "Upvote"}}
              );
           } 
-          query = { $and: [ { $inc: { upvotesCount: 1 }}, { $inc: { downVotesCount: -1 }} ] }
+          // query = { $and: [ { $inc: { upvotesCount: 1 }}, { $inc: { downVotesCount: -1 }} ] }
       }
 
-      if(voteType == "Downvote")
+      else if(voteType == "Downvote")
       {
           let isUpVotePresent = result[0].voteType == "Upvote";
           if(isUpVotePresent)
@@ -328,7 +331,7 @@ class QuestionController {
                 {$set: {voteType : "Downvote"}}
              );
           }
-          query = { $and: [ { $inc: { upvotesCount: -1 }}, { $inc: { downVotesCount: 1 }} ] }  
+          // query = { $and: [ { $inc: { upvotesCount: -1 }}, { $inc: { downVotesCount: 1 }} ] }  
       }
       // const userDetailsUpdateResponse = await UserDetails.updateOne({_id : userId},  query) 
       res.status(200).send(response);
@@ -414,12 +417,12 @@ class QuestionController {
   };
 
   markAnswerAsAccepted = async (req, res) => {
-    const {questionId, answerId} = req.body;
+    const {questionId, answerId, answerUserId} = req.body;
     
     try {
       let question = await Posts.findOneAndUpdate({_id : questionId}, 
           {
-            $set : {isAcceptedAnswerId : answerId, isAccepted : true }
+            $set : {isAcceptedAnswerId : answerId, isAccepted : true , isAcceptedUserId : answerUserId }
           },
           {new : true}
         );
