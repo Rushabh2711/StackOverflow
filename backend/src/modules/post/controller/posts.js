@@ -432,13 +432,24 @@ class QuestionController {
     const { postId } = req.params;
     let results = [];
     try {
-      const activities = await PostActivities.find({_id : postId}, {postId : 0});
-      activities.map(async (activity) => {
+      const activities = await PostActivities.find({postId : postId});
+      console.log(activities)
+      for (const activity of activities) {
         let userId = activity.userId;
-        let username = await UserDetails.findById({_id : userId});
-        activity.username = username;
-        results.push(activity);
-      })
+        let user = await UserDetails.findById({_id : userId});
+       console.log("activity", user.username)
+
+        results.push({
+          activityType: activity.activityType,
+          activityTypeDescription: activity.activityTypeDescription,
+          userId:activity.userId,
+          license: activity.license,
+          comment: activity.comment,
+          time: activity.time,
+          username: user.username
+        });
+      }
+
      
       console.log("post activity", results);
       res.status(200).send(results);
