@@ -47,16 +47,9 @@ export class UserController {
 
     console.log(userObj);
     if (userObj !== null) {
-      return res.status(400).send(
-        {
-          errors: {
-            email: {
-              msg: `Email ${emailId} is already registered. Please login or use a different email`,
-            },
-          },
-        },
-        null
-      );
+      return res
+        .status(400)
+        .send({ errorMsg: "Email is already registered with us" });
     }
 
     const user = new UserDetails({

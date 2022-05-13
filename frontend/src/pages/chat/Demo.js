@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Launcher, TestArea } from "popup-chat-react";
 import io from "socket.io-client";
+import STRINGS from "../../constant";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router";
-const socket = io("http://localhost:3001");
+const socket = io(STRINGS.url);
 
 export default function Demo() {
   const { id } = useParams();

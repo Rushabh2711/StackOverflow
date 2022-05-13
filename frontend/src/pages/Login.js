@@ -13,6 +13,7 @@ import axios from "axios";
 import validator from "validator";
 import { login } from "../actions";
 import { Navigate, useNavigate } from "react-router";
+import STRINGS from "../constant";
 
 export default function Login() {
   const [emailId, setEmailId] = useState("");
@@ -48,7 +49,7 @@ export default function Login() {
         password: password,
       };
       axios
-        .post(`http://localhost:3001/user/login`, data)
+        .post(STRINGS.url + `/user/login`, data)
         .then((response) => {
           console.log("Status Code : ", response.status);
           console.log(response.data);
@@ -135,11 +136,11 @@ export default function Login() {
           &nbsp;
           <Box sx={{ width: 350 }}>
             <Card variant="outlined">{card}</Card>
+            <div align="center">
+              Don’t have an account? <Link to={`/signup`}>Sign up</Link>
+            </div>
           </Box>
           <br></br>
-          <div align="center">
-            Don’t have an account? <Link to={`/signup`}>Sign up</Link>
-          </div>
         </Grid>
       </Grid>
     </div>
