@@ -6,7 +6,7 @@ import { useParams } from "react-router";
 const socket = io("http://localhost:3001");
 
 export default function Demo() {
-  const { id } = useParams();
+  const { username } = useParams();
   const user = useSelector((state) => state.LoggedInUser);
   const isLogin = useSelector((state) => state.isLoggedIn);
 
@@ -61,7 +61,7 @@ export default function Demo() {
     <div>
       <Launcher
         agentProfile={{
-          teamName: "popup-chat-react",
+          teamName: "Connect To The Talent",
           imageUrl:
             "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png",
         }}
@@ -69,13 +69,13 @@ export default function Demo() {
         messageList={state.messageList}
         newMessagesCount={state.newMessagesCount}
         onClick={onClick}
-        isOpen={state.isOpen}
+        isOpen={true}
         showEmoji
         pinMessage={{
           imageUrl:
             "https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png",
-          title: "title",
-          text: "text",
+          title: username,
+          text: "",
         }}
         placeholder="placeholder"
       />

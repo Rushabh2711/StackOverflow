@@ -2,13 +2,13 @@ import express from "express";
 import cors from "cors";
 import http from "http";
 import { Server } from "socket.io"
-import { frontendIP, frontendPort } from "./config/serverConfig.js";
+import { frontendIP, frontendPort, url } from "./config/serverConfig.js";
 
 const app = express();
 
 
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: "http://localhost:3000" }});
+const io = new Server(server, { cors: { origin: url }});
 io.on('connection', (socket) => {
   console.log('a user connected');
   socket.on("message", async (data) => {
