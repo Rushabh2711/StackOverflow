@@ -127,6 +127,23 @@ export class UserController {
     }
   };
 
+  editUser = async (req, res) => {
+    const { _id, about, city, country } = req.body;
+    const data = { city: city, country: country };
+    console.log(data);
+    try {
+      const response = await UserDetails.findByIdAndUpdate(_id, {
+        location: data,
+        about: about,
+      });
+      console.log("user profile updated", response);
+      res.status(200).send(response);
+    } catch (err) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  };
+
   bookmarkQuestion = async (req, res) => {
     const { userId, questionId } = req.body;
     try {
