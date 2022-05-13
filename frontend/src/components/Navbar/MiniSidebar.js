@@ -88,10 +88,9 @@ function a11yProps(index) {
 }
 
 export default function Sidebar(props) {
-  
   const classes = useStyles();
   var currentURL = window.location.pathname;
-  var tabValue = 0;
+  var tabValue = null;
   if(currentURL.startsWith("/home")){
     tabValue = 0;
   }
@@ -132,6 +131,7 @@ export default function Sidebar(props) {
     }
     console.log(url);
     navigate(url);
+    window.location.reload(false);
     //props.setComponent(newValue);
     // this.props.history.push('/tags');
   };
@@ -167,6 +167,7 @@ export default function Sidebar(props) {
           className="publicTab"
           {...a11yProps(4)}
           disabled
+          
         />
         <Tab
           label="Question"

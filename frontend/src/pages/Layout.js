@@ -25,23 +25,23 @@ export default function Layout(props) {
   let navigate = useNavigate();
   const setComponent = (value) => {
     // setValue(value);
-    if (value == 0) {
-      //it is home page
-      var url = "/home";
-      navigate(url);
-    } else if (value == 2) {
-      //it is question page
-      var url = "/question";
-      navigate(url);
-    } else if (value == 3) {
-      //it is tags page
-      var url = "/tags";
-      navigate(url);
-    } else if (value == 4) {
-      //it is users page
-      var url = "/users";
-      navigate(url);
-    }
+    // if (value == 0) {
+    //   //it is home page
+    //   var url = "/home";
+    //   navigate(url);
+    // } else if (value == 2) {
+    //   //it is question page
+    //   var url = "/question";
+    //   navigate(url);
+    // } else if (value == 3) {
+    //   //it is tags page
+    //   var url = "/tags";
+    //   navigate(url);
+    // } else if (value == 4) {
+    //   //it is users page
+    //   var url = "/users";
+    //   navigate(url);
+    // }
   };
   return (
     <Box sx={{ display: "flex", flexGrow: 1 }}>

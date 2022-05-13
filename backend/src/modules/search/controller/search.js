@@ -28,7 +28,7 @@ class SearchController {
                 // console.log(tagData);
                 if (tagData.posts && tagData.posts.length > 0) {
                     for(var i =0; i < tagData.posts.length; i++ ) {
-                        let questionDetails = await Posts.findOne({ _id: tagData.posts[i] });
+                        let questionDetails = await Posts.findOne({ _id: tagData.posts[i] }); // postType:"question" filter here
                         results.push(questionDetails);
                     }
                     finalResult.questions = [...results]
@@ -149,7 +149,7 @@ class SearchController {
 
     try {
         let questions = await Posts.find({postType: "question"});
-        questions.sort((a, b) => b.addedAt - a.addedAt);
+        questions.sort((a, b) => b.modifiedAt.date - a.modifiedAt.date);
         res.status(200).send(questions);
         } catch (err) {
             console.error(err);

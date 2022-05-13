@@ -3,6 +3,8 @@ import userJson from "../dummydata/user.json";
 import UserDetails from "../components/UserProfile/UserDetails";
 import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import { useSelector } from "react-redux";
+import { storage_bucket } from "../utils/firebase";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import {
   Box,
@@ -48,6 +50,23 @@ export default function UserEditProfile() {
     setabout(e.target.value);
   };
 
+  //image change handler to update state variable with the text entered by the user
+  const onImageChange = (event) => {
+    setMessage("");
+    if (event.target.files && event.target.files[0]) {
+      if (event.target.files[0] == null) return;
+      const storageRef = ref(storage_bucket, event.target.files[0].name);
+      uploadBytes(storageRef, event.target.files[0])
+        .then((snapshot) => {
+          return getDownloadURL(snapshot.ref);
+        })
+        .then((downloadURL) => {
+          console.log("Download URL", downloadURL);
+          setImage(downloadURL);
+        });
+    }
+  };
+
   useEffect(() => {
     console.log(loggedInUser.userId);
     axios
@@ -58,7 +77,7 @@ export default function UserEditProfile() {
         console.log(res.data[0].city);
         console.log(res.data[0].country);
         setCity(res.data[0].location.city);
-        setImage(res.data[0].proFilePicture);
+        setImage(res.data[0].profilePicture);
         setCountry(res.data[0].location.country);
         setabout(res.data[0].about);
       })
@@ -70,24 +89,31 @@ export default function UserEditProfile() {
   }, []);
 
   const handleSubmit = (e) => {
-    console.log("here");
     e.preventDefault();
-    const data = {
-      _id: id,
-      city: city,
-      about: about,
-      country: country,
-    };
-    console.log(data);
-    axios
-      .put(`http://localhost:3001/user/editprofile`, data)
-      .then((res) => {
-        setMessage("Your profile has been updated");
-        console.log(res);
-      })
-      .catch((err) => {
-        setMessage(err.res.data);
-      });
+    console.log("here");
+    if (!validator.isAlpha(city, "en-US", { ignore: " " })) {
+      setMessage("City can have only letters");
+    } else if (!validator.isAlpha(country, "en-US", { ignore: " " })) {
+      setMessage("Country can have only letters");
+    } else {
+      const data = {
+        _id: id,
+        city: city,
+        about: about,
+        country: country,
+        image: image,
+      };
+      console.log(data);
+      axios
+        .put(`http://localhost:3001/user/editprofile`, data)
+        .then((res) => {
+          setMessage("Your profile has been updated");
+          console.log(res);
+        })
+        .catch((err) => {
+          setMessage(err.res.data);
+        });
+    }
   };
 
   return loggedInUser === null || loggedInUser._id !== id ? (
@@ -127,17 +153,18 @@ export default function UserEditProfile() {
           >
             Public Information
           </Typography>
-          <Box sx={{ border: 1, width: 800 }}>
+          <Box sx={{ border: 1, width: 800, height: 700 }}>
             <div>
               <Card
                 style={{
                   border: 1,
                   width: 750,
-                  height: 600,
+                  height: 680,
                   marginLeft: "20px",
                 }}
                 align="left"
               >
+                <h6>Profile Image</h6>
                 <img
                   style={{
                     position: "sticky",
@@ -147,10 +174,12 @@ export default function UserEditProfile() {
                   src={image ? image : "/images/userdefault.png"}
                   className="card-img-top"
                   alt="description of image"
-                  margin-top="2"
+                  margin-bottom="2"
                 />
-                <h6>Profile Image</h6>
-                <input type="file" name="myImage" />
+                <br></br>
+                <input type="file" name="myImage" onChange={onImageChange} />
+                <br></br>
+                &nbsp;
                 <Typography
                   sx={{
                     fontSize: 16,
@@ -168,6 +197,7 @@ export default function UserEditProfile() {
                   id="city"
                   type="text"
                   value={city}
+                  size="30"
                   onChange={cityChangeHandler}
                   required
                   sx={{ width: 500 }}
@@ -184,6 +214,7 @@ export default function UserEditProfile() {
                   id="country"
                   type="text"
                   value={country}
+                  size="30"
                   onChange={countryChangeHandler}
                   required
                   sx={{ width: 500 }}

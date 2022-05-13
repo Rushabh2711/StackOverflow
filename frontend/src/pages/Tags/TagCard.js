@@ -23,7 +23,7 @@ export default function TagCard({tags}){
     <div>
         
         <Card elevation={3}>
-        <Link to={'/questions/tagged/'+tags.name} ><CardHeader subheader = {tags.name} sx={{display: 'inline-block',backgroundColor: '#E1ECF4',color: '#5183A8',padding: 1,borderRadius: 1.2,fontSize: 13,fontWeight: 'bold', marginTop: 1, marginLeft:1.5}}/></Link>
+        <Link to={'/question/tagged/'+tags.name} ><CardHeader subheader = {tags.name} sx={{display: 'inline-block',backgroundColor: '#E1ECF4',color: '#5183A8',padding: 1,borderRadius: 1.2,fontSize: 13,fontWeight: 'bold', marginTop: 1, marginLeft:1.5}}/></Link>
         <CardContent>
             <Typography variant="body1" color="textSecondary" className={classes.multiLineEllipsis}>
                 {tags.description}
