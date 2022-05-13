@@ -27,6 +27,8 @@ function MainQuestion() {
   const [isSameUser, SetisSameUser] = useState(false);// this will use for indentify to user has permission to check accepted answer or not
   const [questionData, setQuestionData] = useState("");
   const [answer, setAnswer] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
+  const [allAnswers, setAllAnswers] = useState([]);
   // const [show, setShow] = useState("");
   // const [comment, setComment] = useState("");
   // const [comments, setComments] = useState([]);
@@ -42,13 +44,29 @@ function MainQuestion() {
            .then((res) => {
             console.log(res.data.response); 
             setQuestionData(res.data.response)
+           setAllAnswers(res.data.response.answers)
+           var str2 = res.data.response.description.slice(res.data.response.description.indexOf("<img"),res.data.response.description.indexOf('">')) 
+           console.log(str2)
+     
+             var str3 = res.data.response.description.replace(str2, "");
+             //  str3 = str3.replace("<p>", "");
+             //  str3 = str3.replace("</p>", "");
+             //  str3 = str3.replace("<br>", "");
+             //  str3 = str3.replace("<strong>", "");
+             //  str3 = str3.replace('<pre class="ql-syntax">', "");
+             //  str3 = str3.replace('</pre>', "");
+             console.log("output",str3)
           })
            .catch((err) => console.log(err));
     console.log("data",questionData)
+    //Change this code for Owner of the question
     if(questionData.userId===localStorage.getItem("userId")){
       SetisSameUser(true)
     }
+    SetisSameUser(true)
+
   }, [id]);
+
 
   // useEffect(() => {
   //   async function getFunctionDetails() {
@@ -69,6 +87,20 @@ function MainQuestion() {
   //   setQuestionData(questions.questions[0])
   //   console.log("data",questionData)
   // }, []);
+  useEffect(() => {
+    const bodyJSON = {
+      questionId:id,
+    };
+    //  axios
+    // .put("http://localhost:3001/question/postAnswer", bodyJSON)
+    // .then((res) => {
+    //    console.log(res.data.response);
+    // })
+    // .catch((err) => {
+    //   console.log(err);
+    // });
+  }, []);
+ 
 
   async function getUpdatedAnswer() {
     await axios
@@ -87,14 +119,19 @@ function MainQuestion() {
           questionId:questionData.questionId,
           questionTitle:questionData.questionTitle,
           questionTags:questionData.tags,
+          shortdesc: shortDesc.replace(/\s/g,' '),
+          type: "answered",
           userId:"62763e62bfe0a2faeddf0270",//localStorage.getItem('userId')
           username:"harsha"//localStorage.getItem('username')
         };
         await axios
           .put("http://localhost:3001/question/postAnswer", bodyJSON)
           .then((res) => {
-             console.log(res.data);
+             console.log(res.data.response);
              setAnswer("")
+             var response=res.data.response
+             allAnswers.push(response)
+            //setAllAnswers(allAnswers.push(res.data.response))
             alert("Answer added successfully");
             //history.push("/");
           })
@@ -106,37 +143,21 @@ function MainQuestion() {
         alert("Please insert answer first!!!")
       }
   };
-  const handleSubmit1 = async () => {
-    console.log(answer)
-    // const body = {
-    //   question_id: id,
-    //   answer: answer,
-    //   user: user,
-    // };
-    // const config = {
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    // };
-
-    // await axios
-    //   .post("/api/answer", body, config)
-    //   .then(() => {
-    //     alert("Answer added successfully");
-    //     setAnswer("");
-    //     getUpdatedAnswer();
-    //   })
-    //   .catch((err) => console.log(err));
-  };
+ 
 
   return (
     <div className="main">
       <div className="main-container">
         <div className="main-top">
           <h2 className="main-question">{questionData?.questionTitle} </h2>
+          <div>
+          {isSameUser?<Link to={`/edit/${questionData.questionId}`} style={{marginRight:"20px"}}>
+            <button>Edit Question</button>
+          </Link>:""}
           <Link to="/ask">
             <button>Ask Question</button>
           </Link>
+          </div>
         </div>
         <div className="main-desc">
           <div className="info">
@@ -145,7 +166,7 @@ function MainQuestion() {
               <span>{new Date(questionData?.createdTime).toLocaleString()}</span>
             </p>
             <p>
-              Active<span>today</span>
+              Modified<span>today</span>
             </p>
             <p>
               Viewed<span>{questionData.views} times</span>
@@ -170,10 +191,10 @@ function MainQuestion() {
               fontWeight: "400",
             }}
           >
-            {questionData && questionData?.answers?.length? questionData.answers.length +" Answers":""} 
+            {questionData && allAnswers? questionData.answers.length +" Answers":""} 
           </p>
-          { questionData?.answers && questionData?.answers.map((_q) => (
-            <Answer answer={_q} question_id={questionData.questionId} question_author={isSameUser}/>
+          { questionData?.answers &&  allAnswers.map((_q) => (
+            <Answer answer={_q} question_id={questionData.questionId} question_author={true} isAcceptedAnswerId={questionData.isAcceptedAnswerId}/>
           
           ))}
         </div>
@@ -193,6 +214,7 @@ function MainQuestion() {
           body={answer}
           style={{ height: "200px" }}
           onChange={setAnswer}
+          shortText={setShortDesc}
         />
 
       </div>
