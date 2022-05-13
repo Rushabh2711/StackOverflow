@@ -149,7 +149,7 @@ class SearchController {
 
     try {
         let questions = await Posts.find({postType: "question"});
-        questions.sort((a, b) => b.addedAt - a.addedAt);
+        questions.sort((a, b) => b.modifiedAt.date - a.modifiedAt.date);
         res.status(200).send(questions);
         } catch (err) {
             console.error(err);
