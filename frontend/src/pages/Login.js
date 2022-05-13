@@ -6,18 +6,22 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Helmet } from "react-helmet";
-import { Grid } from "@mui/material";
+import { Grid, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import validator from "validator";
 import { login } from "../actions";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
+import STRINGS from "../constant";
 
 export default function Login() {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
+  // const loggedInUser = useSelector((state) => state.LoggedInUser);
+
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -45,16 +49,17 @@ export default function Login() {
         password: password,
       };
       axios
-        .post(`http://localhost:3001/user/login`, data)
-        .then((res) => {
-          console.log("Status Code : ", res.status);
-          console.log(res.data);
-          dispatch(login(res.data));
+        .post(STRINGS.url + `/user/login`, data)
+        .then((response) => {
+          console.log("Status Code : ", response.status);
+          console.log(response.data);
+          dispatch(login(response.data));
           navigate("/home");
-          console.log(res.data);
+          console.log(response.data);
         })
-        .catch((err) => {
-          // setMessage(err.res.data);
+        .catch((error) => {
+          console.log(error.response.data.errorMsg);
+          setMessage(error.response.data.errorMsg);
         });
     }
   };
@@ -113,8 +118,15 @@ export default function Login() {
     </React.Fragment>
   );
 
-  return (
+  return loggedInUser !== 0 ? (
+    loggedInUser.accountType === "admin" ? (
+      <Navigate to="/adminHome" />
+    ) : (
+      <Navigate to="/home" />
+    )
+  ) : (
     <div className="login-component">
+      <Toolbar />
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
@@ -124,11 +136,11 @@ export default function Login() {
           &nbsp;
           <Box sx={{ width: 350 }}>
             <Card variant="outlined">{card}</Card>
+            <div align="center">
+              Don’t have an account? <Link to={`/signup`}>Sign up</Link>
+            </div>
           </Box>
           <br></br>
-          <div align="center">
-            Don’t have an account? <Link to={`/signup`}>Sign up</Link>
-          </div>
         </Grid>
       </Grid>
     </div>

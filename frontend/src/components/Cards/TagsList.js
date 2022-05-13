@@ -6,9 +6,9 @@ export default function TagsList(props) {
   const tags = props.tags;
   return (
     <Stack spacing={1} direction="row">
-      {tags.map((tag) => (
+      {tags ? tags.map((tag) => (
         <Link
-          href={"/questions/tagged/" + tag}
+          href={"/question/tagged/" + tag.name}
           underline="none"
           sx={{
             padding: "2px 5px",
@@ -35,10 +35,10 @@ export default function TagsList(props) {
             }}
             textTransform="none"
           >
-            {tag}
+            {tag.name}
           </Typography>
         </Link>
-      ))}
+      )): null}
     </Stack>
   );
 }

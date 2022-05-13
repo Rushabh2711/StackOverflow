@@ -2,7 +2,12 @@ import React from "react";
 import { IconButton } from "@mui/material";
 import { Typography } from "@mui/material";
 import Link from "@mui/material/Link";
+
+import getRelativeTime from "../../utils/getRelativeTime";
 export default function CardUserInfo(props){
+
+    let { profileImageURL, userId, username, reputation, askedOn} = props.data;
+    askedOn = getRelativeTime(askedOn, new Date().toISOString());
     return(
         // <div>
         //     Hellof
@@ -11,12 +16,12 @@ export default function CardUserInfo(props){
         <div style={{ display:"flex", justifyContent:"flex-end", alignItems:"center" }}>
             
               <img
-                src="https://www.gravatar.com/avatar/c0bc039e1fa3c0e09e4c69a6d0a8c7bf?s=48&d=identicon&r=PG&f=1"
+                src={profileImageURL}
                 alt="Site Logo"
                 width="16"
                 height="16"
               />
-              <Link href="/question" underline="none" color="#0074CC" sx={{ "& :hover": { color: "#0A95FF" }}}>
+              <Link href={"/users/profile/"+userId} underline="none" color="#0074CC" sx={{ "& :hover": { color: "#0A95FF" }}}>
                   <Typography
                     variant="body1"
                     
@@ -33,7 +38,7 @@ export default function CardUserInfo(props){
                     }}
                     textTransform="none"
                   >
-                    Username
+                    {username}
                   </Typography>
                   </Link>
               <Typography
@@ -51,7 +56,7 @@ export default function CardUserInfo(props){
                 }}
                 textTransform="none"
               >
-                2963
+                {reputation}
               </Typography>
               <Typography
                 variant="body2"
@@ -67,7 +72,7 @@ export default function CardUserInfo(props){
                 }}
                 textTransform="none"
               >
-                asked 1 hr ago
+                asked {}
               </Typography>
             
         </div>

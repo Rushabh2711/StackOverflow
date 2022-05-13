@@ -4,6 +4,7 @@ import UserProfileNavbar from "../components/UserProfile/UserProfileNavbar";
 import UserActivitySidebar from "../components/UserProfile/UserActivitySidebar";
 import { Grid, Typography } from "@mui/material";
 import UserQuestions from "../components/UserProfile/UserQuestions";
+import STRINGS from "../constant";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 
@@ -14,7 +15,7 @@ export default function UserActivityQuestions() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url + `/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);

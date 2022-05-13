@@ -11,22 +11,25 @@ import Moment from "react-moment";
 import TagList from "../ViewQuestion/TagList";
 import TagsList from "../Cards/TagsList";
 import { Link } from "react-router-dom";
+import STRINGS from "../../constant";
 
 export default function TopQues(props) {
   const { id } = useParams();
   const [questions, setQuestions] = useState("");
   useEffect(() => {
     console.log(id);
-    axios.get("http://localhost:3001/get/top10MostViewedQuestions").then((response) => {
+    axios
+      .get(STRINGS.url + "/get/top10MostViewedQuestions")
+      .then((response) => {
         console.log(response.data);
-      setQuestions(response.data);
-    });
+        setQuestions(response.data);
+      });
     console.log(questions);
   }, []);
 
   return (
     <div>
-        <p>Top 10 most viewed questions.</p>
+      <p>Top 10 most viewed questions.</p>
       {questions === "" || questions.length === 0 ? (
         <List sx={{ width: "100%", bgcolor: "background.paper" }}>
           <ListItem
@@ -57,14 +60,12 @@ export default function TopQues(props) {
                     <ListItemText
                       primary={
                         <div>
-                          <div>
-                            &nbsp;{question.views} views
-                          </div>
-                          <Link to={"/view/"+question._id}>{question.questionTitle}</Link>
+                          <div>&nbsp;{question.views} views</div>
+                          <Link to={"/view/" + question._id}>
+                            {question.questionTitle}
+                          </Link>
                           <div></div>
-                          <div>
-                            
-                          </div>
+                          <div></div>
                         </div>
                       }
                     />

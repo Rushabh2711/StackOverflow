@@ -41,7 +41,9 @@ import Edit from "./pages/EditQuestion";
 
 import Layout from "./pages/Layout";
 import SearchTag from "./pages/SearchTag";
+import SearchResults from "./pages/SearchResults";
 import MainQuestion from "./components/ViewQuestion/MainQuestion";
+import AdminLayout from "./pages/admin/AdminLayout";
 
 export default function App() {
   return (
@@ -51,37 +53,41 @@ export default function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/adminHome" element={<AdminHome />} />
-          <Route path="/demo" element={<Demo />} />
-          <Route path="/adminDashboard" element={<AdminDashboard />} />
+          <Route path="/adminHome" element={<AdminLayout page={<AdminHome />} />} />
+          <Route path="/chat/:username" element={<Demo />} />
+          <Route path="/adminDashboard" element={<AdminLayout page={<AdminDashboard />}/>} />
           <Route path="/" element={<LandingPage />} />
           <Route
             path="/home"
-            element={<Layout page={<Home />} sidebarTabValue={0} />}
+            element={<Layout page={<Home />} />}
           />
           <Route
             path="/question"
-            element={<Layout page={<Question />} sidebarTabValue={2} />}
+            element={<Layout page={<Question />} />}
           />
           <Route
             path="/tags"
-            element={<Layout page={<TagsPage />} sidebarTabValue={3} />}
+            element={<Layout page={<TagsPage />} />}
           />
           <Route
             path="/users"
-            element={<Layout page={<UsersPage />} sidebarTabValue={4} />}
+            element={<Layout page={<UsersPage />}  />}
           />
           <Route
             path="/login"
-            element={<Layout page={<Login />} sidebarTabValue={4} />}
+            element={<Login />}
           />
           <Route
             path="/signup"
-            element={<Layout page={<SignUp />} sidebarTabValue={4} />}
+            element={<SignUp />}
+          />
+  <Route
+            path="/question/tagged/:tagName"
+            element={<Layout page={<SearchTag />} />}
           />
           <Route
-            path="/questions/tagged/:tagName"
-            element={<Layout page={<SearchTag />} sidebarTabValue={2} />}
+            path="/search/:searchText"
+            element={<Layout page={<SearchResults />} />}
           />
           <Route
             path="/users/profile/:id"
@@ -126,14 +132,15 @@ export default function App() {
           <Route path="/edit/:id" element={<Edit />} />
 
           <Route
-            path="/view/:id"
-            element={<Layout page={<MainQuestion />} sidebarTabValue={0} />}
+            path="/question/view/:id"
+            element={<Layout page={<MainQuestion />} />}
           />
           <Route
             path="/activity/:id"
             element={<Layout page={<Activity />} sidebarTabValue={2} />}
           />
-          <Route path="/errorpage" element={<Layout page={<ErrorPage />} />} />
+
+          <Route path="/errorpage" element={<ErrorPage />}  />
         </Routes>
       </Box>
     </div>

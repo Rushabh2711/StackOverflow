@@ -6,13 +6,14 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Helmet } from "react-helmet";
-import { Grid } from "@mui/material";
+import { Grid, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 import validator from "validator";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
+import STRINGS from "../constant";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -21,6 +22,7 @@ export default function SignUp() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
 
   const usernameChangeHandler = (e) => {
     setMessage("");
@@ -56,19 +58,28 @@ export default function SignUp() {
       };
       console.log(data);
       axios
-        .post(`http://localhost:3001/user/signup`, data)
+        .post(STRINGS.url + `/user/signup`, data)
         .then((res) => {
           console.log("Status Code : ", res.status);
           if (res.data === "Email already in use") {
             setMessage("Email already in use");
           } else {
             console.log(res.data);
-            dispatch(login(res.data));
+            axios
+              .get(STRINGS.url + `/user/` + res.data.userId)
+              .then((res) => {
+                dispatch(login(res.data[0]));
+              })
+              .catch((err) => {
+                console.log(err);
+                navigate("/errorpage");
+              });
             navigate("/home");
           }
         })
-        .catch((err) => {
-          setMessage(err.res.data);
+        .catch((error) => {
+          console.log(error.response.data.errorMsg);
+          setMessage(error.response.data.errorMsg);
         });
     }
   };
@@ -150,8 +161,11 @@ export default function SignUp() {
     </React.Fragment>
   );
 
-  return (
+  return loggedInUser !== 0 ? (
+    <Navigate to="/home" />
+  ) : (
     <div className="signup-component">
+      <Toolbar />
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
@@ -169,10 +183,8 @@ export default function SignUp() {
         <Grid item xs={3}>
           <Box sx={{ width: 350 }} align="right">
             <Card variant="outlined">{card}</Card>
+            <p>Already have an account?</p> <Link to={`/login`}>Log in</Link>
           </Box>
-          <div align="center">
-            Already have an account? <Link to={`/login`}>Log in</Link>
-          </div>
         </Grid>
       </Grid>
     </div>

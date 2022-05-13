@@ -3,8 +3,8 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { Button, ButtonGroup } from "@mui/material";
 
 export default function HomeFilter(props){
-    const posts = props.posts;
-
+    let p = props.posts;
+    
     const theme = createTheme({
         palette: {
           secondary1: {
@@ -13,11 +13,16 @@ export default function HomeFilter(props){
         },
       });
 
+      const interestingFilterFunction = (data) => {
+        console.log(data);
+        // var d = data.sort((a,b) => new Date(a.askedOn).getTime() - new Date(b.askedOn).getTime());
+      }
+
       const clickMe = (e, s) => {
         console.log(e.target.id);
 
         switch(e.target.id){
-            case "interestingFilter": props.setTempPosts("interesting");break;
+            case "interestingFilter": props.setTempPosts(interestingFilterFunction(p));break;
             case "hotFilter": props.setTempPosts("hot");break;
             case "scoreFilter": props.setTempPosts("score");break;
             case "unansweredFilter": props.setTempPosts("unanswered");break;
@@ -60,9 +65,9 @@ export default function HomeFilter(props){
                         style={{ textTransform: "none", fontSize:"12px",
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif' }}
                       >
-                        Interesting
+                        Newest
                       </Button>
-                      <Button
+                      {/* <Button
                         id="hotFilter"
                         className="unselectedFilter"
                         onClick={(e) => {
@@ -72,7 +77,7 @@ export default function HomeFilter(props){
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif'}}
                       >
                         Hot
-                      </Button>
+                      </Button> */}
                       <Button
                         id="scoreFilter"
                         className="unselectedFilter"
@@ -82,9 +87,9 @@ export default function HomeFilter(props){
                         style={{ textTransform: "none", fontSize:"12px",
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif' }}
                       >
-                        Score
+                        Votes
                       </Button>
-                      <Button
+                      {/* <Button
                         id="unansweredFilter"
                         className="unselectedFilter"
                         onClick={(e) => {
@@ -94,7 +99,7 @@ export default function HomeFilter(props){
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif' }}
                       >
                         Unanswered
-                      </Button>
+                      </Button> */}
                     </ButtonGroup>
                   </ThemeProvider>
     )

@@ -12,14 +12,14 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
-import Navbar from "../components/Navbar/Navbar";
-import Sidebar from "../components/Navbar/Sidebar";
-
+import Navbar from "../../components/Navbar/Navbar";
+import Sidebar from "../../components/Navbar/Sidebar";
+import AdminSidebar from "../../components/admin/SidebarAdmin";
 import { useNavigate } from "react-router";
 
 const drawerWidth = 240;
 
-export default function Layout(props) {
+export default function AdminLayout(props) {
   const [value, setValue] = React.useState(1);
 
   let navigate = useNavigate();
@@ -76,7 +76,7 @@ export default function Layout(props) {
         >
           <Toolbar />
           <Box sx={{ overflow: "auto" }}>
-            <Sidebar
+            <AdminSidebar
               setComponent={setComponent}
               tabValue={props.sidebarTabValue}
             />
