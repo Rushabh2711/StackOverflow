@@ -57,17 +57,64 @@ class QuestionController {
 
   fetchQuestionDetails = async (data) => {
     console.log(data);
+   
     const questionId = data.questionId;
     try {
       const questionDetails = await Posts.findById({ _id: questionId });
-      console.log("questionDetails",questionDetails);
+      // console.log("questionDetails",questionDetails);
 
-      const answers = await Posts.find({parentId : questionId});
+      let answers = await Posts.find({parentId : questionId});
 
       const userDetails = UserDetails.find({_id : data.userId});
 
-      const questionVotes = Votes.find({_id : questionId});
-      
+      // const votes = Votes.find({postId : questionId}).aggregate([
+      //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
+      // ]);
+
+      // for await(const doc of votes){
+      //     if(doc._id.voteType == "Upvote")
+      //     {
+      //         upvotes = doc.count;
+      //     }
+      //     if(doc._id.voteType == "Downvote" )
+      //     {
+      //         downvotes = doc.count
+      //     }
+      //     console.log("votes", doc.count, doc._id.voteType);
+      //   }
+
+      // console.log("answers",answers);
+      let answersModified = [];
+
+      for(var answer of answers)
+      {
+        const {questionTitle, postType, parentId, description, shortdesc, votes, 
+              views, numberOfAnswers,
+              addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
+        const obj = {
+            questionTitle: questionTitle,
+            postType: postType,
+            parentId: parentId,
+            description: description,
+            shortdesc: shortdesc,
+            upvotes: (await this.fetchCountAndFlag(answer._id, "Upvote")).count,
+            downvotes:(await this.fetchCountAndFlag(answer._id, "Downvote")).count,
+            upvoteFlag: (await this.fetchCountAndFlag(answer._id, "Upvote", data.userId)).flag,
+            downvoteFlag: (await this.fetchCountAndFlag(answer._id, "Downvote", data.userId)).flag,
+            views: views,
+            numberOfAnswers: numberOfAnswers,
+            addedAt: addedAt,
+            modifiedAt: modifiedAt,
+            isAcceptedAnswerId: isAcceptedAnswerId,
+            status: status,
+            isAccepted: isAccepted,
+            userId: userId,
+            comments: comments,
+            questionTags: questionTags
+        }
+         answersModified.push(obj);
+      }
+
       const result = {
         questionId: questionDetails._id,
         questionTitle: questionDetails.questionTitle,
@@ -77,8 +124,10 @@ class QuestionController {
         modifiedTime: questionDetails.modifiedTime,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
-        upvotes: questionDetails.upvotes,
-        downvotes: questionDetails.downvotes,
+        upvotes: (await this.fetchCountAndFlag(questionId, "Upvote")).count,
+        downvotes: (await this.fetchCountAndFlag(questionId, "Downvote")).count,
+        upvoteFlag: (await this.fetchCountAndFlag(questionId, "Upvote", data.userId)).flag,
+        downvoteFlag: (await this.fetchCountAndFlag(questionId, "Downvote", data.userId)).flag,
         comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
@@ -88,7 +137,7 @@ class QuestionController {
         badges: userDetails.badges,
         userId: questionDetails.userId,
         reputation: userDetails.reputation,
-        answers : answers
+        answers : answersModified
       };
       return this.responseGenerator(200, result);
     } catch (err) {
@@ -99,6 +148,24 @@ class QuestionController {
       );
     }
   };
+
+
+  fetchCountAndFlag = async (id, type, userId = "") => {
+      let count=0;
+      let flag=false;
+      let votes = await Votes.find({postId : id});
+      console.log("votes", votes);
+      for(var vote of votes)
+      {
+          console.log("vote",vote);
+          console.log(vote.voteType, "equals", type);
+          if(vote.voteType == type)  count++;
+          if(vote.userId == userId)  flag = true;
+      }
+      // console.log(count);
+      // console.log("inside ",flag)
+      return {flag: flag, count: count};
+  }
 
   addView = async (data) => {
     console.log(data);
