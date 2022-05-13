@@ -5,12 +5,23 @@ import { stringAvatar } from "../../utils/Avatar";
 import ReactQuill from "react-quill";
 import Comments from "./Comments";
 import Author from "./Author";
+import { useNavigate } from "react-router";
 
 export default function Answer(props) {
-  const { answer, question_id, question_author } = props;
+  const history = useNavigate();
+
+  const { answer, question_id, question_author,isAcceptedAnswerId } = props;
   const [answeredUser, SetansweredUser] = useState("");
-  const [isAcceptedAnswer, SetisAcceptedAnswer] = useState(answer.isAccepted);
-  const [voteCount, setvoteCount] = useState(parseInt(answer?.upvotes) - parseInt(answer?.downvotes));
+  const [isAcceptedAnswer, SetisAcceptedAnswer] = useState(false);
+  // const [voteCount, setvoteCount] = useState(parseInt(answer?.upvotes) - parseInt(answer?.downvotes));
+  const userId="62763e6cbfe0a2faeddf0272";
+  const isLoggedIn=false;
+   //const [arrayofUpvotes, setarrayofUpvotes] = useState(["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]);
+  //const [arrayofDownvotes, setarrayofDownvotes] = useState(["62763e54bfe0a2faeddf026e"]);
+  var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
+var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
+const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
+
   // useEffect(() => {
   //   const body = {
   //     user_id: answer.user_id,
@@ -32,41 +43,72 @@ export default function Answer(props) {
     });
 
   }, [answer]);
+  // useEffect(() => {
+  //     console.log();
+  //     // console.log("isAcceptedAnswerId",JSON.stringify(props))
+  //     console.log("isAcceptedAnswerId",props.isAcceptedAnswerId)
+    
+
+  // }, []);
+  // useEffect(() => {
+  //   console.log("answer2222",isAcceptedAnswerId)
+  //  if(isAcceptedAnswerId===answer._id){
+  //   SetisAcceptedAnswer(true)
+  //  }
+  // }, [ props.isAcceptedAnswerId]);
   const votePost = async (e) => {
     const body = {
       postId: answer._id,
       // postType: "answer",
-      voteType: e.taregt.name
+      voteType: e.target.id
     }
-    await axios.post(`http://localhost:3001/votePost`, body).then((res) => {
-      console.log(res.data);
-      if (e.taregt.name === 'Upvote') {
-        setvoteCount(voteCount + 1)
-      }
-      else {
-        setvoteCount(voteCount - 1)
-      }
-    }).catch(err => {
-      console.log(err)
-    });
-  }
-  const handleAcceptAnswer = async (e) => {
-    if (question_author) {
-      const body = {
-        postId: answer._id,
-        voteType: e.taregt.name
-      }
-      await axios.post(`http://localhost:3001/votePost`, body).then((res) => {
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+      await axios.put(`http://localhost:3001/votePost`, body).then((res) => {
         console.log(res.data);
-        if(res.data){
-          SetisAcceptedAnswer(true)
+        if (e.target.id === 'Upvote') {
+          setvoteCount(voteCount + 1)
         }
-        else{
-          SetisAcceptedAnswer(false)
+        else {
+          setvoteCount(voteCount - 1)
         }
       }).catch(err => {
         console.log(err)
       });
+    }
+
+  }
+  const handleAcceptAnswer = async (e) => {
+    if (question_author) {
+      console.log("inside accpeted answer")
+      const body = {
+        answerId: answer._id,
+        questionId: question_id,
+        postType:!isAcceptedAnswer?"Accepted":"Removed"
+      }
+      if(!isLoggedIn){
+        console.log("insidde login")
+        history("/login");
+      }
+      else{
+        await axios.put(`http://localhost:3001/question/markAnswerAccepted`, body).then((res) => {
+          console.log("responce",res.data);
+          if(res.data){
+            SetisAcceptedAnswer(true)
+          }
+          else{
+            SetisAcceptedAnswer(false)
+          }
+        }).catch(err => {
+          console.log(err)
+        });
+      }
+    }
+    else{
+      alert("")
     }
   }
   return (
@@ -80,12 +122,15 @@ export default function Answer(props) {
       >
         <div className="all-questions-left">
           <div className="all-options">
-            <p className="arrow votes" name="Upvote" onClick={votePost}>▲</p>
+          {!arrayofUpvotes.includes(userId)?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
+           
+            {/* <p className="arrow votes" id="Upvote" onClick={votePost}>▲</p> */}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(answer?.upvotes) - parseInt(answer?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
+            {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
 
-            <p className="arrow votes" name="Downvote" onClick={votePost}>▼</p>
+            {/* <p className="arrow votes" id="Downvote" onClick={votePost}>▼</p> */}
             {isAcceptedAnswer ? <svg aria-hidden="true" onClick={handleAcceptAnswer} className={question_author ? "svg-Trueicon votes" : "svg-Trueicon"} color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg> :
               <svg aria-hidden="true" fill="#00000040" onClick={handleAcceptAnswer} className={question_author ? "votes" : ""} color="red" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg>}
             {/* <svg aria-hidden="true" class="svg-icon iconCheckmarkLg" width="36" height="36" viewBox="0 0 36 36"><path d="m6 14 8 8L30 6v8L14 30l-8-8v-8Z"></path></svg> */}
@@ -100,7 +145,7 @@ export default function Answer(props) {
           />
           <Author author={answeredUser} createdTime={answer?.addedAt} isQuestion={false}/>
 
-          {/* {ReactHtmlParser(answer.description)} */}{console.log("answer ID", answer._id)}
+          {/* {ReactHtmlParser(answer.description)} */}
           <Comments comments={answer?.comments} isQuestionComment={false} question_id={answer._id} answer_id={answer._id} />
           {/* <div className="comments">
                     <div className="comment">
