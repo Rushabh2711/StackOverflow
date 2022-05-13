@@ -45,7 +45,7 @@ export default function Question(props) {
     }
     if (isLoggedIn) {
       axios
-        .get(STRINGS.url + `/user/${LoggedInUser?.userId}`)
+        .get(STRINGS.url + `/user/${LoggedInUser?._id}`)
         .then((res) => {
           console.log(res.data[0]);
           if (res.data[0].bookmarkedQuestions.includes(question.questionId)) {
@@ -70,7 +70,7 @@ export default function Question(props) {
 
     const body = {
       postId: question.questionId,
-      userId: LoggedInUser ? LoggedInUser.userId : "",
+      userId: LoggedInUser ? LoggedInUser._id : "",
       postType: "question",
       voteType: e.target.id,
     };
@@ -100,7 +100,7 @@ export default function Question(props) {
   const addBookmark = async () => {
     const body = {
       questionId: question.questionId,
-      userId: LoggedInUser.userId, //localStorage.getItem("userId")
+      userId: LoggedInUser._id, //localStorage.getItem("userId")
     };
     if (!isLoggedIn) {
       console.log("insidde login");
@@ -120,7 +120,7 @@ export default function Question(props) {
   const removeBookmark = async () => {
     const body = {
       questionId: question.questionId,
-      userId: LoggedInUser.userId, //localStorage.getItem("userId")
+      userId: LoggedInUser._id, //localStorage.getItem("userId")
     };
     if (!isLoggedIn) {
       console.log("insidde login");
@@ -151,7 +151,7 @@ export default function Question(props) {
       >
         <div className="all-questions-left">
           <div className="all-options">
-            {question.userId !== LoggedInUser?.userId ? (
+            {question.userId !== LoggedInUser?._id ? (
               !upvoteFlag ? (
                 <p className="arrow votes" id="Upvote" onClick={votePost}>
                   ▲
@@ -171,7 +171,7 @@ export default function Question(props) {
             <p className="arrow" style={{ fontSize: "1.3rem" }}>
               {voteCount}
             </p>
-            {question.userId !== LoggedInUser?.userId ? (
+            {question.userId !== LoggedInUser?._id ? (
               !downvoteFlag ? (
                 <p className="arrow votes" id="Downvote" onClick={votePost}>
                   ▼

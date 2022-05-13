@@ -29,7 +29,7 @@ export default function Comments(props) {
           description: commentText,
           isQuestionComment: isQuestionComment,
           username: LoggedInUser.username,
-          userId: LoggedInUser.userId,
+          userId: LoggedInUser._id,
           // user: user,
         };
         await axios

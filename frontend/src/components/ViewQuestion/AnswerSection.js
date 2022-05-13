@@ -75,7 +75,7 @@ export default function Answer(props) {
   const votePost = async (e) => {
     const body = {
       postId: answer._id,
-      userId: LoggedInUser ? LoggedInUser.userId : "",
+      userId: LoggedInUser ? LoggedInUser._id : "",
       postType: "answer",
       voteType: e.target.id,
     };
@@ -147,7 +147,7 @@ export default function Answer(props) {
         <div className="all-questions-left">
           <div className="all-options">
             {/* {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>} */}
-            {answer.userId !== LoggedInUser?.userId ? (
+            {answer.userId !== LoggedInUser?._id ? (
               !upvoteFlag ? (
                 <p className="arrow votes" id="Upvote" onClick={votePost}>
                   ▲
@@ -170,7 +170,7 @@ export default function Answer(props) {
               {voteCount}
             </p>
             {/* {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>} */}
-            {answer.userId !== LoggedInUser?.userId ? (
+            {answer.userId !== LoggedInUser?._id ? (
               !downvoteFlag ? (
                 <p className="arrow votes" id="Downvote" onClick={votePost}>
                   ▼

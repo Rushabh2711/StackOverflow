@@ -52,7 +52,7 @@ function MainQuestion() {
     //var url=`http://localhost:3001/questions/${id}/${userId}`;
     var body = {
       questionId: id,
-      userId: LoggedInUser?.userId ? LoggedInUser.userId : "",
+      userId: LoggedInUser?._id ? LoggedInUser._id : "",
     };
     axios
       .post(STRINGS.url + `/fetch/questions`, body)
@@ -61,7 +61,7 @@ function MainQuestion() {
         console.log(res.data.response);
         setQuestionData(res.data.response);
         setAllAnswers(res.data.response.answers);
-        if (res.data.response.userId === LoggedInUser.userId) {
+        if (res.data.response.userId === LoggedInUser._id) {
           SetisSameUser(true);
         }
       })
@@ -168,7 +168,7 @@ function MainQuestion() {
           questionTags: questionData.tags,
           shortdesc: shortDesc.replace(/\s/g, " "),
           type: "answered",
-          userId: LoggedInUser.userId, //localStorage.getItem('userId')
+          userId: LoggedInUser._id, //localStorage.getItem('userId')
           // username: LoggedInUser.username//localStorage.getItem('username')
         };
         await axios
