@@ -21,7 +21,7 @@ questionRouter.put(
   questionController.postCommentToAnswer
 );
 questionRouter.get(
-  "/questions/:questionId",
+  "/questions/:questionId/:userId",
   questionController.fetchQuestionDetails
 );
 questionRouter.get(

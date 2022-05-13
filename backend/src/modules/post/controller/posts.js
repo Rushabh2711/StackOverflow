@@ -124,6 +124,7 @@ class QuestionController {
     console.log("Inside question controller, about to make Kafka request");
     const message = {};
     message.body = req.params;
+    console.log(message.body);
     message.path = req.route.path;
     make_request("post", message, (err, results) => {
       if (err) {

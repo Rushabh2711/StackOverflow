@@ -58,14 +58,15 @@ class QuestionController {
   fetchQuestionDetails = async (data) => {
     console.log(data);
    
-    const questionId = data.questionId;
+    const {questionId, userId} = data;
+    console.log("data",questionId, userId);
     try {
       const questionDetails = await Posts.findById({ _id: questionId });
       // console.log("questionDetails",questionDetails);
 
       let answers = await Posts.find({parentId : questionId});
 
-      const userDetails = UserDetails.find({_id : data.userId});
+      // const userDetails = UserDetails.find({_id : data.userId});
 
       // const votes = Votes.find({postId : questionId}).aggregate([
       //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
@@ -97,10 +98,10 @@ class QuestionController {
             parentId: parentId,
             description: description,
             shortdesc: shortdesc,
-            upvotes: (await this.fetchCountAndFlag(answer._id, "Upvote")).count,
-            downvotes:(await this.fetchCountAndFlag(answer._id, "Downvote")).count,
-            upvoteFlag: (await this.fetchCountAndFlag(answer._id, "Upvote", data.userId)).flag,
-            downvoteFlag: (await this.fetchCountAndFlag(answer._id, "Downvote", data.userId)).flag,
+            upvotes: (await this.fetchVoteCount(answer._id, "Upvote")),
+            downvotes:(await this.fetchVoteCount(answer._id, "Downvote")),
+            upvoteFlag: (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+            downvoteFlag: (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
             views: views,
             numberOfAnswers: numberOfAnswers,
             addedAt: addedAt,
@@ -124,20 +125,20 @@ class QuestionController {
         modifiedTime: questionDetails.modifiedTime,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
-        upvotes: (await this.fetchCountAndFlag(questionId, "Upvote")).count,
-        downvotes: (await this.fetchCountAndFlag(questionId, "Downvote")).count,
-        upvoteFlag: (await this.fetchCountAndFlag(questionId, "Upvote", data.userId)).flag,
-        downvoteFlag: (await this.fetchCountAndFlag(questionId, "Downvote", data.userId)).flag,
+        upvotes: (await this.fetchVoteCount(questionId, "Upvote")),
+        downvotes: (await this.fetchVoteCount(questionId, "Downvote")),
+        upvoteFlag: (await this.fetchVoteFlag(questionId, "Upvote", userId)),
+        downvoteFlag: (await this.fetchVoteFlag(questionId, "Downvote", userId)),
         comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
         isAcceptedAnswerId: questionDetails.isAcceptedAnswerId,
         questionComments: questionDetails.questionComments,
-        username: userDetails.username,
-        profilePicture: userDetails.profilePicture,
-        badges: userDetails.badges,
+        // username: userDetails.username,
+        // profilePicture: userDetails.profilePicture,
+        // badges: userDetails.badges,
         userId: questionDetails.userId,
-        reputation: userDetails.reputation,
+        // reputation: userDetails.reputation,
         answers : answersModified
       };
       return this.responseGenerator(200, result);
@@ -151,22 +152,29 @@ class QuestionController {
   };
 
 
-  fetchCountAndFlag = async (id, type, userId = "") => {
+  fetchVoteCount = async (id, type) => {
       let count=0;
-      let flag=false;
       let votes = await Votes.find({postId : id});
-      console.log("votes", votes);
+      // console.log("votes", votes);
       for(var vote of votes)
       {
-          console.log("vote",vote);
-          console.log(vote.voteType, "equals", type);
           if(vote.voteType == type)  count++;
-          if(vote.userId == userId)  flag = true;
       }
-      // console.log(count);
-      // console.log("inside ",flag)
-      return {flag: flag, count: count};
+      return count;
   }
+
+  fetchVoteFlag = async (id, type, userId) => {
+    let flag = false;
+    // console.log("postid",id , "user", userId);
+    let votes = await Votes.find({postId : id, userId : userId});
+    console.log("votes", votes);
+    for(var vote of votes)
+    {
+        console.log(vote.voteType , "equals", type);
+        if(vote.voteType == type)  flag = true;
+    }
+    return flag;
+}
 
   addView = async (data) => {
     console.log(data);
