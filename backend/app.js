@@ -40,7 +40,8 @@ io.on('connection', (socket) => {
 // );
 
 var corsOptions = {
-  origin: `http://${frontendIP}:${frontendPort}`,
+  // origin: `http://${frontendIP}:${frontendPort}`,
+  origin: `http://${frontendIP}`,
   "Access-Control-Allow-Origin": "*",
   credentials: "true",
 };
