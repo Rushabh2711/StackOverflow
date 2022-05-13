@@ -110,7 +110,7 @@ export default function UserDetails(props) {
               )? loggedUser._id===user._id ?(<div></div> ):(<div></div>)}  
             </Grid> */}
           
-            <Grid item xs={4}>
+            {isLoggedIn && (loggedUser._id !== user._id) && <Grid item xs={4}>
               <Button
                 sx={{ fontSize: 12, color: "#fafafa" }}
                 variant="contained"
@@ -118,7 +118,7 @@ export default function UserDetails(props) {
               >
                 Chat
               </Button>
-            </Grid>
+            </Grid>}
           </Grid>
 
           {user.location !== undefined ? (
