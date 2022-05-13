@@ -14,16 +14,18 @@ export default function Question(props) {
   const { question } = props;
   const [aksedQuestionUser, setAksedQuestionUser] = useState();
   const [isBookmarked, SetIsBookmarked] = useState(false);
+  const [downvoteFlag, setdownvoteFlag] = useState(false);
+  const [upvoteFlag, setupvoteFlag] = useState(false);
   const isLoggedIn=useSelector((state)=>state.isLoggedIn)
   const LoggedInUser=useSelector((state)=>state.LoggedInUser)
   //const [arrayofUpvotes, setarrayofUpvotes] = useState(["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]);
   //const [arrayofDownvotes, setarrayofDownvotes] = useState(["62763e54bfe0a2faeddf026e"]);
-  //const [voteCount, setvoteCount] = useState(parseInt(question?.upvotes) - parseInt(question?.downvotes));
+  const [voteCount, setvoteCount] = useState(parseInt(question?.upvotes) - parseInt(question?.downvotes));
   const [text, setText] = useState(props.question.description)
   const userId="62763e6cbfe0a2faeddf0272";
   var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
 var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
-const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
+//const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
 const history = useNavigate();
 
   useEffect(() => {
@@ -36,7 +38,9 @@ const history = useNavigate();
   }, [question]);
 
   useEffect(() => {
-    setText(question.description)     
+    setText(question.description)  
+    setupvoteFlag(question.upvoteFlag)   
+    setdownvoteFlag(question.downvoteFlag)   
   }, [props.question, question, question.description])
 
   const votePost = async (e) => {
@@ -44,6 +48,7 @@ const history = useNavigate();
 
     const body = {
       postId: question.questionId,
+      userId:LoggedInUser?LoggedInUser.userId:"",
       // postType: "Question",
       voteType: e.target.id
     }
@@ -57,10 +62,14 @@ const history = useNavigate();
         console.log(res.data);
         if( e.target.id==='Upvote'){
           setvoteCount(voteCount+1)
-          
+          setdownvoteFlag(false)
+          setupvoteFlag(true)
         }
         else{
           setvoteCount(voteCount-1)
+          setupvoteFlag(false)
+          setdownvoteFlag(true)
+
         }
       }).catch(err => {
         console.log(err)
@@ -115,11 +124,11 @@ const history = useNavigate();
       >
         <div className="all-questions-left">
           <div className="all-options">
-            {!arrayofUpvotes.includes(userId)?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
+            {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
-            {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
+            {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
 
             {/* {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:""} */}
            

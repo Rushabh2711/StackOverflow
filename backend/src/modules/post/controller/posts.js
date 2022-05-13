@@ -285,9 +285,12 @@ class QuestionController {
     let response;
     let query;
     let time = new Date();
+    console.log("result", req.body);
+
     try {
-      const result = await Votes.find({userId: userId, postId: postId, voteType: voteType});
-      if(result == null)
+      const result = await Votes.find({userId: userId, postId: postId});
+      console.log("result", result);
+      if(result.length == 0)
       {
           const newVote = new Votes({
             userId: userId,
@@ -297,38 +300,37 @@ class QuestionController {
           });
 
           response = await newVote.save();
-          query = voteType == "upvote" ? { $inc: { upvotesCount: 1 }} : { $inc: { downVotesCount: 1 }};
+          query = voteType == "Upvote" ? { $inc: { upvotesCount: 1 }} : { $inc: { downVotesCount: 1 }};
           console.log(result);
-          res.status(200).send(response);
       }
 
-      if(voteType == "upvote")
+      if(voteType == "Upvote")
       {
-          let isDownVotePresent = result.voteType == "downvote";
+          let isDownVotePresent = result[0].voteType == "Downvote";
     
           if(isDownVotePresent)
           {
-             response = await Votes.findOneAndUpdate(
-                {userId: userId, postId: postId, voteType: "downvote"}, 
-                {$set: {voteType : "upvote"}}
+             response = await Votes.updateOne(
+                {userId: userId, postId: postId, voteType: "Downvote"}, 
+                {$set: {voteType : "Upvote"}}
              );
           } 
           query = { $and: [ { $inc: { upvotesCount: 1 }}, { $inc: { downVotesCount: -1 }} ] }
       }
 
-      if(voteType == "downvote")
+      if(voteType == "Downvote")
       {
-          let isUpVotePresent = result.voteType == "upvote";
+          let isUpVotePresent = result[0].voteType == "Upvote";
           if(isUpVotePresent)
           {
-             response = await Votes.findOneAndUpdate(
-                {userId: userId, postId: postId, voteType: "upvote"}, 
-                {$set: {voteType : "downvote"}}
+             response = await Votes.updateOne(
+                {userId: userId, postId: postId, voteType: "Upvote"}, 
+                {$set: {voteType : "Downvote"}}
              );
           }
           query = { $and: [ { $inc: { upvotesCount: -1 }}, { $inc: { downVotesCount: 1 }} ] }  
       }
-      const userDetailsUpdateResponse = await UserDetails.updateOne({_id : userId},  query) 
+      // const userDetailsUpdateResponse = await UserDetails.updateOne({_id : userId},  query) 
       res.status(200).send(response);
     } catch (err) {
       console.error(err);

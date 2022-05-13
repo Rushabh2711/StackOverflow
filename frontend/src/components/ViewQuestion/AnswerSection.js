@@ -16,16 +16,18 @@ export default function Answer(props) {
   const [answeredUser, SetansweredUser] = useState("");
   const [isAcceptedAnswer, SetisAcceptedAnswer] = useState(false);
   const [isAcceptedAnswerId, setisAcceptedAnswerId] = useState(props.isAcceptedAnswerId);
-  // const [voteCount, setvoteCount] = useState(parseInt(answer?.upvotes) - parseInt(answer?.downvotes));
+ const [voteCount, setvoteCount] = useState(parseInt(answer?.upvotes) - parseInt(answer?.downvotes));
+ const LoggedInUser=useSelector((state)=>state.LoggedInUser)
   const userId="62763e6cbfe0a2faeddf0272";
   // const isLoggedIn=false;
   const isLoggedIn=useSelector((state)=>state.isLoggedIn)
    //const [arrayofUpvotes, setarrayofUpvotes] = useState(["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]);
   //const [arrayofDownvotes, setarrayofDownvotes] = useState(["62763e54bfe0a2faeddf026e"]);
-  var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
-var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
-const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
-
+//  var arrayofUpvotes=["62763e6cbfe0a2faeddf0272","62763e62bfe0a2faeddf0270"]
+//var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
+//const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - parseInt(arrayofDownvotes.length));
+const [downvoteFlag, setdownvoteFlag] = useState(false);
+const [upvoteFlag, setupvoteFlag] = useState(false);
   // useEffect(() => {
   //   const body = {
   //     user_id: answer.user_id,
@@ -40,7 +42,7 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
   // }, [answer,question_id]);
   useEffect(() => {
     axios.get(`http://localhost:3001/user/${answer.userId}`).then((res) => {
-      console.log(res.data[0]);
+      // console.log(res.data[0]);
       SetansweredUser(res.data[0]);
     }).catch(err => {
       console.log(err)
@@ -48,6 +50,8 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
     if(isAcceptedAnswerId===answer._id){
          SetisAcceptedAnswer(true)
       }
+      setupvoteFlag(answer.upvoteFlag)   
+      setdownvoteFlag(answer.downvoteFlag) 
   }, [answer]);
  
   // useEffect(() => {
@@ -61,6 +65,7 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
   const votePost = async (e) => {
     const body = {
       postId: answer._id,
+      userId:LoggedInUser?LoggedInUser.userId:"",
       // postType: "answer",
       voteType: e.target.id
     }
@@ -73,9 +78,13 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
         console.log(res.data);
         if (e.target.id === 'Upvote') {
           setvoteCount(voteCount + 1)
+          setdownvoteFlag(false)
+          setupvoteFlag(true)
         }
         else {
           setvoteCount(voteCount - 1)
+          setupvoteFlag(false)
+          setdownvoteFlag(true)
         }
       }).catch(err => {
         console.log(err)
@@ -124,13 +133,13 @@ const [voteCount, setvoteCount] = useState(parseInt(arrayofUpvotes.length) - par
       >
         <div className="all-questions-left">
           <div className="all-options">
-          {!arrayofUpvotes.includes(userId)?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
+          {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
            
             {/* <p className="arrow votes" id="Upvote" onClick={votePost}>▲</p> */}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(answer?.upvotes) - parseInt(answer?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
-            {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
+            {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
 
             {/* <p className="arrow votes" id="Downvote" onClick={votePost}>▼</p> */}
             {question_author?

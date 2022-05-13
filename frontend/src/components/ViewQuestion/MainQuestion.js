@@ -38,14 +38,22 @@ function MainQuestion() {
   const isLoggedIn=useSelector((state)=>state.isLoggedIn)
   const LoggedInUser=useSelector((state)=>state.LoggedInUser)
   const history = useNavigate();
-
+  const [isAdmin, setisAdmin] = useState(false);
   const handleQuill = (value) => {
     setAnswer(value);
   };
+  
   useEffect(() => {
     console.log("inside")
+   // const userId=LoggedInUser?LoggedInUser?.userId:""
+    //var url=`http://localhost:3001/questions/${id}/${userId}`;
+    var body={
+      questionId:id,
+      userId:LoggedInUser?.userId?LoggedInUser.userId:""
+    }
           axios
-           .get(`http://localhost:3001/questions/${id}`)
+          .post(`http://localhost:3001/fetch/questions`,body)
+          //.get(`${ur}`)
            .then((res) => {
             console.log(res.data.response); 
             setQuestionData(res.data.response)
@@ -64,8 +72,23 @@ function MainQuestion() {
     console.log(questionData.userId===LoggedInUser.userId)
     
    // SetisSameUser(true)
-   
+   if (LoggedInUser?.accountType === "admin") {
+    setisAdmin(true)
+  }
+  setisAdmin(true)
+ 
   }, [id]);
+  // useEffect(() => {
+  //   console.log("inside")
+  //   const body={
+  //     questionId:id
+  //   }
+  //         axios
+  //          .post(`http://localhost:3001/question/addView`,body)
+  //          .then((res) => {
+  //         })
+  //          .catch((err) => console.log(err));
+  // }, []);
 
   useEffect(() => {
     console.log("inside dispatch")
@@ -163,7 +186,27 @@ function MainQuestion() {
     }
      
   };
- 
+  const approveQuestion = async (e) => {
+    e.preventDefault();
+    if (isLoggedIn) {
+      const bodyJSON = {
+        postId: id
+      };
+      await axios
+        .put("http://localhost:3001/update/question/status", bodyJSON)
+        .then((res) => {
+          console.log(res.data);
+          alert("Question approved");
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    else {
+      history("/login");
+    }
+    
+  };
 
   return (
     <div className="main">
@@ -171,6 +214,9 @@ function MainQuestion() {
         <div className="main-top">
           <h2 className="main-question">{questionData?.questionTitle} </h2>
           <div>
+          {isAdmin?
+              <button onClick={approveQuestion} style={{marginRight:"20px"}}>Approve Question</button>
+               :""}
           {isSameUser?<Link to={`/edit/${questionData.questionId}`} style={{marginRight:"20px"}}>
             <button>Edit Question</button>
           </Link>:""}

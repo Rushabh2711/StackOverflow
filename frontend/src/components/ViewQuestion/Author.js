@@ -27,7 +27,7 @@ export default function Author(props) {
         height: 70
       }}
     >
-      <Card sx={{ width: 200, boxShadow: 0 }} style={isQuestion?{backgroundColor:"#88caf366"}:{}}>
+      <Card sx={{ width: 210, boxShadow: 0 }} style={isQuestion?{backgroundColor:"#88caf366"}:{}}>
         <CardContent>
           <Grid item container  >
             <Grid item xs={12}>
@@ -40,14 +40,14 @@ export default function Author(props) {
             </Grid>
             <Grid item xs={7} sx={{ textAlign: "left", ml: -3 }}>
               <Typography variant="body2" component="div" sx={{color:"blue"}} className="votes">
-                <Link to="" style={{textDecoration:"none"}}>{author?.username}</Link>
+                <Link to={`/users/profile/${author?._id}`} style={{textDecoration:"none"}}>{author?.username}</Link>
               </Typography>
               <span style={{ fontSize: "0.7rem", marginLeft: "0px", marginTop: "-1px", paddingRight: "10px" }}>{author?.reputation}</span>
-              <span className="" title="badges" aria-hidden="true">
+              {/* <span className="" title="badges" aria-hidden="true">
                 <span className="badge1"></span><span className="badgecount">8</span>
                 <span className="badge2"></span><span className="badgecount">10</span>
                 <span className="badge3"></span><span className="badgecount">11</span>
-              </span>
+              </span> */}
               {
          author?.badges?.length > 0 ?
            <span className="userBadges_queans" title="badges" aria-hidden="true">
