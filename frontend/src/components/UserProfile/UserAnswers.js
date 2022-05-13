@@ -10,6 +10,7 @@ import axios from "axios";
 import questionsJson from "../../dummydata/questions.json";
 import Moment from "react-moment";
 import TagList from "../ViewQuestion/TagList";
+import { Link } from "react-router-dom";
 
 export default function UserAnswers(props) {
   const { id } = useParams();
@@ -20,6 +21,7 @@ export default function UserAnswers(props) {
     axios
       .get("http://localhost:3001/user/answersAnswered/" + id)
       .then((response) => {
+        console.log(response.data);
         setAnswers(
           response.data
             .filter((x) => x.postType === "answer")
@@ -47,7 +49,7 @@ export default function UserAnswers(props) {
               gutterBottom
               align="left"
             >
-              You currently have no answers
+              No answers given.
             </Typography>
           </ListItem>
         </List>
@@ -81,7 +83,14 @@ export default function UserAnswers(props) {
                               <di></di>
                             )}
                           </div>
-                          <div>{answer.questionTitle}</div>
+                          <div>
+                            <Link
+                              to={"/view/" + answer.parentId}
+                              style={{ textDecoration: "none" }}
+                            >
+                              {answer.questionTitle}
+                            </Link>
+                          </div>
                           <div>
                             <Grid container spacing={2}>
                               <Grid item xs={9}>

@@ -28,7 +28,7 @@ export default function UserEditProfile() {
   const [message, setMessage] = useState("");
   const { id } = useParams();
   let navigate = useNavigate();
-  const loggedInUser = useSelector((state) => state.LoggedInUser.userId);
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
 
   //city change handler to update state variable with the text entered by the user
   const cityChangeHandler = (e) => {
@@ -49,6 +49,7 @@ export default function UserEditProfile() {
   };
 
   useEffect(() => {
+    console.log(loggedInUser.userId);
     axios
       .get(`http://localhost:3001/user/` + id)
       .then((res) => {
@@ -57,6 +58,7 @@ export default function UserEditProfile() {
         console.log(res.data[0].city);
         console.log(res.data[0].country);
         setCity(res.data[0].location.city);
+        setImage(res.data[0].proFilePicture);
         setCountry(res.data[0].location.country);
         setabout(res.data[0].about);
       })
@@ -136,6 +138,17 @@ export default function UserEditProfile() {
                 }}
                 align="left"
               >
+                <img
+                  style={{
+                    position: "sticky",
+                    height: "130px",
+                    width: "130px",
+                  }}
+                  src={image ? image : "/images/userdefault.png"}
+                  className="card-img-top"
+                  alt="description of image"
+                  margin-top="2"
+                />
                 <h6>Profile Image</h6>
                 <input type="file" name="myImage" />
                 <Typography
