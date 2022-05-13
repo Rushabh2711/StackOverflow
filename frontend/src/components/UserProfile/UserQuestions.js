@@ -103,7 +103,7 @@ export default function UserQuestions(props) {
                             &nbsp;{question.views} views
                           </div>
                           <Link
-                            to={"/view/" + question._id}
+                            to={"/question/view/" + question._id}
                             style={{ textDecoration: "none" }}
                           >
                             {question.questionTitle}

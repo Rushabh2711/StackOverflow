@@ -98,7 +98,7 @@ export default function UserActivityReputation() {
                 .map((e) => (
                   <Typography>
                     <Link
-                      to={"/view/" + e.postId}
+                      to={"/question/view/" + e.postId}
                       style={{ textDecoration: "none" }}
                     >
                       {e.questionTitle}
