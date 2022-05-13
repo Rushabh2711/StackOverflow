@@ -285,35 +285,53 @@ class QuestionController {
   votePost = async (req, res) => {
     const { userId, voteType, postId} = req.body;
     let response;
+    let query;
     let time = new Date();
     try {
       const result = await Votes.find({userId: userId, postId: postId, voteType: voteType});
-      console.log(result);
-      if(result && result.length > 0)
+      if(result == null)
       {
-        res.status(200).send("User already performed" + voteType + "on this post" + postId);
-      }
-      else
-      {
-        const newVote = new Votes({
-          userId: userId,
-          voteType: voteType,
-          postId: postId,
-          creationDate: time.toISOString()
-        });
-  
-        const response = await newVote.save();
-        res.status(200).send(response);
-      }
-        // const filter = { _id: postId };
-        // const update =
-        //   voteType == "Upvote"
-        //     ? { $inc: { upvotes: 1 } }
-        //     : { $inc: { downvotes: 1 } };
+          const newVote = new Votes({
+            userId: userId,
+            voteType: voteType,
+            postId: postId,
+            creationDate: time.toISOString()
+          });
 
-        // response = await Posts.findOneAndUpdate(filter, update,{
-        //   upsert: true, new: true
-        // });
+          response = await newVote.save();
+          query = voteType == "upvote" ? { $inc: { upvotesCount: 1 }} : { $inc: { downVotesCount: 1 }};
+          console.log(result);
+          res.status(200).send(response);
+      }
+
+      if(voteType == "upvote")
+      {
+          let isDownVotePresent = result.voteType == "downvote";
+    
+          if(isDownVotePresent)
+          {
+             response = await Votes.findOneAndUpdate(
+                {userId: userId, postId: postId, voteType: "downvote"}, 
+                {$set: {voteType : "upvote"}}
+             );
+          } 
+          query = { $and: [ { $inc: { upvotesCount: 1 }}, { $inc: { downVotesCount: -1 }} ] }
+      }
+
+      if(voteType == "downvote")
+      {
+          let isUpVotePresent = result.voteType == "upvote";
+          if(isUpVotePresent)
+          {
+             response = await Votes.findOneAndUpdate(
+                {userId: userId, postId: postId, voteType: "upvote"}, 
+                {$set: {voteType : "downvote"}}
+             );
+          }
+          query = { $and: [ { $inc: { upvotesCount: -1 }}, { $inc: { downVotesCount: 1 }} ] }  
+      }
+      const userDetailsUpdateResponse = await UserDetails.updateOne({_id : userId},  query) 
+      res.status(200).send(response);
     } catch (err) {
       console.error(err);
       res.status(400).send(err);
@@ -364,6 +382,8 @@ class QuestionController {
           new: true,
         }
       );
+
+      await UserDetails.updateOne({_id : userId},  {$inc : {commentsCount : 1}});
       console.log("comment successfully added", response);
       res.status(200).send(response.comments);
     } catch (err) {
@@ -399,7 +419,7 @@ class QuestionController {
     try {
       let question = await Posts.findOneAndUpdate({_id : questionId}, 
           {
-            "$set" : {isAcceptedAnswerId : answerId, isAccepted : true }
+            $set : {isAcceptedAnswerId : answerId, isAccepted : true }
           },
           {new : true}
         );

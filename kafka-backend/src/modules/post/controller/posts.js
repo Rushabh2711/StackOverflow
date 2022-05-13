@@ -2,6 +2,7 @@
 import Posts from "../../../db/models/mongo/posts.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
+import Votes from "../../../db/models/mongo/votes.js"
 import moment from "moment";
 
 class QuestionController {
@@ -64,6 +65,8 @@ class QuestionController {
       const answers = await Posts.find({parentId : questionId});
 
       const userDetails = UserDetails.find({_id : data.userId});
+
+      const questionVotes = Votes.find({_id : questionId})
 
       const result = {
         questionId: questionDetails._id,
@@ -171,6 +174,8 @@ class QuestionController {
       }, {
         upsert: true, new: true
       });
+
+      await UserDetails.updateOne({_id : userId},  {$inc : {commentsCount : 1}});
       console.log("comment successfully added to answer",answerId)
       res.status(200).send(response.comments);
     } catch (err) {
