@@ -1,4 +1,4 @@
-export function roundOffNumber(num) {
+ export default function roundOffNumber(num) {
   const lookup = [
     { value: 1, symbol: "", digits: 0 },
     { value: 1e3, symbol: "k", digits: 0 },
@@ -15,15 +15,15 @@ export function roundOffNumber(num) {
   return item ? (num / item.value).toFixed(item.digits).replace(rx, "$1") + item.symbol : "0";
 }
 
-// /*
-//  * Tests
-//  */
+/*
+ * Tests
+ */
 // const tests = [
 //   { num: 0, digits: 1 },
-//   { num: 1000, digits: 1 },
-//   { num: 989, digits: 1 },
+//   { num: -1000, digits: 1 },
+//   { num: -989, digits: 1 },
 //   { num: 100000000, digits: 1 },
-//   { num: 299792458, digits: 1 },
+//   { num: -299792458, digits: 1 },
 //   { num: 759878, digits: 1 },
 //   { num: 759878, digits: 0 },
 //   { num: 123, digits: 1 },
@@ -32,5 +32,5 @@ export function roundOffNumber(num) {
 //   { num: 123.456, digits: 4 }
 // ];
 // tests.forEach(function(test) {
-//   console.log("nFormatter(" + test.num + ", " + test.digits + ") = " + nFormatter(test.num, test.digits));
+//   console.log("nFormatter(" + test.num + ", " + test.digits + ") = " + roundOffNumber(test.num, test.digits));
 // });

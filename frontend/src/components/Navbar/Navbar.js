@@ -10,6 +10,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
+import CloseIcon from '@mui/icons-material/Close';
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 import { Link } from "@mui/material";
@@ -25,7 +26,7 @@ import { blue } from "@mui/material/colors";
 import { withTheme } from "@emotion/react";
 
 import InboxIcon from "@mui/icons-material/Inbox";
-import Sidebar from "./Sidebar";
+import Sidebar from "./MiniSidebar";
 
 import { useNavigate } from "react-router";
 
@@ -165,6 +166,7 @@ export default function Navbar(props) {
 
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [tabValue, setTabValue] = React.useState(0);
   const isMenuOpen = Boolean(anchorEl);
   const handleProfileMenuOpen = (event) => {
     if (anchorEl) {
@@ -178,6 +180,7 @@ export default function Navbar(props) {
   };
 
   const setComponent = (value) => {
+    setTabValue(value);
     if (value == 0) {
       //it is home page
       var url = "/home";
@@ -222,6 +225,14 @@ export default function Navbar(props) {
     </Menu>
   );
 
+  const [searchQuery, setSearchQuery] = React.useState("");
+
+  const submitSearch = (e) => {
+    if(e.keyCode == 13){
+      var url = "/search/" + searchQuery;
+      navigate(url);
+    }
+  }
   return (
     <div>
       {/* <Box sx={{ flexGrow: 1 }}> */}
@@ -265,7 +276,8 @@ export default function Navbar(props) {
               }}
               onClick={handleProfileMenuOpen}
             >
-              <MenuIcon sx={{ color: "black", height: "30px" }} />
+              {anchorEl === null ? <MenuIcon sx={{ color: "black", height: "30px" }} /> : <CloseIcon sx={{ color: "black", height: "30px" }} />}
+              
               {renderMenu}
             </IconButton>
           ) : null}
@@ -288,6 +300,7 @@ export default function Navbar(props) {
                 backgroundColor: "grey",
               },
             }}
+            onClick={() => { navigate('/')}}
           >
             <img
               src="https://stackoverflow.design/assets/img/logos/so/logo-stackoverflow.png"
@@ -425,7 +438,7 @@ export default function Navbar(props) {
               sx={{ flexGrow: 1 }}
             >
               <BootstrapInput
-                defaultValue=""
+                defaultValue={searchQuery}
                 placeholder="Search..."
                 id="bootstrap-input"
                 InputProps={{
@@ -438,6 +451,8 @@ export default function Navbar(props) {
                     </InputAdornment>
                   ),
                 }}
+                onKeyDown={(e) => submitSearch(e)}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </FormControl>
           </BootstrapTooltip>
@@ -455,6 +470,7 @@ export default function Navbar(props) {
                 borderColor: "#7AA7C7",
                 "&:hover": { color: "#1976D2", backgroundColor: "#E3F2FD" },
               }}
+              onClick={() => { navigate('/login')}}
             >
               Log In
             </Button>
@@ -472,6 +488,7 @@ export default function Navbar(props) {
                 borderColor: "#7AA7C7",
                 "&:hover": { color: "#FFFFFF", backgroundColor: "#0074CC" },
               }}
+              onClick={() => { navigate('/signup')}}
             >
               Sign Up
             </Button>

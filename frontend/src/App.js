@@ -53,31 +53,31 @@ export default function App() {
           <Route path="/" element={<LandingPage />} />
           <Route
             path="/home"
-            element={<Layout page={<Home />} sidebarTabValue={0} />}
+            element={<Layout page={<Home />} />}
           />
           <Route
             path="/question"
-            element={<Layout page={<Question />} sidebarTabValue={2} />}
+            element={<Layout page={<Question />} />}
           />
           <Route
             path="/tags"
-            element={<Layout page={<TagsPage />} sidebarTabValue={3} />}
+            element={<Layout page={<TagsPage />} />}
           />
           <Route
             path="/users"
-            element={<Layout page={<UsersPage />} sidebarTabValue={4} />}
+            element={<Layout page={<UsersPage />}  />}
           />
           <Route
             path="/login"
-            element={<Layout page={<Login />} sidebarTabValue={4} />}
+            element={<Login />}
           />
           <Route
             path="/signup"
-            element={<Layout page={<SignUp />} sidebarTabValue={4} />}
+            element={<SignUp />}
           />
   <Route
-            path="/questions/tagged/:tagName"
-            element={<Layout page={<SearchTag />} sidebarTabValue={2} />}
+            path="/question/tagged/:tagName"
+            element={<Layout page={<SearchTag />} />}
           />
           <Route
             path="/users/profile/:id"
@@ -120,11 +120,11 @@ export default function App() {
           />
           <Route path="/ask" element={<Add />} />
           <Route
-            path="/view/:id"
-            element={<Layout page={<MainQuestion />} sidebarTabValue={0} />}
+            path="/question/view/:id"
+            element={<Layout page={<MainQuestion />} />}
           />
 
-          <Route path="/errorpage" element={<Layout page={<ErrorPage />} />} />
+          <Route path="/errorpage" element={<ErrorPage />}  />
         </Routes>
       </Box>
     </div>

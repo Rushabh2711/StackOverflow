@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Helmet } from "react-helmet";
-import { Grid } from "@mui/material";
+import { Grid, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function SignUp() {
@@ -39,7 +39,7 @@ export default function SignUp() {
         >
           Password
         </Typography>
-        <TextField id="basic" sx={{ width: 320 }} />
+        <TextField id="basic" sx={{ width: 320 }} type="password" />
         <Typography
           sx={{ fontSize: 13, color: "#212121" }}
           color="text.secondary"
@@ -61,6 +61,7 @@ export default function SignUp() {
 
   return (
     <div className="signup-component">
+      <Toolbar/>
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
@@ -79,8 +80,8 @@ export default function SignUp() {
           <Box sx={{ width: 350 }} align="right">
             <Card variant="outlined">{card}</Card>
           </Box>
-          <div align="center">
-            Already have an account? <Link to={`/login`}>Log in</Link>
+          <div>
+            <p>Already have an account?</p> <Link to={`/login`}>Log in</Link>
           </div>
         </Grid>
       </Grid>

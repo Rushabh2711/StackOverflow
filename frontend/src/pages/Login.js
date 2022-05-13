@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Helmet } from "react-helmet";
-import { Grid } from "@mui/material";
+import { Grid, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Login() {
@@ -30,7 +30,7 @@ export default function Login() {
         >
           Password
         </Typography>
-        <TextField id="basic" sx={{ width: 320 }} />
+        <TextField id="basic" sx={{ width: 320 }} type="password" />
         &nbsp;
         <Button
           sx={{ fontSize: 20, width: 320, color: "#fafafa" }}
@@ -44,6 +44,7 @@ export default function Login() {
 
   return (
     <div className="login-component">
+      <Toolbar/>
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
