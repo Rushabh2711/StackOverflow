@@ -96,7 +96,7 @@ function Edit() {
         .then((res) => {
           console.log(res.data);
           alert("Question updated successfully");
-          history(`/view/${id}`);
+          history(`/question/view/${id}`);
         })
         .catch((err) => {
           console.log(err);

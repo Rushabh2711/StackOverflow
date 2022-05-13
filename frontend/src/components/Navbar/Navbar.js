@@ -10,7 +10,7 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import { IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import { Button } from "@mui/material";
 import { Typography } from "@mui/material";
 import { Link } from "@mui/material";
@@ -31,6 +31,8 @@ import Sidebar from "./MiniSidebar";
 import { useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../actions";
+import axios from "axios";
+import STRINGS from "../../constant";
 //Configuring Style for SearchBar Elements
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -166,10 +168,25 @@ export default function Navbar(props) {
   let navigate = useNavigate();
   const dispatch = useDispatch();
   const setLogout = () => {
-    dispatch(logout());
-  }
+    let time = new Date();
+    const data = {
+      _id: user._id,
+      visitedTime: time.toISOString(),
+    };
+    axios
+      .put(STRINGS.url + "/user/updatevisitedtime", data)
+      .then((res) => {
+        console.log(res.data);
+        dispatch(logout());
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  
+  const user = useSelector((state) => state.LoggedInUser);
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [tabValue, setTabValue] = React.useState(0);
@@ -261,17 +278,17 @@ export default function Navbar(props) {
       open={isMenu2Open}
       onClose={handleMenu2Close}
     >
-       <MenuItem onClick={() => setLogout()}>Logout</MenuItem>
+      <MenuItem onClick={() => setLogout()}>Logout</MenuItem>
     </Menu>
   );
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const submitSearch = (e) => {
-    if(e.keyCode == 13){
+    if (e.keyCode == 13) {
       var url = "/search/" + searchQuery;
       navigate(url);
     }
-  }
+  };
   return (
     <div>
       {/* <Box sx={{ flexGrow: 1 }}> */}
@@ -315,8 +332,12 @@ export default function Navbar(props) {
               }}
               onClick={handleProfileMenuOpen}
             >
-              {anchorEl === null ? <MenuIcon sx={{ color: "black", height: "30px" }} /> : <CloseIcon sx={{ color: "black", height: "30px" }} />}
-              
+              {anchorEl === null ? (
+                <MenuIcon sx={{ color: "black", height: "30px" }} />
+              ) : (
+                <CloseIcon sx={{ color: "black", height: "30px" }} />
+              )}
+
               {renderMenu}
             </IconButton>
           ) : null}
@@ -339,7 +360,9 @@ export default function Navbar(props) {
                 backgroundColor: "grey",
               },
             }}
-            onClick={() => { isLoggedIn ? navigate('/home'): navigate('/')}}
+            onClick={() => {
+              isLoggedIn ? navigate("/home") : navigate("/");
+            }}
           >
             <img
               src="https://stackoverflow.design/assets/img/logos/so/logo-stackoverflow.png"
@@ -509,7 +532,9 @@ export default function Navbar(props) {
                 borderColor: "#7AA7C7",
                 "&:hover": { color: "#1976D2", backgroundColor: "#E3F2FD" },
               }}
-              onClick={() => { navigate('/login')}}
+              onClick={() => {
+                navigate("/login");
+              }}
             >
               Log In
             </Button>
@@ -527,7 +552,9 @@ export default function Navbar(props) {
                 borderColor: "#7AA7C7",
                 "&:hover": { color: "#FFFFFF", backgroundColor: "#0074CC" },
               }}
-              onClick={() => { navigate('/signup')}}
+              onClick={() => {
+                navigate("/signup");
+              }}
             >
               Sign Up
             </Button>
@@ -761,7 +788,6 @@ export default function Navbar(props) {
               >
                 <path d="M15 1H3a2 2 0 0 0-2 2v2h16V3a2 2 0 0 0-2-2ZM1 13c0 1.1.9 2 2 2h8v3l3-3h1a2 2 0 0 0 2-2v-2H1v2Zm16-7H1v4h16V6Z"></path>
               </svg>
-              
             </IconButton>
           ) : null}
         </Toolbar>

@@ -84,7 +84,7 @@ export default function UserAnswers(props) {
                           </div>
                           <div>
                             <Link
-                              to={"/view/" + answer.parentId}
+                              to={"/question/view/" + answer.parentId}
                               style={{ textDecoration: "none" }}
                             >
                               {answer.questionTitle}

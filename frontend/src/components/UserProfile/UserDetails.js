@@ -7,9 +7,13 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Moment from "react-moment";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 export default function UserDetails(props) {
   const { user } = props;
+  const loggedUser = useSelector((state) => state.LoggedInUser);
+
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
   const navigate = useNavigate();
   const chat = (e) => {
@@ -92,6 +96,20 @@ export default function UserDetails(props) {
                 Last seen <Moment fromNow>{user.visitedTime}</Moment>
               </Typography>
             </Grid>
+
+            {/* { isLoggedIn===false ?(
+                          <Grid item xs={4}>
+              <Button
+                sx={{ fontSize: 12, color: "#fafafa" }}
+                variant="contained"
+                onClick={chat}
+              >
+                Chat
+              </Button>
+              </Grid>
+              )? loggedUser._id===user._id ?(<div></div> ):(<div></div>)}  
+            </Grid> */}
+          
             <Grid item xs={4}>
               <Button
                 sx={{ fontSize: 12, color: "#fafafa" }}
