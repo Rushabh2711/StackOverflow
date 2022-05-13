@@ -29,12 +29,14 @@ var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
 const history = useNavigate();
 
   useEffect(() => {
+    if(question.userId){
     axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
       console.log(res.data[0]);
       setAksedQuestionUser(res.data[0]);
     }).catch(err => {
       console.log(err)
     });
+  }
     if(isLoggedIn){
       axios.get(`http://localhost:3001/user/${LoggedInUser?.userId}`).then((res) => {
         console.log(res.data[0]);
@@ -138,11 +140,11 @@ const history = useNavigate();
       >
         <div className="all-questions-left">
           <div className="all-options">
-            {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
+            { (question.userId!==LoggedInUser?.userId)? !upvoteFlag ?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>:<p className="arrow" id="Upvote">▲</p>}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
-            {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
+            {(question.userId!==LoggedInUser?.userId)?!downvoteFlag ?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>:<p className="arrow " id="Downvote">▼</p>}
 
             {/* {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:""} */}
            

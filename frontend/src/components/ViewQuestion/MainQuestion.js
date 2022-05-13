@@ -92,24 +92,24 @@ function MainQuestion() {
   // }, []);
 
   useEffect(() => {
-    console.log("inside dispatch")
-    var body = {
-      questionId: id,
-      userId: LoggedInUser?.userId ? LoggedInUser.userId : ""
-    }
-    axios
-      .post(`http://localhost:3001/fetch/questions`, body)
-      .then((res) => {
-        console.log(res.data.response);
-        //  setQuestionData(res.data.response)
-        setAllAnswers(res.data.response.answers)
-        dispatch(bestAnswerUpdated(false))
-        setQuestionData(res.data.response)
-        if (res.data.response.userId === LoggedInUser.userId) {
-          SetisSameUser(true)
-        }
-      })
-      .catch((err) => console.log(err));
+    // console.log("inside dispatch")
+    // var body = {
+    //   questionId: id,
+    //   userId: LoggedInUser?.userId ? LoggedInUser.userId : ""
+    // }
+    // axios
+    //   .post(`http://localhost:3001/fetch/questions`, body)
+    //   .then((res) => {
+    //     console.log(res.data.response);
+    //     //  setQuestionData(res.data.response)
+    //     setAllAnswers(res.data.response.answers)
+    //     dispatch(bestAnswerUpdated(false))
+    //     setQuestionData(res.data.response)
+    //     if (res.data.response.userId === LoggedInUser.userId) {
+    //       SetisSameUser(true)
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
     // console.log("data",questionData)
   }, [bestAnswerUpdated1]);
   // useEffect(() => {
@@ -171,7 +171,7 @@ function MainQuestion() {
           shortdesc: shortDesc.replace(/\s/g, ' '),
           type: "answered",
           userId: LoggedInUser.userId,//localStorage.getItem('userId')
-          username: LoggedInUser.username//localStorage.getItem('username')
+         // username: LoggedInUser.username//localStorage.getItem('username')
         };
         await axios
           .put("http://localhost:3001/question/postAnswer", bodyJSON)
@@ -179,7 +179,8 @@ function MainQuestion() {
             console.log(res.data.response);
             setAnswer("")
             var response = res.data.response
-            allAnswers.push(response)
+            var res1={...response,username:"virag"}
+            allAnswers.push(res1)
             //setAllAnswers(allAnswers.push(res.data.response))
             alert("Answer added successfully");
             //history.push("/");

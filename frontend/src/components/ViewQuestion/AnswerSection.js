@@ -61,7 +61,11 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
   //  }
   // }, [ props.isAcceptedAnswerId]);
 
-  
+  useEffect(() => {
+    setupvoteFlag(answer.upvoteFlag)   
+    setdownvoteFlag(answer.downvoteFlag)   
+  }, [props.question])
+
   const votePost = async (e) => {
     const body = {
       postId: answer._id,
@@ -134,13 +138,15 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
       >
         <div className="all-questions-left">
           <div className="all-options">
-          {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
+          {/* {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>} */}
+          { (answer.userId!==LoggedInUser?.userId)? !upvoteFlag ?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>:<p className="arrow" id="Upvote">▲</p>}
            
             {/* <p className="arrow votes" id="Upvote" onClick={votePost}>▲</p> */}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{parseInt(answer?.upvotes) - parseInt(answer?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
-            {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
+            {/* {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>} */}
+            {(answer.userId!==LoggedInUser?.userId)?!downvoteFlag ?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>:<p className="arrow " id="Downvote">▼</p>}
 
             {/* <p className="arrow votes" id="Downvote" onClick={votePost}>▼</p> */}
             {question_author?
