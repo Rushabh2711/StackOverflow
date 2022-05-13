@@ -75,19 +75,19 @@ export default function Home() {
     return data.sort((a,b) => new Date(b.modifiedAt.time).getTime() - new Date(a.modifiedAt.time).getTime());
   }
 
-  const hotFilterFunction = async (data) => {
+  const hotFilterFunction = (data) => {
     console.log(data)
-    data = await data.filter((a) => a.questionTitle.includes("What"));
+    data = data.sort((a,b) => a.todayViews - b.todayViews);
     console.log(data) 
     return data;  
   }
 
-  const scoreFilterFunction = async (data) => {
+  const scoreFilterFunction = (data) => {
     console.log(data)
-    return data.sort((a,b) => (a.upvotes-a.downvotes) - (b.upvotes,b.downvotes));  
+    return data.sort((a,b) => (b.upvotes,b.downvotes) - (a.upvotes-a.downvotes) );  
   }
 
-  const unansweredFilterFunction = async (data) => {
+  const unansweredFilterFunction = (data) => {
     console.log(data);
     data = data.filter((d) => d.numberOfAnswers === 0);
     data = data.sort((a,b) => (a.upvotes-a.downvotes) - (b.upvotes,b.downvotes))
@@ -150,7 +150,7 @@ export default function Home() {
                     }}
                     textTransform="none"
                   >
-                    All Questions
+                    Top Questions
                   </Typography>
                 </Item>
               </Grid>
