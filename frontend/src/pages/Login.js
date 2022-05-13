@@ -118,10 +118,14 @@ export default function Login() {
   );
 
   return loggedInUser !== 0 ? (
-    <Navigate to="/home" />
+    loggedInUser.accountType === "admin" ? (
+      <Navigate to="/adminHome" />
+    ) : (
+      <Navigate to="/home" />
+    )
   ) : (
     <div className="login-component">
-      <Toolbar/>
+      <Toolbar />
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
