@@ -3,7 +3,6 @@ const Schema = mongoose.Schema;
 
 const userActivitySchema = new Schema({
   postId: { type: Schema.Types.ObjectId, ref: "post" },
-  postTitle: {type: String, required: true},//check with utkarsh
   activityType: { type: String, required: true },
   points: {type: Number, required: true},
   date: { type: Date, required: true },
@@ -13,5 +12,5 @@ const userActivitySchema = new Schema({
   },
 });
 
-const userActivities = mongoose.model("userActivity", userActivitySchema);
-export default userActivities;
+const UserActivities = mongoose.model("userActivity", userActivitySchema);
+export default UserActivities;

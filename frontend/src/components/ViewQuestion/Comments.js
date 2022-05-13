@@ -1,32 +1,45 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 export default function Comments(props) {
   const {  answer_id, question_id, isQuestionComment } = props;
   const [showCommentBox, setshowCommentBox] = useState("");
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
+  const LoggedInUser=useSelector((state)=>state.LoggedInUser)
+  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
+  const history = useNavigate();
+
   useEffect(() => {
     setComments(props.comments)
   }, [props.comments])
 
   const handleComment = async () => {
-    if (commentText !== "") {
-      const body = {
-        questionId: question_id,
-        answer_id: answer_id,
-        description: commentText,
-        isQuestionComment: isQuestionComment,
-        username:"utkarshpant112",
-        userId:"62763e54bfe0a2faeddf026e"
-        // user: user,
-      };
-      await axios.put(`http://localhost:3001/question/postComment`, body).then((res) => {
-        setCommentText("");
-        setshowCommentBox("");
-        setComments(res.data)
-        console.log(res)
-      });
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+
+      if (commentText !== "") {
+        const body = {
+          questionId: question_id,
+          answer_id: answer_id,
+          description: commentText,
+          isQuestionComment: isQuestionComment,
+          username:LoggedInUser.username,
+          userId:LoggedInUser.userId
+          // user: user,
+        };
+        await axios.put(`http://localhost:3001/question/postComment`, body).then((res) => {
+          setCommentText("");
+          setshowCommentBox("");
+          setComments(res.data)
+          console.log(res)
+        });
+      }
     }
   };
   return (

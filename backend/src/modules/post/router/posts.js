@@ -20,8 +20,8 @@ questionRouter.put(
   "/answer/postComment",
   questionController.postCommentToAnswer
 );
-questionRouter.get(
-  "/questions/:questionId",
+questionRouter.post(
+  "/fetch/questions",
   questionController.fetchQuestionDetails
 );
 questionRouter.get(
@@ -54,6 +54,8 @@ questionRouter.put(
   questionController.markAnswerAsAccepted
 );
 // questionRouter.get("/user/questionsAnswered/:userId", questionController.getQuestionsAnswered);  ---   check if needed, commented because founded similar line
-// questionRouter.put("/question/markAnswerAccepted", questionController.markAnswerAsAccepted)
+questionRouter.put("/question/markAnswerAccepted", questionController.markAnswerAsAccepted)
+questionRouter.get("/question/activity/:postId", questionController.fetchQuestionActivity)
+
 
 export default questionRouter;
