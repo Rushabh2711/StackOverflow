@@ -10,9 +10,9 @@ import { Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 import validator from "validator";
 import axios from "axios";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { login } from "../actions";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 export default function SignUp() {
   const [username, setUsername] = useState("");
@@ -21,6 +21,7 @@ export default function SignUp() {
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
   let navigate = useNavigate();
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
 
   const usernameChangeHandler = (e) => {
     setMessage("");
@@ -150,7 +151,9 @@ export default function SignUp() {
     </React.Fragment>
   );
 
-  return (
+  return loggedInUser !== 0 ? (
+    <Navigate to="/home" />
+  ) : (
     <div className="signup-component">
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
