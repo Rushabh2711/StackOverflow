@@ -169,6 +169,7 @@ export default function Navbar(props) {
   const dispatch = useDispatch();
   const setLogout = () => {
     dispatch(logout());
+    navigate("/home");
   };
 
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
