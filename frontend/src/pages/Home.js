@@ -52,9 +52,11 @@ export default function Home() {
 
   useEffect(() => {
     axios.get(STRINGS.url + "/getQuestions").then((response) => {
-      setPosts(response.data);
-      setTempPosts(response.data);
-      console.log(response.data);
+     var p = response.data;
+     p =p.filter((a) => (a.postType === "question" && a.status =="APPROVED"));
+      setPosts(p);
+      setTempPosts(p);
+      console.log(p);
     });
     // console.log(posts);
     setRefreshGrid(false);
@@ -72,25 +74,25 @@ export default function Home() {
 
   const interestingFilterFunction = (data) => {
     console.log(data);
-    return data.sort((a,b) => new Date(b.modifiedAt.time).getTime() - new Date(a.modifiedAt.time).getTime());
+    return data.sort((a,b) => new Date(a.modifiedAt.time).getTime() - new Date(b.modifiedAt.time).getTime());
   }
 
   const hotFilterFunction = (data) => {
     console.log(data)
-    data = data.sort((a,b) => a.todayViews - b.todayViews);
+    data = data.sort((a,b) => b.views - a.views);
     console.log(data) 
     return data;  
   }
 
   const scoreFilterFunction = (data) => {
     console.log(data)
-    return data.sort((a,b) => (b.upvotes,b.downvotes) - (a.upvotes-a.downvotes) );  
+    return data.sort((a,b) => (b.upvotes-b.downvotes) - (a.upvotes-a.downvotes) );  
   }
 
   const unansweredFilterFunction = (data) => {
     console.log(data);
     data = data.filter((d) => d.numberOfAnswers === 0);
-    data = data.sort((a,b) => (a.upvotes-a.downvotes) - (b.upvotes,b.downvotes))
+    data = data.sort((a,b) => (b.upvotes-b.downvotes) - (a.upvotes,a.downvotes))
     console.log(data);
     return data;  
   }

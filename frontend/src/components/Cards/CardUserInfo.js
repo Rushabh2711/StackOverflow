@@ -6,7 +6,7 @@ import Link from "@mui/material/Link";
 import getRelativeTime from "../../utils/getRelativeTime";
 export default function CardUserInfo(props){
 
-    let { profileImageURL, userId, username, reputation, askedOn} = props.data;
+    let { profileImageURL, userId, username, reputation, type, askedOn} = props.data;
     askedOn = getRelativeTime(askedOn, new Date().toISOString());
     return(
         // <div>
@@ -72,7 +72,7 @@ export default function CardUserInfo(props){
                 }}
                 textTransform="none"
               >
-                asked {}
+                {type} {askedOn}
               </Typography>
             
         </div>

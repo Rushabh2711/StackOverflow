@@ -25,7 +25,7 @@ export default function TagList(props) {
       }}
     >
       <Link
-        to={"/questions/tagged/" + tag.name}
+        to={"/questions/tagged/[" + tag.name + "]"}
         style={{ textDecoration: "none", color: "#39739d" }}
       >
         {tag.name}

@@ -21,10 +21,10 @@ import Grid from "@mui/material/Grid";
 import Paper from "@mui/material/Paper";
 import { styled } from "@mui/material/styles";
 import { Button } from "@mui/material";
-
+import AddTag from "./admin/AddTag";
 import STRINGS from '../constant';
 import axios from "axios";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -41,37 +41,29 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const drawerWidth = 240;
 
-export default function Home() {
-
+export default function AdminHome() {
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
   let navigate = useNavigate();
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const [posts, setPosts] = React.useState([]);
   const [tempPosts, setTempPosts] = React.useState(posts);
   const [refreshGrid, setRefreshGrid] = React.useState(true);
-  const [users, setUsers] = React.useState([]);
   console.log(tempPosts);
 
   useEffect(() => {
     axios.get(STRINGS.url + "/getQuestions").then((response) => {
-      setPosts(response.data);
-      setTempPosts(response.data);
-      console.log(response.data);
+     var p = response.data;
+     p =p.filter((a) => (a.postType === "question" && a.status =="PENDING"));
+      setPosts(p);
+      setTempPosts(p);
+      console.log(p);
     });
-
-    
-    fetch(STRINGS.url + "/users")
-      .then((res) => res.json())
-      .then((data) => {
-        setUsers(data);
-        console.log("data", data);
-      })
-      .catch((err) => {
-        console.log("data", err);
-      });
     // console.log(posts);
     setRefreshGrid(false);
   },[])
-
+    
   // };
 
   const theme = createTheme({
@@ -84,25 +76,25 @@ export default function Home() {
 
   const interestingFilterFunction = (data) => {
     console.log(data);
-    return data.sort((a,b) => new Date(b.modifiedAt.time).getTime() - new Date(a.modifiedAt.time).getTime());
+    return data.sort((a,b) => new Date(a.modifiedAt.time).getTime() - new Date(b.modifiedAt.time).getTime());
   }
 
   const hotFilterFunction = (data) => {
     console.log(data)
-    data = data.sort((a,b) => a.views - b.views);
+    data = data.sort((a,b) => b.views - a.views);
     console.log(data) 
     return data;  
   }
 
   const scoreFilterFunction = (data) => {
     console.log(data)
-    return data.sort((a,b) => (b.upvotes,b.downvotes) - (a.upvotes-a.downvotes) );  
+    return data.sort((a,b) => (b.upvotes-b.downvotes) - (a.upvotes-a.downvotes) );  
   }
 
   const unansweredFilterFunction = (data) => {
     console.log(data);
     data = data.filter((d) => d.numberOfAnswers === 0);
-    data = data.sort((a,b) => (a.upvotes-a.downvotes) - (b.upvotes,b.downvotes))
+    data = data.sort((a,b) => (b.upvotes-b.downvotes) - (a.upvotes,a.downvotes))
     console.log(data);
     return data;  
   }
@@ -162,13 +154,15 @@ export default function Home() {
                     }}
                     textTransform="none"
                   >
-                    All Questions
+                    Pending Questions
                   </Typography>
                 </Item>
               </Grid>
               <Grid item xs={6} sm={6} md={6} style={{ paddingTop: "0px" }}>
                 <Item style={{ textAlign: "right" }}>
-                  <Button
+                <Button  sx={{ mt: 2 }} onClick={handleOpen} variant="contained">Add Tag</Button>
+      <AddTag open={open} handleClose={handleClose}/>
+                  {/* <Button
                     variant="outlined"
                     sx={{
                       minWidth: "100px",
@@ -185,7 +179,7 @@ export default function Home() {
                     onClick={() => (isLoggedIn ? navigate('/ask') : navigate('/login'))}
                   >
                     Ask Question
-                  </Button>
+                  </Button> */}
                 </Item>
               </Grid>
             </Grid>

@@ -31,7 +31,13 @@ export default function SearchTag() {
 
   let navigate = useNavigate();
   useEffect(() => {
-    axios.get(STRINGS.url + "/search/"+ tagName).then((response) => {
+    axios.get(STRINGS.url + "/search/["+ tagName + "]").then((response) => {
+      setPosts(response.data);
+      setTempPosts(response.data);
+      
+    });
+
+    axios.get(STRINGS.url + "/search/["+ tagName + "]").then((response) => {
       setPosts(response.data);
       setTempPosts(response.data);
       
@@ -64,7 +70,7 @@ export default function SearchTag() {
                     }}
                     textTransform="none"
                   >
-                    Questions tagged [{tagName}]
+                    Questions tagged {tagName}
                   </Typography>
                 </Item>
               </Grid>

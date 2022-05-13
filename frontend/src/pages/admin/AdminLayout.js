@@ -14,7 +14,7 @@ import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import Navbar from "../../components/Navbar/Navbar";
 import Sidebar from "../../components/Navbar/Sidebar";
-import AdminSidebar from "../../components/admin/SidebarAdmin";
+// import AdminSidebar from "../../components/admin/SidebarAdmin";
 import { useNavigate } from "react-router";
 
 const drawerWidth = 240;
@@ -76,7 +76,7 @@ export default function AdminLayout(props) {
         >
           <Toolbar />
           <Box sx={{ overflow: "auto" }}>
-            <AdminSidebar
+            <Sidebar
               setComponent={setComponent}
               tabValue={props.sidebarTabValue}
             />

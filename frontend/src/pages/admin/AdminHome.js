@@ -13,6 +13,7 @@ export default function AdminHome() {
       <Toolbar/>
       <Button  sx={{ mt: 2 }} onClick={handleOpen} variant="contained">Add Tag</Button>
       <AddTag open={open} handleClose={handleClose}/>
+      
     </div>
   );
 }

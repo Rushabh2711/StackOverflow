@@ -172,9 +172,9 @@ export default function Navbar(props) {
 
   const loggedInUser = useSelector((state) => state.LoggedInUser);
   
-  // const goldCount = loggedInUser.badges.filter((x) => x.type === "gold") ? loggedInUser?.badges?.filter((x) => x.type === "gold").length : 0;
-  // const silverCount = loggedInUser.badges.filter((x) => x.type === "silver") ? loggedInUser?.badges?.filter((x) => x.type === "silver").length : 0;
-  // const bronzeCount = loggedInUser.badges.filter((x) => x.type === "bronze") ? loggedInUser?.badges?.filter((x) => x.type === "bronze").length : 0;
+  const goldCount = loggedInUser?.badges?.filter((x) => x.type === "gold") ? loggedInUser?.badges?.filter((x) => x.type === "gold").length : 0;
+  const silverCount = loggedInUser?.badges?.filter((x) => x.type === "silver") ? loggedInUser?.badges?.filter((x) => x.type === "silver").length : 0;
+  const bronzeCount = loggedInUser?.badges?.filter((x) => x.type === "bronze") ? loggedInUser?.badges?.filter((x) => x.type === "bronze").length : 0;
   
 
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -274,16 +274,25 @@ export default function Navbar(props) {
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const submitSearch = (e) => {
-    if(e.keyCode == 13){
-
-      if(!searchQuery.includes(":") && searchQuery.includes('"') && searchQuery.includes("[")){
-
-      }else{
-        var url = "/search/" + searchQuery;
-      navigate(url);
+    console.log(e.keyCode);
+    if(e.keyCode === 13){
+      if(searchQuery == null || searchQuery == ""){
+        alert("Enter somehting to search");
       }
-      
-    }
+      else{
+        // console.log("in search")
+        // setSearchQuery(searchQuery.trim());
+        // if(!searchQuery.includes(":") && !searchQuery.includes('"') && searchQuery.includes("[")){
+        //   // searchQuery = searchQuery.replace("[","");
+        //   // searchQuery = searchQuery.replace("]","");
+        //   var url = "/question/tagged/" + searchQuery;
+        //   navigate(url);
+        // }else{
+          var url = "/search/" + searchQuery;
+          navigate(url);
+        // }
+      }
+  }
   }
   return (
     <div>
@@ -565,9 +574,10 @@ export default function Navbar(props) {
                   backgroundColor: "grey",
                 },
               }}
+              onClick={() => navigate('/users/profile/' + loggedInUser._id)}
             >
               <img
-                src="https://www.gravatar.com/avatar/c0bc039e1fa3c0e09e4c69a6d0a8c7bf?s=48&d=identicon&r=PG&f=1"
+                src={loggedInUser["profilePicture"] ? loggedInUser["profilePicture"] : "https://www.gravatar.com/avatar/c0bc039e1fa3c0e09e4c69a6d0a8c7bf?s=48&d=identicon&r=PG&f=1"}
                 alt="Site Logo"
                 width="24"
                 height="24"
@@ -604,7 +614,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 0
+                {"\u2022"} {goldCount}
               </Typography>
               <Typography
                 variant="body2"
@@ -621,7 +631,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 0
+                {"\u2022"} {silverCount}
               </Typography>
               <Typography
                 variant="body2"
@@ -638,7 +648,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 0
+                {"\u2022"} {bronzeCount}
               </Typography>
             </IconButton>
           ) : null}
@@ -662,6 +672,7 @@ export default function Navbar(props) {
                   backgroundColor: "grey",
                 },
               }}
+              
             >
               {/* inbox */}
               <svg

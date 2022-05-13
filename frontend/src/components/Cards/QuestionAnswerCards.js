@@ -46,7 +46,8 @@ export default function QuestionAnswerCards(props) {
     userId: "",
     username: "mozway",
     reputation: 2896,
-    askedOn: "2022-04-11T00:00:00.000Z",
+    type: p.modifiedAt.type,
+    askedOn: p.modifiedAt.date,
   }
 
   let tags = p.questionTags;

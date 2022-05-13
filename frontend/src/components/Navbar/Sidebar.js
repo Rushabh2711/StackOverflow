@@ -8,7 +8,7 @@ import { makeStyles } from "@mui/styles";
 import PublicIcon from "@mui/icons-material/Public";
 import { height } from "@mui/system";
 import { Divider } from "@mui/material";
-
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
 function TabPanel(props) {
@@ -89,6 +89,7 @@ function a11yProps(index) {
 
 export default function Sidebar(props) {
   
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
   const classes = useStyles();
   var currentURL = window.location.pathname;
   var tabValue = 0;
@@ -130,6 +131,12 @@ export default function Sidebar(props) {
       
       
     }
+    else if (newValue === 5) {
+      //it is users page
+       url = "/adminDashboard";
+      
+      
+    }
     console.log(url);
     navigate(url);
     //props.setComponent(newValue);
@@ -150,7 +157,7 @@ export default function Sidebar(props) {
         id="sidebar"
         orientation="vertical"
         value={value}
-        // onChange={handleChange}
+        onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{ borderRight: 0, borderColor: "divider", width: "150px" }}
         className={classes.tabs}
@@ -159,14 +166,15 @@ export default function Sidebar(props) {
         }}
         
       >
-        <Tab label="Home" value={0} className="normalTab" {...a11yProps(0)} onClick={() => navigate('/home')}/>
+        <Tab label="Home" value={0} className="normalTab" {...a11yProps(0)} onClick={() => loggedInUser.accountType === "admin" ? navigate('/adminHome') : navigate('/home')} />
 
         <Tab
           label="PUBLIC"
           value={1}
           className="publicTab"
-          {...a11yProps(4)}
+          {...a11yProps(1)}
           disabled
+          
         />
         <Tab
           label="Question"
@@ -174,7 +182,7 @@ export default function Sidebar(props) {
           className="normalTab"
           icon={<PublicIcon />}
           iconPosition="start"
-          {...a11yProps(1)}
+          {...a11yProps(2)}
           onClick={() => navigate('/question')}
         />
         <Tab
@@ -183,7 +191,7 @@ export default function Sidebar(props) {
           className="normalTab"
           icon={<PublicIcon style={{ visibility: "hidden" }} />}
           iconPosition="start"
-          {...a11yProps(2)}
+          {...a11yProps(3)}
           onClick={() => navigate('/tags')}
         />
         <Tab
@@ -192,9 +200,20 @@ export default function Sidebar(props) {
           className="normalTab"
           icon={<PublicIcon style={{ visibility: "hidden" }} />}
           iconPosition="start"
-          {...a11yProps(3)}
+          {...a11yProps(4)}
           onClick={() => navigate('/users')}
         />
+        { loggedInUser.accountType === "admin" ? (
+          <Tab
+          label="Dashboard"
+          value={5}
+          className="normalTab"
+          icon={<PublicIcon style={{ visibility: "hidden" }} />}
+          iconPosition="start"
+          {...a11yProps(5)}
+          onClick={() => navigate('/adminDashboard')}
+        />
+        ) : null}
       </Tabs>
       {/* <Divider flexItem orientation="vertical"/> */}
     </Box>

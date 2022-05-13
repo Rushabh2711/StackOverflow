@@ -8,7 +8,7 @@ export default function TagsList(props) {
     <Stack spacing={1} direction="row">
       {tags ? tags.map((tag) => (
         <Link
-          href={"/question/tagged/" + tag.name}
+          href={"/question/tagged/[" + tag.name + "]"}
           underline="none"
           sx={{
             padding: "2px 5px",
