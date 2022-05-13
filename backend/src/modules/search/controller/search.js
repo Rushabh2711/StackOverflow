@@ -148,7 +148,14 @@ class SearchController {
     getAllQuestions = async (req, res) => {
 
     try {
-        let questions = await Posts.find({postType: "question"});
+        let questions = await Posts.aggregate([{
+            $lookup : {
+                from: "users",
+                localField: "userId",
+                foreignField: "_id",
+                as: "userData"
+            }
+        }]);
         questions.sort((a, b) => b.modifiedAt.date - a.modifiedAt.date);
         res.status(200).send(questions);
         } catch (err) {
