@@ -46,7 +46,7 @@ export default function PopularTag() {
       gutterBottom
       align="left"
     >
-     Top 10 most used tags.
+     <b>Top 10 most used tags.</b>
     </Typography>
             <PieChart width={600} height={600}>
             <Pie
