@@ -29,12 +29,25 @@ var arrayofDownvotes=["62763e54bfe0a2faeddf026e"]
 const history = useNavigate();
 
   useEffect(() => {
+    if(question.userId){
     axios.get(`http://localhost:3001/user/${question.userId}`).then((res) => {
       console.log(res.data[0]);
       setAksedQuestionUser(res.data[0]);
     }).catch(err => {
       console.log(err)
     });
+  }
+    if(isLoggedIn){
+      axios.get(`http://localhost:3001/user/${LoggedInUser?.userId}`).then((res) => {
+        console.log(res.data[0]);
+        if(res.data[0].bookmarkedQuestions.includes(question.questionId)){    
+          SetIsBookmarked(true)
+        }
+        // setAksedQuestionUser(res.data[0]);
+      }).catch(err => {
+        console.log(err)
+      });
+    }
   }, [question]);
 
   useEffect(() => {
@@ -49,7 +62,7 @@ const history = useNavigate();
     const body = {
       postId: question.questionId,
       userId:LoggedInUser?LoggedInUser.userId:"",
-      // postType: "Question",
+      postType: "question",
       voteType: e.target.id
     }
     if(!isLoggedIn){
@@ -113,6 +126,9 @@ const history = useNavigate();
     }
 
   };
+  const gotoactivity=()=>{
+    history(`/activity/${question.questionId}`)
+  }
   return (
     <>
       <div
@@ -124,17 +140,17 @@ const history = useNavigate();
       >
         <div className="all-questions-left">
           <div className="all-options">
-            {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>}
+            { (question.userId!==LoggedInUser?.userId)? !upvoteFlag ?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>:<p className="arrow" id="Upvote">▲</p>}
 
             {/* <p className="arrow" style={{ "fontSize": "1.3rem" }}>{question?.upvotes === 0 ? 0 : parseInt(question?.upvotes) - parseInt(question?.downvotes)}</p> */}
             <p className="arrow" style={{ "fontSize": "1.3rem" }}>{voteCount}</p>
-            {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>}
+            {(question.userId!==LoggedInUser?.userId)?!downvoteFlag ?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>:<p className="arrow " id="Downvote">▼</p>}
 
             {/* {!arrayofDownvotes.includes(userId)?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:""} */}
            
             {isBookmarked? <BookmarkIcon className="votes" onClick={removeBookmark} style={{ color: "cea81c" }}/>:<BookmarkIcon className="votes" onClick={addBookmark} />}
  
-            <HistoryIcon className="votes" style={{ "fontSize": "1.5rem" }} />
+            <HistoryIcon className="votes" style={{ "fontSize": "1.5rem" }} onClick={gotoactivity} />
           </div>
         </div>
         <div className="question-answer" style={{ marginBottom: "10px" }}>
@@ -150,7 +166,7 @@ const history = useNavigate();
                <TagList tag={tag}/>
           ))}
           </div>
-          <Author author={aksedQuestionUser} createdTime={question?.createdTime} isQuestion={true}/>
+          <Author answer={aksedQuestionUser} createdTime={question?.createdTime} isQuestion={true}/>
 
           <Comments comments={question?.comments} isQuestionComment={true} question_id={question.questionId} answer_id={question.questionId} />
 

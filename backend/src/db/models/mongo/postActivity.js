@@ -3,7 +3,7 @@ const Schema = mongoose.Schema;
 
 const postActivitySchema = new Schema({
   activityType: { type: String, required: true },
-  activityTypeDescription: {type: String},
+  activityDescription: {type: String},
   userId: { type: Schema.Types.ObjectId, ref: "userDetails" },
   license: { type: String },
   comment: { type: String },

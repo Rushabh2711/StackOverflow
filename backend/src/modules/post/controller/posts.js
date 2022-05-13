@@ -447,7 +447,7 @@ class QuestionController {
 
         results.push({
           activityType: activity.activityType,
-          activityTypeDescription: activity.activityTypeDescription,
+          activityDescription: activity.activityDescription,
           userId:activity.userId,
           license: activity.license,
           comment: activity.comment,

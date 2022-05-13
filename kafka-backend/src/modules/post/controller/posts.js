@@ -15,7 +15,7 @@ class QuestionController {
     let results = [];
 
     try {
-      let questions = await Posts.find({postType: "question"});
+      let questions = await Posts.find({ postType: "question" });
 
       questions.map((question) =>
         results.push({
@@ -43,7 +43,7 @@ class QuestionController {
 
   fetch10kQuestions = async () => {
     try {
-      let questions = await Posts.find({postType: "question"});
+      let questions = await Posts.find({ postType: "question" });
       client.set("test-questions", JSON.stringify(questions));
       return this.responseGenerator(200, questions);
     } catch (err) {
@@ -57,16 +57,18 @@ class QuestionController {
 
   fetchQuestionDetails = async (data) => {
     console.log(data);
-   
-    const {questionId, userId} = data;
-    console.log("data",questionId, userId);
+
+    const { questionId, userId } = data;
+    const tempUserID = userId
+    console.log("data", questionId, userId);
     try {
       const questionDetails = await Posts.findById({ _id: questionId });
       // console.log("questionDetails",questionDetails);
 
-      let answers = await Posts.find({parentId : questionId});
+      let answers = await Posts.find({ parentId: questionId });
+      let question = await Posts.find({ _id: questionId });
 
-      const userDetailsQuestionPoster= UserDetails.find({_id : data.userId});
+      const userDetailsQuestionPoster = UserDetails.find({ _id: question.userId });
 
       // const votes = Votes.find({postId : questionId}).aggregate([
       //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
@@ -86,59 +88,99 @@ class QuestionController {
 
       // console.log("answers",answers);
       let answersModified = [];
-      if(answers && answers.length > 0)
-      {
-        for(var answer of answers)
-        {
-          let { questionTitle, postType, parentId, description, shortdesc, 
-                views, numberOfAnswers, addedAt, modifiedAt, isAcceptedAnswerId, 
-                status, isAccepted, userId, comments, questionTags 
-              } = answer;
-          let userDetails = await UserDetails.findById({_id : userId});
+      if (answers && answers.length > 0) {
+        for (var answer of answers) {
+          var userArray = await Votes.find({ postId: answer._id });
+          console.log("userarray", userArray)
+          var userArray1 = userArray.filter(array => array.voteType === 'Upvote');
+          var userArray12 = userArray.filter(array => array.voteType === 'Downvote');
+          // console.log("asdsadsadsa", userArray1)
+           console.log("asdsadsadsa222", userArray12)
+          // console.log("asdsadsadsa", tempUserID)
+          var found = false;
+          for (var i = 0; i < userArray1.length; i++) {
+            if (userArray1[i].userId == tempUserID) {
+              found = true;
+              break;
+            }
+          }
+          var found2 = false;
+          for (var i = 0; i < userArray12.length; i++) {
+            if (userArray12[i].userId == tempUserID) {
+              found2 = true;
+              break;
+            }
+          }
+          let { questionTitle, postType, parentId, description, shortdesc, votes, _id,
+            views, numberOfAnswers,
+            addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
+          let userDetails = await UserDetails.findById({ _id: userId });
 
           const obj = {
-              questionTitle: questionTitle,
-              postType: postType,
-              parentId: parentId,
-              description: description,
-              shortdesc: shortdesc,
-              upvotes: (await this.fetchVoteCount(answer._id, "Upvote")),
-              downvotes:(await this.fetchVoteCount(answer._id, "Downvote")),
-              upvoteFlag: userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
-              downvoteFlag: userId.length == 0 ? false :(await this.fetchVoteFlag(answer._id, "Downvote", userId)),
-              views: views,
-              numberOfAnswers: numberOfAnswers,
-              addedAt: addedAt,
-              modifiedAt: modifiedAt,
-              isAcceptedAnswerId: isAcceptedAnswerId,
-              status: status,
-              isAccepted: isAccepted,
-              userId: userId,
-              comments: comments,
-              questionTags: questionTags,
-              username: userDetails.username,
-              profilePicture: userDetails.profilePicture,
-              badges: userDetails.badges,
-              reputation: userDetails.reputation,
+            _id: _id,
+            questionTitle: questionTitle,
+            postType: postType,
+            parentId: parentId,
+            description: description,
+            shortdesc: shortdesc,
+            upvotes: userArray1.length,//(await this.fetchVoteCount(answer._id, "Upvote")),
+            downvotes: userArray12.length,//(await this.fetchVoteCount(answer._id, "Downvote")),
+            upvoteFlag:found ,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+            downvoteFlag: found2,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
+            views: views,
+            numberOfAnswers: numberOfAnswers,
+            addedAt: addedAt,
+            modifiedAt: modifiedAt,
+            isAcceptedAnswerId: isAcceptedAnswerId,
+            status: status,
+            isAccepted: isAccepted,
+            userId: userId,
+            comments: comments,
+            questionTags: questionTags,
+            username: userDetails.username,
+            profilePicture: userDetails.profilePicture,
+            badges: userDetails.badges,
+            reputation: userDetails.reputation,
           }
-           answersModified.push(obj);
+          answersModified.push(obj);
         }
       }
-      
 
+      var userArray = await Votes.find({ postId: questionDetails._id });
+      console.log("userarray", userArray)
+      var userArray1 = userArray.filter(array => array.voteType === 'Upvote');
+      var userArray12 = userArray.filter(array => array.voteType === 'Downvote');
+      var found = false;
+      for (var i = 0; i < userArray1.length; i++) {
+        if (userArray1[i].userId == tempUserID) {
+          found = true;
+          break;
+        }
+      }
+      var found2 = false;
+      for (var i = 0; i < userArray12.length; i++) {
+        if (userArray12[i].userId == tempUserID) {
+          found2 = true;
+          break;
+        }
+      }
       const result = {
         questionId: questionDetails._id,
         questionTitle: questionDetails.questionTitle,
         views: questionDetails.views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
-        modifiedTime: questionDetails.modifiedTime,
+        modifiedAt: questionDetails.modifiedAt,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
-        upvotes: (await this.fetchVoteCount(questionId, "Upvote")),
-        downvotes: (await this.fetchVoteCount(questionId, "Downvote")),
-        upvoteFlag: (await this.fetchVoteFlag(questionId, "Upvote", userId)),
-        downvoteFlag: (await this.fetchVoteFlag(questionId, "Downvote", userId)),
+        upvotes: userArray1.length,//(await this.fetchVoteCount(answer._id, "Upvote")),
+            downvotes: userArray12.length,//(await this.fetchVoteCount(answer._id, "Downvote")),
+            upvoteFlag:found ,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+            downvoteFlag: found2,
+        // upvotes: //(await this.fetchVoteCount(questionId, "Upvote")),
+        // downvotes: (await this.fetchVoteCount(questionId, "Downvote")),
+        // upvoteFlag: (await this.fetchVoteFlag(questionId, "Upvote", userId)),
+        // downvoteFlag: (await this.fetchVoteFlag(questionId, "Downvote", userId)),
         comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
@@ -149,7 +191,7 @@ class QuestionController {
         badges: userDetailsQuestionPoster.badges,
         userId: questionDetails.userId,
         reputation: userDetailsQuestionPoster.reputation,
-        answers : answersModified
+        answers: answersModified
       };
       return this.responseGenerator(200, result);
     } catch (err) {
@@ -163,39 +205,35 @@ class QuestionController {
 
 
   fetchVoteCount = async (id, type) => {
-      let count=0;
-      let votes = await Votes.find({postId : id});
-      for(var vote of votes)
-      {
-          if(vote.voteType == type)  count++;
-      }
-      return count;
+    let count = 0;
+    let votes = await Votes.find({ postId: id });
+    for (var vote of votes) {
+      if (vote.voteType == type) count++;
+    }
+    return count;
   }
 
   fetchVoteFlag = async (id, type, userId) => {
     let flag = false;
     let votes;
-    if(userId == "")
-    {
-        votes = await Votes.find({postId : id});
+    if (userId == "") {
+      votes = await Votes.find({ postId: id });
     }
-    else
-    {
-        votes = await Votes.find({postId : id, userId : userId});
+    else {
+      votes = await Votes.find({ postId: id, userId: userId });
     }
     console.log("votes", votes);
-    for(var vote of votes)
-    {
-        console.log(vote.voteType , "equals", type);
-        if(vote.voteType == type)  flag = true;
+    for (var vote of votes) {
+      console.log(vote.voteType, "equals", type);
+      if (vote.voteType == type) flag = true;
     }
     return flag;
-}
+  }
 
   addView = async (data) => {
     console.log(data);
     const questionId = data.questionId;
-    console.log("qid",questionId);
+    console.log("qid", questionId);
     const date = moment().format("MM-DD-YYYY");
     try {
       const result = await Posts.updateOne(
@@ -226,9 +264,9 @@ class QuestionController {
     console.log("Add answer");
     let time = new Date();
     let type = data.type;
-    var modifiedAt={
-      type:type,
-      date:time.toISOString()
+    var modifiedAt = {
+      type: type,
+      date: time.toISOString()
     }
     try {
       const newPost = new Posts({
@@ -243,6 +281,8 @@ class QuestionController {
         userId: data.userId,
       });
       const response = await newPost.save();
+      const response2 = await Posts.findByIdAndUpdate(data.questionId,{$inc:{numberOfAnswers:1}});
+       console.log(response2)
       return this.responseGenerator(200, response);
     } catch (err) {
       console.error("Error when posting answer ", err);
@@ -250,13 +290,13 @@ class QuestionController {
   };
 
   postCommentToAnswer = async (data) => {
-    const { answerId, description, userId,username } = data;
+    const { answerId, description, userId, username } = data;
     let time = new Date();
 
     const comment = {
       description: description,
       userId: userId,
-      username:username,
+      username: username,
       postedOn: time.toISOString(),
     };
 
@@ -267,8 +307,8 @@ class QuestionController {
         upsert: true, new: true
       });
 
-      await UserDetails.updateOne({_id : userId},  {$inc : {commentsCount : 1}});
-      console.log("comment successfully added to answer",answerId)
+      await UserDetails.updateOne({ _id: userId }, { $inc: { commentsCount: 1 } });
+      console.log("comment successfully added to answer", answerId)
       res.status(200).send(response.comments);
     } catch (err) {
       console.error(err);
