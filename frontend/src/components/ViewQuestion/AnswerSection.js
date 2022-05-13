@@ -45,35 +45,38 @@ export default function Answer(props) {
   //     console.log(err)
   //   });
   // }, [answer,question_id]);
+  // useEffect(() => {
+  //   axios.get(`http://localhost:3001/user/${answer.userId}`).then((res) => {
+  //     // console.log(res.data[0]);
+  //     SetansweredUser(res.data[0]);
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });
+  //   if(isAcceptedAnswerId===answer._id){
+  //        SetisAcceptedAnswer(true)
+  //     }
+  //     setupvoteFlag(answer.upvoteFlag)
+  //     setdownvoteFlag(answer.downvoteFlag)
+  // }, [answer]);
+
   useEffect(() => {
-    axios
-      .get(STRINGS.url + `/user/${answer.userId}`)
-      .then((res) => {
-        // console.log(res.data[0]);
-        SetansweredUser(res.data[0]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
     if (isAcceptedAnswerId === answer._id) {
       SetisAcceptedAnswer(true);
     }
+    console.log("answer2222", isAcceptedAnswerId);
+  }, [isAcceptedAnswerId]);
+
+  useEffect(() => {
     setupvoteFlag(answer.upvoteFlag);
     setdownvoteFlag(answer.downvoteFlag);
-  }, [answer]);
-
-  // useEffect(() => {
-  //   console.log("answer2222",isAcceptedAnswerId)
-  //  if(isAcceptedAnswerId===answer._id){
-  //   SetisAcceptedAnswer(true)
-  //  }
-  // }, [ props.isAcceptedAnswerId]);
+    setisAcceptedAnswerId(props.isAcceptedAnswerId);
+  }, [props.question, props.isAcceptedAnswerId]);
 
   const votePost = async (e) => {
     const body = {
       postId: answer._id,
       userId: LoggedInUser ? LoggedInUser.userId : "",
-      // postType: "answer",
+      postType: "answer",
       voteType: e.target.id,
     };
     if (!isLoggedIn) {
@@ -104,10 +107,11 @@ export default function Answer(props) {
       console.log("inside accpeted answer");
       const body = {
         answerId: answer._id,
+        answeruserId: answer.userId,
         questionId: question_id,
         postType: !isAcceptedAnswer ? "Accepted" : "Removed",
       };
-      if (isLoggedIn) {
+      if (!isLoggedIn) {
         console.log("insidde login");
         history("/login");
       } else {
@@ -119,6 +123,8 @@ export default function Answer(props) {
               dispatch(bestAnswerUpdated(true));
               SetisAcceptedAnswer(true);
               setisAcceptedAnswerId(answer._id);
+              props.OnAcceptedAnswers(answer._id);
+              window.location.reload();
             } else {
               SetisAcceptedAnswer(false);
             }
@@ -140,12 +146,19 @@ export default function Answer(props) {
       >
         <div className="all-questions-left">
           <div className="all-options">
-            {!upvoteFlag ? (
-              <p className="arrow votes" id="Upvote" onClick={votePost}>
-                ▲
-              </p>
+            {/* {!upvoteFlag?<p className="arrow votes" id="Upvote" onClick={votePost}>▲</p>:<p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>▲</p>} */}
+            {answer.userId !== LoggedInUser?.userId ? (
+              !upvoteFlag ? (
+                <p className="arrow votes" id="Upvote" onClick={votePost}>
+                  ▲
+                </p>
+              ) : (
+                <p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>
+                  ▲
+                </p>
+              )
             ) : (
-              <p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>
+              <p className="arrow" id="Upvote">
                 ▲
               </p>
             )}
@@ -156,12 +169,23 @@ export default function Answer(props) {
             <p className="arrow" style={{ fontSize: "1.3rem" }}>
               {voteCount}
             </p>
-            {!downvoteFlag ? (
-              <p className="arrow votes" id="Downvote" onClick={votePost}>
-                ▼
-              </p>
+            {/* {!downvoteFlag?<p className="arrow votes" id="Downvote" onClick={votePost}>▼</p>:<p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>▼</p>} */}
+            {answer.userId !== LoggedInUser?.userId ? (
+              !downvoteFlag ? (
+                <p className="arrow votes" id="Downvote" onClick={votePost}>
+                  ▼
+                </p>
+              ) : (
+                <p
+                  className="arrow "
+                  id="Downvote"
+                  style={{ color: "#cea81c" }}
+                >
+                  ▼
+                </p>
+              )
             ) : (
-              <p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>
+              <p className="arrow " id="Downvote">
                 ▼
               </p>
             )}
@@ -211,7 +235,7 @@ export default function Answer(props) {
             theme={"bubble"}
           />
           <Author
-            author={answeredUser}
+            answer={answer}
             createdTime={answer?.addedAt}
             isQuestion={false}
           />

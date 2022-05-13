@@ -14,7 +14,7 @@ import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
 import Navbar from '../components/Navbar/Navbar';
 import Sidebar from '../components/Navbar/Sidebar';
-
+import { useSelector } from 'react-redux';
 import QuestionAnswerCards from "../components/Cards/QuestionAnswerCards";
 import HomeFilter from "../components/Filters/HomeFilter";
 import Grid from "@mui/material/Grid";
@@ -44,20 +44,23 @@ const drawerWidth = 240;
 export default function Home() {
 
   let navigate = useNavigate();
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const [posts, setPosts] = React.useState([]);
   const [tempPosts, setTempPosts] = React.useState(posts);
   const [refreshGrid, setRefreshGrid] = React.useState(true);
 
 
-  if (refreshGrid)  {
+  useEffect(() => {
     axios.get(STRINGS.url + "/getQuestions").then((response) => {
       setPosts(response.data);
       setTempPosts(response.data);
       
     });
     // console.log(posts);
-    setRefreshGrid(false);
-  };
+    // setRefreshGrid(false);
+  },[])
+    
+  // };
 
   const theme = createTheme({
     palette: {
@@ -74,7 +77,7 @@ export default function Home() {
 
   const hotFilterFunction = async (data) => {
     console.log(data)
-    return data.sort((a,b) => a.todayViews - b.todayViews);  
+    return data.sort((a,b) => a.questionTitle.includes("Why"));  
   }
 
   const scoreFilterFunction = async (data) => {
@@ -165,6 +168,7 @@ export default function Home() {
                         backgroundColor: "#0074CC",
                       },
                     }}
+                    onClick={() => (isLoggedIn ? navigate('/ask') : navigate('/login'))}
                   >
                     Ask Question
                   </Button>

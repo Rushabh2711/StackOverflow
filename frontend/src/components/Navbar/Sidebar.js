@@ -150,7 +150,7 @@ export default function Sidebar(props) {
         id="sidebar"
         orientation="vertical"
         value={value}
-        onChange={handleChange}
+        // onChange={handleChange}
         aria-label="Vertical tabs example"
         sx={{ borderRight: 0, borderColor: "divider", width: "150px" }}
         className={classes.tabs}
@@ -159,7 +159,7 @@ export default function Sidebar(props) {
         }}
         
       >
-        <Tab label="Home" value={0} className="normalTab" {...a11yProps(0)} />
+        <Tab label="Home" value={0} className="normalTab" {...a11yProps(0)} onClick={() => navigate('/home')}/>
 
         <Tab
           label="PUBLIC"
@@ -175,6 +175,7 @@ export default function Sidebar(props) {
           icon={<PublicIcon />}
           iconPosition="start"
           {...a11yProps(1)}
+          onClick={() => navigate('/question')}
         />
         <Tab
           label="Tags"
@@ -183,6 +184,7 @@ export default function Sidebar(props) {
           icon={<PublicIcon style={{ visibility: "hidden" }} />}
           iconPosition="start"
           {...a11yProps(2)}
+          onClick={() => navigate('/tags')}
         />
         <Tab
           label="Users"
@@ -191,6 +193,7 @@ export default function Sidebar(props) {
           icon={<PublicIcon style={{ visibility: "hidden" }} />}
           iconPosition="start"
           {...a11yProps(3)}
+          onClick={() => navigate('/users')}
         />
       </Tabs>
       {/* <Divider flexItem orientation="vertical"/> */}

@@ -32,8 +32,13 @@ function Ask() {
   const [tag, setTag] = useState([]);
   const [tagList, setTagList] = useState([]);
   const history = useNavigate();
+<<<<<<< HEAD
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
 
+=======
+  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
+  const LoggedInUser = useSelector((state) => state.LoggedInUser)
+>>>>>>> f5d06b98e93914e751d0a2a9c7fc14dfc7cdb29d
   const handleQuill = (value) => {
     setBody(value);
   };
@@ -60,17 +65,29 @@ function Ask() {
     if (!isLoggedIn) {
       console.log("insidde login");
       history("/login");
+<<<<<<< HEAD
     } else {
       if (title !== "" && body !== "" && tag?.length > 0) {
+=======
+    }
+    else{
+      if (title !== "" && body !== "" && (tag?.length>0 && tag?.length<6)) {
+>>>>>>> f5d06b98e93914e751d0a2a9c7fc14dfc7cdb29d
         const bodyJSON = {
           title: title,
           description: body,
           shortdesc: shortDesc.replace(/\s/g, " "),
           tags: tag,
           type: "asked",
+<<<<<<< HEAD
           userId: "62763e26bfe0a2faeddf026c", //localStorage.getItem('userId')
           username: "virag", //localStorage.getItem('username')
           // user: user,
+=======
+          userId:LoggedInUser?.userId,//localStorage.getItem('userId')
+          username:LoggedInUser.username//localStorage.getItem('username')
+         // user: user,
+>>>>>>> f5d06b98e93914e751d0a2a9c7fc14dfc7cdb29d
         };
         await axios
           .post(STRINGS.url + "/questions/ask", bodyJSON)
@@ -78,6 +95,8 @@ function Ask() {
             console.log(res.data);
             alert("Question added successfully");
             //history.push("/");
+            history(`/view/${res.data._id}`);
+
           })
           .catch((err) => {
             console.log(err);
@@ -89,11 +108,33 @@ function Ask() {
       } else if (tag?.length > 0) {
         alert("tag is required");
       }
+<<<<<<< HEAD
+=======
+      else if(title===""){
+         alert("title is required")
+      }
+      else if(body===""){
+        alert("description is required")
+     }
+      else if(tag?.length<1){
+      alert("tag is required")}
+
+      else if(tag?.length>5){
+        alert("only 5 tags are allowed")
+   }
+
+>>>>>>> f5d06b98e93914e751d0a2a9c7fc14dfc7cdb29d
     }
   };
 
   const setTagsState = (tagObj) => {
+<<<<<<< HEAD
     setTag((arr) => [...arr, { tagId: tagObj._id, name: tagObj.name }]);
+=======
+    if(tagObj){
+      setTag(arr => [...arr, {tagId : tagObj._id, name: tagObj.name}])
+    }
+>>>>>>> f5d06b98e93914e751d0a2a9c7fc14dfc7cdb29d
   };
 
   return (

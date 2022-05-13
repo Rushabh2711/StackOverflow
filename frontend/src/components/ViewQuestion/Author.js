@@ -8,12 +8,12 @@ import { Box, Grid } from "@mui/material";
 import { Link } from "react-router-dom";
 
 export default function Author(props) {
-  const {  createdTime,isQuestion } = props;
+  const {  createdTime,isQuestion,answer } = props;
 
-   const [author, setauthor] = useState({});
-   useEffect(() => {
-    setauthor(props.author)
-  }, [props.author]);
+  //  const [author, setauthor] = useState({});
+  //  useEffect(() => {
+  //   setauthor(props.author)
+  // }, [props.author]);
 
   return (
     <Box
@@ -36,24 +36,24 @@ export default function Author(props) {
               </Typography>
             </Grid>
             <Grid item xs={5}>
-              <Avatar src='../../images/profile.jpeg' />
+              <Avatar src={`${answer?.profilePicture}`} />
             </Grid>
             <Grid item xs={7} sx={{ textAlign: "left", ml: -3 }}>
               <Typography variant="body2" component="div" sx={{color:"blue"}} className="votes">
-                <Link to={`/users/profile/${author?._id}`} style={{textDecoration:"none"}}>{author?.username}</Link>
+                <Link to={`/users/profile/${answer?.userId}`} style={{textDecoration:"none"}}>{answer?.username}</Link>
               </Typography>
-              <span style={{ fontSize: "0.7rem", marginLeft: "0px", marginTop: "-1px", paddingRight: "10px" }}>{author?.reputation}</span>
+              <span style={{ fontSize: "0.7rem", marginLeft: "0px", marginTop: "-1px", paddingRight: "10px" }}>{answer?.reputation}</span>
               {/* <span className="" title="badges" aria-hidden="true">
                 <span className="badge1"></span><span className="badgecount">8</span>
                 <span className="badge2"></span><span className="badgecount">10</span>
                 <span className="badge3"></span><span className="badgecount">11</span>
               </span> */}
               {
-         author?.badges?.length > 0 ?
+         answer?.badges?.length > 0 ?
            <span className="userBadges_queans" title="badges" aria-hidden="true">
-             {author.badges.filter((x) => x.type === "gold").length>0 ? <><span className="badge1"></span><span className="badgecount">{author.badges.filter((x) => x.type === "gold").length}</span></> : ""}
-             {author.badges.filter((x) => x.type === "silver").length>0? <><span className="badge2"></span><span className="badgecount">{author.badges.filter((x) => x.type === "silver").length}</span></> : ""}
-             {author.badges.filter((x) => x.type === "bronze").length>0 ? <><span className="badge3"></span><span className="badgecount">{author.badges.filter((x) => x.type === "bronze").length}</span></> : ""}
+             {answer.badges.filter((x) => x.type === "gold").length>0 ? <><span className="badge1"></span><span className="badgecount">{answer.badges.filter((x) => x.type === "gold").length}</span></> : ""}
+             {answer.badges.filter((x) => x.type === "silver").length>0? <><span className="badge2"></span><span className="badgecount">{answer.badges.filter((x) => x.type === "silver").length}</span></> : ""}
+             {answer.badges.filter((x) => x.type === "bronze").length>0 ? <><span className="badge3"></span><span className="badgecount">{answer.badges.filter((x) => x.type === "bronze").length}</span></> : ""}
            </span>
            : ""
        }

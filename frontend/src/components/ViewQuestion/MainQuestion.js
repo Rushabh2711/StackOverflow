@@ -31,6 +31,9 @@ function MainQuestion() {
   const { id } = useParams();
   const [isSameUser, SetisSameUser] = useState(false); // this will use for indentify to user has permission to check accepted answer or not
   const [questionData, setQuestionData] = useState("");
+  const [isAcceptedAnswerId, setisAcceptedAnswerId] = useState(
+    questionData.isAcceptedAnswerId
+  );
   const [answer, setAnswer] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [allAnswers, setAllAnswers] = useState([]);
@@ -66,16 +69,11 @@ function MainQuestion() {
     // console.log("data",questionData)
     //Change this code for Owner of the question
 
-    console.log(LoggedInUser.userId);
-    console.log(questionData.userId);
-
-    console.log(questionData.userId === LoggedInUser.userId);
-
     // SetisSameUser(true)
     if (LoggedInUser?.accountType === "admin") {
       setisAdmin(true);
     }
-    setisAdmin(true);
+    //setisAdmin(true)
   }, [id]);
   // useEffect(() => {
   //   console.log("inside")
@@ -85,21 +83,30 @@ function MainQuestion() {
   //         axios
   //          .post(`http://localhost:3001/question/addView`,body)
   //          .then((res) => {
+  //            console.log(res)
   //         })
   //          .catch((err) => console.log(err));
   // }, []);
 
   useEffect(() => {
-    console.log("inside dispatch");
-    axios
-      .get(STRINGS.url + `/questions/${id}`)
-      .then((res) => {
-        console.log(res.data.response);
-        //  setQuestionData(res.data.response)
-        setAllAnswers(res.data.response.answers);
-        dispatch(bestAnswerUpdated(false));
-      })
-      .catch((err) => console.log(err));
+    // console.log("inside dispatch")
+    // var body = {
+    //   questionId: id,
+    //   userId: LoggedInUser?.userId ? LoggedInUser.userId : ""
+    // }
+    // axios
+    //   .post(`http://localhost:3001/fetch/questions`, body)
+    //   .then((res) => {
+    //     console.log(res.data.response);
+    //     //  setQuestionData(res.data.response)
+    //     setAllAnswers(res.data.response.answers)
+    //     dispatch(bestAnswerUpdated(false))
+    //     setQuestionData(res.data.response)
+    //     if (res.data.response.userId === LoggedInUser.userId) {
+    //       SetisSameUser(true)
+    //     }
+    //   })
+    //   .catch((err) => console.log(err));
     // console.log("data",questionData)
   }, [bestAnswerUpdated1]);
   // useEffect(() => {
@@ -135,11 +142,14 @@ function MainQuestion() {
     // });
   }, []);
 
-  async function getUpdatedAnswer() {
-    await axios
-      .get(`/api/question/${id}`)
-      .then((res) => setQuestionData(res.data[0]))
-      .catch((err) => console.log(err));
+  useEffect(() => {
+    setisAcceptedAnswerId(questionData.isAcceptedAnswerId);
+  }, [allAnswers]);
+
+  function acceptedAnswers(value) {
+    console.log("inside");
+    setisAcceptedAnswerId(value);
+    //setAllAnswers(allAnswers)
   }
 
   // console.log(questionData);
@@ -159,7 +169,7 @@ function MainQuestion() {
           shortdesc: shortDesc.replace(/\s/g, " "),
           type: "answered",
           userId: LoggedInUser.userId, //localStorage.getItem('userId')
-          username: LoggedInUser.username, //localStorage.getItem('username')
+          // username: LoggedInUser.username//localStorage.getItem('username')
         };
         await axios
           .put(STRINGS.url + "/question/postAnswer", bodyJSON)
@@ -167,7 +177,12 @@ function MainQuestion() {
             console.log(res.data.response);
             setAnswer("");
             var response = res.data.response;
-            allAnswers.push(response);
+            var res1 = {
+              ...response,
+              username: LoggedInUser?.username,
+              profilePicture: "",
+            };
+            allAnswers.push(res1);
             //setAllAnswers(allAnswers.push(res.data.response))
             alert("Answer added successfully");
             //history.push("/");
@@ -237,7 +252,10 @@ function MainQuestion() {
               </span>
             </p>
             <p>
-              Modified<span>today</span>
+              Modified
+              <span>
+                {new Date(questionData?.modifiedAt?.date).toLocaleString()}
+              </span>
             </p>
             <p>
               Viewed<span>{questionData.views} times</span>
@@ -272,7 +290,8 @@ function MainQuestion() {
                 answer={_q}
                 question_id={questionData.questionId}
                 question_author={isSameUser}
-                isAcceptedAnswerId={questionData.isAcceptedAnswerId}
+                isAcceptedAnswerId={isAcceptedAnswerId}
+                OnAcceptedAnswers={acceptedAnswers}
               />
             ))}
         </div>

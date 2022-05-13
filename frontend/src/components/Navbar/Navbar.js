@@ -29,8 +29,8 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import Sidebar from "./MiniSidebar";
 
 import { useNavigate } from "react-router";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../../actions";
 //Configuring Style for SearchBar Elements
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -164,9 +164,14 @@ const ColorButton = styled(Button)(({ theme }) => ({
 
 export default function Navbar(props) {
   let navigate = useNavigate();
-
+  const dispatch = useDispatch();
+  const setLogout = () => {
+    dispatch(logout());
+  }
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [tabValue, setTabValue] = React.useState(0);
   const isMenuOpen = Boolean(anchorEl);
   const handleProfileMenuOpen = (event) => {
@@ -178,6 +183,18 @@ export default function Navbar(props) {
   };
   const handleMenuClose = () => {
     setAnchorEl(null);
+  };
+
+  const isMenu2Open = Boolean(anchorEl2);
+  const handleProfileMenu2Open = (event) => {
+    if (anchorEl2) {
+      setAnchorEl2(null);
+    } else {
+      setAnchorEl2(event.currentTarget);
+    }
+  };
+  const handleMenu2Close = () => {
+    setAnchorEl2(null);
   };
 
   const setComponent = (value) => {
@@ -226,6 +243,27 @@ export default function Navbar(props) {
     </Menu>
   );
 
+  const menuId2 = "primary-search-account-menu-2";
+  const renderMenu2 = (
+    <Menu
+      position="relative"
+      anchorEl={anchorEl}
+      anchorOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      id={menuId2}
+      keepMounted
+      transformOrigin={{
+        vertical: "top",
+        horizontal: "right",
+      }}
+      open={isMenu2Open}
+      onClose={handleMenu2Close}
+    >
+       <MenuItem onClick={() => setLogout()}>Logout</MenuItem>
+    </Menu>
+  );
   const [searchQuery, setSearchQuery] = React.useState("");
 
   const submitSearch = (e) => {
@@ -710,7 +748,9 @@ export default function Navbar(props) {
                   backgroundColor: "grey",
                 },
               }}
+              onClick={handleProfileMenu2Open}
             >
+              {renderMenu2}
               {/* stackexchange */}
               <svg
                 aria-hidden="true"
@@ -721,6 +761,7 @@ export default function Navbar(props) {
               >
                 <path d="M15 1H3a2 2 0 0 0-2 2v2h16V3a2 2 0 0 0-2-2ZM1 13c0 1.1.9 2 2 2h8v3l3-3h1a2 2 0 0 0 2-2v-2H1v2Zm16-7H1v4h16V6Z"></path>
               </svg>
+              
             </IconButton>
           ) : null}
         </Toolbar>

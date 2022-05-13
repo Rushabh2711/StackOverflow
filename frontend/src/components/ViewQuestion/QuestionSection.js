@@ -32,15 +32,31 @@ export default function Question(props) {
   const history = useNavigate();
 
   useEffect(() => {
-    axios
-      .get(STRINGS.url + `/user/${question.userId}`)
-      .then((res) => {
-        console.log(res.data[0]);
-        setAksedQuestionUser(res.data[0]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (question.userId) {
+      axios
+        .get(STRINGS.url + `/user/${question.userId}`)
+        .then((res) => {
+          console.log(res.data[0]);
+          setAksedQuestionUser(res.data[0]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+    if (isLoggedIn) {
+      axios
+        .get(STRINGS.url + `/user/${LoggedInUser?.userId}`)
+        .then((res) => {
+          console.log(res.data[0]);
+          if (res.data[0].bookmarkedQuestions.includes(question.questionId)) {
+            SetIsBookmarked(true);
+          }
+          // setAksedQuestionUser(res.data[0]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, [question]);
 
   useEffect(() => {
@@ -55,7 +71,7 @@ export default function Question(props) {
     const body = {
       postId: question.questionId,
       userId: LoggedInUser ? LoggedInUser.userId : "",
-      // postType: "Question",
+      postType: "question",
       voteType: e.target.id,
     };
     if (!isLoggedIn) {
@@ -121,6 +137,9 @@ export default function Question(props) {
         });
     }
   };
+  const gotoactivity = () => {
+    history(`/activity/${question.questionId}`);
+  };
   return (
     <>
       <div
@@ -132,12 +151,18 @@ export default function Question(props) {
       >
         <div className="all-questions-left">
           <div className="all-options">
-            {!upvoteFlag ? (
-              <p className="arrow votes" id="Upvote" onClick={votePost}>
-                ▲
-              </p>
+            {question.userId !== LoggedInUser?.userId ? (
+              !upvoteFlag ? (
+                <p className="arrow votes" id="Upvote" onClick={votePost}>
+                  ▲
+                </p>
+              ) : (
+                <p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>
+                  ▲
+                </p>
+              )
             ) : (
-              <p className="arrow" id="Upvote" style={{ color: "#cea81c" }}>
+              <p className="arrow" id="Upvote">
                 ▲
               </p>
             )}
@@ -146,12 +171,22 @@ export default function Question(props) {
             <p className="arrow" style={{ fontSize: "1.3rem" }}>
               {voteCount}
             </p>
-            {!downvoteFlag ? (
-              <p className="arrow votes" id="Downvote" onClick={votePost}>
-                ▼
-              </p>
+            {question.userId !== LoggedInUser?.userId ? (
+              !downvoteFlag ? (
+                <p className="arrow votes" id="Downvote" onClick={votePost}>
+                  ▼
+                </p>
+              ) : (
+                <p
+                  className="arrow "
+                  id="Downvote"
+                  style={{ color: "#cea81c" }}
+                >
+                  ▼
+                </p>
+              )
             ) : (
-              <p className="arrow " id="Downvote" style={{ color: "#cea81c" }}>
+              <p className="arrow " id="Downvote">
                 ▼
               </p>
             )}
@@ -168,7 +203,11 @@ export default function Question(props) {
               <BookmarkIcon className="votes" onClick={addBookmark} />
             )}
 
-            <HistoryIcon className="votes" style={{ fontSize: "1.5rem" }} />
+            <HistoryIcon
+              className="votes"
+              style={{ fontSize: "1.5rem" }}
+              onClick={gotoactivity}
+            />
           </div>
         </div>
         <div className="question-answer" style={{ marginBottom: "10px" }}>
@@ -179,7 +218,7 @@ export default function Question(props) {
               question?.tags.map((tag) => <TagList tag={tag} />)}
           </div>
           <Author
-            author={aksedQuestionUser}
+            answer={aksedQuestionUser}
             createdTime={question?.createdTime}
             isQuestion={true}
           />
