@@ -62,7 +62,6 @@ class QuestionController {
     console.log("data",questionId, userId);
     try {
       const questionDetails = await Posts.findById({ _id: questionId });
-      // console.log("questionDetails",questionDetails);
 
       let answers = await Posts.find({parentId : questionId});
 
@@ -86,6 +85,9 @@ class QuestionController {
 
       // console.log("answers",answers);
       let answersModified = [];
+      let map = new Map();
+
+      // postId, userId, 
       if(answers && answers.length > 0)
       {
         for(var answer of answers)
@@ -94,6 +96,8 @@ class QuestionController {
                 views, numberOfAnswers, addedAt, modifiedAt, isAcceptedAnswerId, 
                 status, isAccepted, userId, comments, questionTags 
               } = answer;
+
+          // map.set(userId, {answerId: answer._id, voteType: })    
           let userDetails = await UserDetails.findById({_id : userId});
 
           const obj = {
@@ -125,6 +129,9 @@ class QuestionController {
         }
       }
       
+      
+      
+      let votes = await Votes.find({postId : id, userId : userId});
 
       const result = {
         questionId: questionDetails._id,
@@ -175,14 +182,7 @@ class QuestionController {
   fetchVoteFlag = async (id, type, userId) => {
     let flag = false;
     let votes;
-    if(userId == "")
-    {
-        votes = await Votes.find({postId : id});
-    }
-    else
-    {
-        votes = await Votes.find({postId : id, userId : userId});
-    }
+    votes = await Votes.find({postId : id, userId : userId});
     console.log("votes", votes);
     for(var vote of votes)
     {
@@ -190,7 +190,7 @@ class QuestionController {
         if(vote.voteType == type)  flag = true;
     }
     return flag;
-}
+  }
 
   addView = async (data) => {
     console.log(data);

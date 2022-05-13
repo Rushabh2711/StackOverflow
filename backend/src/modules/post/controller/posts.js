@@ -16,6 +16,7 @@ class QuestionController {
     let time = new Date();
     let tags = req.body.tags;
     let type = req.body.type;
+    let userId = req.body.userId;
     var modifiedAt={
       type:type,
       date:time.toISOString()
@@ -32,18 +33,46 @@ class QuestionController {
         status: req.body.description.includes('src="data:image/')
           ? "PENDING"
           : "APPROVED",
-        userId: req.body.userId,
+        userId: userId,
       });
 
       const response = await newPost.save();
-      // let postId = response._id;
-      // tags.map(tag => {
-      //   let tagId = tag.tagId;
-      //   await Tags.findByIdAndUpdate(tagId, )
-      // })
-      
+
+      let postId = response._id;
+      console.log(postId);
+      for(var tag of tags)
+      {
+        let tagId = tag.tagId;
+        const tagModelResponse = await Tags.findByIdAndUpdate(tagId, {$push: { posts: postId }});
+        console.log(tagModelResponse);
+
+        let user = await UserDetails.find({_id : userId, "tags.tagId": tagId});
+        if(user.length > 0)
+        {
+          const existingTagResponse = await UserDetails.updateOne(
+            {_id : userId, "tags.tagId": tagId},
+            {
+              $inc : {"tags.$.posts" : 1}
+            }
+         )
+        
+         console.log("existingTagResponse  ", existingTagResponse);
+        }
+        else
+        {
+          const newTagResponse = await UserDetails.findOneAndUpdate(
+            {_id : userId},
+            {
+              $push : { tags : tag }
+            }
+          )
+ 
+         console.log("newTagResponse  ", newTagResponse);
+        }
+      }
       res.status(200).send(response);
-    } catch (err) {
+
+      } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
