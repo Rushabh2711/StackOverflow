@@ -10,6 +10,7 @@ import axios from "axios";
 import Moment from "react-moment";
 import TagList from "../ViewQuestion/TagList";
 import { Link } from "react-router-dom";
+import STRINGS from "../../constant";
 
 export default function UserBookmarks(props) {
   const { id } = useParams();
@@ -17,7 +18,7 @@ export default function UserBookmarks(props) {
   useEffect(() => {
     console.log(id);
     axios
-      .get("http://localhost:3001/user/bookmarkedQuestions/" + id)
+      .get(STRINGS.url + "/user/bookmarkedQuestions/" + id)
       .then((response) => {
         setQuestions(response.data);
       });

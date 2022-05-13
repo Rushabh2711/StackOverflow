@@ -11,6 +11,7 @@ import questionsJson from "../../dummydata/questions.json";
 import Moment from "react-moment";
 import TagList from "../ViewQuestion/TagList";
 import { Link } from "react-router-dom";
+import STRINGS from "../../constant";
 
 export default function UserAnswers(props) {
   const { id } = useParams();
@@ -18,16 +19,14 @@ export default function UserAnswers(props) {
 
   useEffect(() => {
     console.log(id);
-    axios
-      .get("http://localhost:3001/user/answersAnswered/" + id)
-      .then((response) => {
-        console.log(response.data);
-        setAnswers(
-          response.data
-            .filter((x) => x.postType === "answer")
-            .sort((a, b) => b.votes - a.votes)
-        );
-      });
+    axios.get(STRINGS.url + "/user/answersAnswered/" + id).then((response) => {
+      console.log(response.data);
+      setAnswers(
+        response.data
+          .filter((x) => x.postType === "answer")
+          .sort((a, b) => b.votes - a.votes)
+      );
+    });
     console.log(answers);
   }, []);
 

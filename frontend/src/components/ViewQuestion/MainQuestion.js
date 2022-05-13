@@ -5,6 +5,7 @@ import { useParams } from "react-router-dom";
 import { bestAnswerUpdated } from "../../actions/index";
 import axios from "axios";
 import { useNavigate } from "react-router";
+import STRINGS from "../../constant";
 
 // import ReactHtmlParser from "react-html-parser";
 import { Link } from "react-router-dom";
@@ -16,12 +17,11 @@ import questions from "../../dummydata/questions.json";
 import "./AllQuestions.css";
 import "./Main.css";
 import QuillEditor from "../Questions/Editor";
-import 'react-quill/dist/quill.snow.css'
-import 'react-quill/dist/quill.bubble.css'
+import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.bubble.css";
 import Answer from "./AnswerSection";
 import Question from "./QuestionSection";
 import { useDispatch, useSelector } from "react-redux";
-
 
 function MainQuestion() {
   //let search = window.location.search;
@@ -29,15 +29,17 @@ function MainQuestion() {
   // const id = "627456028ee4459e04591bb0"//params.get("q");
   const dispatch = useDispatch();
   const { id } = useParams();
-  const [isSameUser, SetisSameUser] = useState(false);// this will use for indentify to user has permission to check accepted answer or not
+  const [isSameUser, SetisSameUser] = useState(false); // this will use for indentify to user has permission to check accepted answer or not
   const [questionData, setQuestionData] = useState("");
-  const [isAcceptedAnswerId, setisAcceptedAnswerId] = useState(questionData.isAcceptedAnswerId);
+  const [isAcceptedAnswerId, setisAcceptedAnswerId] = useState(
+    questionData.isAcceptedAnswerId
+  );
   const [answer, setAnswer] = useState("");
   const [shortDesc, setShortDesc] = useState("");
   const [allAnswers, setAllAnswers] = useState([]);
-  const bestAnswerUpdated1 = useSelector((state) => state.bestAnswerUpdated)
-  const isLoggedIn = useSelector((state) => state.isLoggedIn)
-  const LoggedInUser = useSelector((state) => state.LoggedInUser)
+  const bestAnswerUpdated1 = useSelector((state) => state.bestAnswerUpdated);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
+  const LoggedInUser = useSelector((state) => state.LoggedInUser);
   const history = useNavigate();
   const [isAdmin, setisAdmin] = useState(false);
   const handleQuill = (value) => {
@@ -45,22 +47,22 @@ function MainQuestion() {
   };
 
   useEffect(() => {
-    console.log("inside")
+    console.log("inside");
     // const userId=LoggedInUser?LoggedInUser?.userId:""
     //var url=`http://localhost:3001/questions/${id}/${userId}`;
     var body = {
       questionId: id,
-      userId: LoggedInUser?.userId ? LoggedInUser.userId : ""
-    }
+      userId: LoggedInUser?.userId ? LoggedInUser.userId : "",
+    };
     axios
-      .post(`http://localhost:3001/fetch/questions`, body)
+      .post(STRINGS.url + `/fetch/questions`, body)
       //.get(`${ur}`)
       .then((res) => {
         console.log(res.data.response);
-        setQuestionData(res.data.response)
-        setAllAnswers(res.data.response.answers)
+        setQuestionData(res.data.response);
+        setAllAnswers(res.data.response.answers);
         if (res.data.response.userId === LoggedInUser.userId) {
-          SetisSameUser(true)
+          SetisSameUser(true);
         }
       })
       .catch((err) => console.log(err));
@@ -69,10 +71,9 @@ function MainQuestion() {
 
     // SetisSameUser(true)
     if (LoggedInUser?.accountType === "admin") {
-      setisAdmin(true)
+      setisAdmin(true);
     }
     //setisAdmin(true)
-
   }, [id]);
   // useEffect(() => {
   //   console.log("inside")
@@ -141,45 +142,47 @@ function MainQuestion() {
     // });
   }, []);
 
-   useEffect(() => {
-    setisAcceptedAnswerId(questionData.isAcceptedAnswerId)
-   
-   }, [allAnswers]);
+  useEffect(() => {
+    setisAcceptedAnswerId(questionData.isAcceptedAnswerId);
+  }, [allAnswers]);
 
-   function acceptedAnswers(value) {
-     console.log("inside")
-     setisAcceptedAnswerId(value)
-   //setAllAnswers(allAnswers)
+  function acceptedAnswers(value) {
+    console.log("inside");
+    setisAcceptedAnswerId(value);
+    //setAllAnswers(allAnswers)
   }
 
   // console.log(questionData);
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("body", answer)
+    console.log("body", answer);
     if (!isLoggedIn) {
-      console.log("insidde login")
+      console.log("insidde login");
       history("/login");
-    }
-    else {
+    } else {
       if (answer !== "") {
         const bodyJSON = {
           description: answer,
           questionId: questionData.questionId,
           questionTitle: questionData.questionTitle,
           questionTags: questionData.tags,
-          shortdesc: shortDesc.replace(/\s/g, ' '),
+          shortdesc: shortDesc.replace(/\s/g, " "),
           type: "answered",
-          userId: LoggedInUser.userId,//localStorage.getItem('userId')
-         // username: LoggedInUser.username//localStorage.getItem('username')
+          userId: LoggedInUser.userId, //localStorage.getItem('userId')
+          // username: LoggedInUser.username//localStorage.getItem('username')
         };
         await axios
-          .put("http://localhost:3001/question/postAnswer", bodyJSON)
+          .put(STRINGS.url + "/question/postAnswer", bodyJSON)
           .then((res) => {
             console.log(res.data.response);
-            setAnswer("")
-            var response = res.data.response
-            var res1={...response,username:LoggedInUser?.username,profilePicture:""}
-            allAnswers.push(res1)
+            setAnswer("");
+            var response = res.data.response;
+            var res1 = {
+              ...response,
+              username: LoggedInUser?.username,
+              profilePicture: "",
+            };
+            allAnswers.push(res1);
             //setAllAnswers(allAnswers.push(res.data.response))
             alert("Answer added successfully");
             //history.push("/");
@@ -187,21 +190,19 @@ function MainQuestion() {
           .catch((err) => {
             console.log(err);
           });
-      }
-      else {
-        alert("Please insert answer first!!!")
+      } else {
+        alert("Please insert answer first!!!");
       }
     }
-
   };
   const approveQuestion = async (e) => {
     e.preventDefault();
     if (isLoggedIn) {
       const bodyJSON = {
-        postId: id
+        postId: id,
       };
       await axios
-        .put("http://localhost:3001/update/question/status", bodyJSON)
+        .put(STRINGS.url + "/update/question/status", bodyJSON)
         .then((res) => {
           console.log(res.data);
           alert("Question approved");
@@ -209,11 +210,9 @@ function MainQuestion() {
         .catch((err) => {
           console.log(err);
         });
-    }
-    else {
+    } else {
       history("/login");
     }
-
   };
 
   return (
@@ -222,12 +221,23 @@ function MainQuestion() {
         <div className="main-top">
           <h2 className="main-question">{questionData?.questionTitle} </h2>
           <div>
-            {isAdmin ?
-              <button onClick={approveQuestion} style={{ marginRight: "20px" }}>Approve Question</button>
-              : ""}
-            {isSameUser ? <Link to={`/edit/${questionData.questionId}`} style={{ marginRight: "20px" }}>
-              <button>Edit Question</button>
-            </Link> : ""}
+            {isAdmin ? (
+              <button onClick={approveQuestion} style={{ marginRight: "20px" }}>
+                Approve Question
+              </button>
+            ) : (
+              ""
+            )}
+            {isSameUser ? (
+              <Link
+                to={`/edit/${questionData.questionId}`}
+                style={{ marginRight: "20px" }}
+              >
+                <button>Edit Question</button>
+              </Link>
+            ) : (
+              ""
+            )}
             <Link to="/ask">
               <button>Ask Question</button>
             </Link>
@@ -237,10 +247,15 @@ function MainQuestion() {
           <div className="info">
             <p>
               Asked
-              <span>{new Date(questionData?.createdTime).toLocaleString()}</span>
+              <span>
+                {new Date(questionData?.createdTime).toLocaleString()}
+              </span>
             </p>
             <p>
-              Modified<span>{new Date(questionData?.modifiedAt?.date).toLocaleString()}</span>
+              Modified
+              <span>
+                {new Date(questionData?.modifiedAt?.date).toLocaleString()}
+              </span>
             </p>
             <p>
               Viewed<span>{questionData.views} times</span>
@@ -265,14 +280,21 @@ function MainQuestion() {
               fontWeight: "400",
             }}
           >
-            {questionData && allAnswers ? questionData.answers.length + " Answers" : ""}
+            {questionData && allAnswers
+              ? questionData.answers.length + " Answers"
+              : ""}
           </p>
-          {questionData?.answers && allAnswers.map((_q) => (
-            <Answer answer={_q} question_id={questionData.questionId} question_author={isSameUser} isAcceptedAnswerId={isAcceptedAnswerId} OnAcceptedAnswers={acceptedAnswers}/>
-
-          ))}
+          {questionData?.answers &&
+            allAnswers.map((_q) => (
+              <Answer
+                answer={_q}
+                question_id={questionData.questionId}
+                question_author={isSameUser}
+                isAcceptedAnswerId={isAcceptedAnswerId}
+                OnAcceptedAnswers={acceptedAnswers}
+              />
+            ))}
         </div>
-
       </div>
       <div className="main-answer">
         <h3
@@ -290,7 +312,6 @@ function MainQuestion() {
           onChange={setAnswer}
           shortText={setShortDesc}
         />
-
       </div>
       <button
         onClick={handleSubmit}

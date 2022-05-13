@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import { useNavigate, useParams } from "react-router";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import STRINGS from "../constant";
 import axios from "axios";
 import moment from "moment";
 import { Link } from "react-router-dom";
@@ -122,7 +123,7 @@ export default function UserActivityReputation() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url + `/user/` + id)
       .then((res) => {
         setUser(res.data[0]);
       })
@@ -132,7 +133,7 @@ export default function UserActivityReputation() {
       });
 
     axios
-      .get(`http://localhost:3001/useractivity/` + id)
+      .get(STRINGS.url + `/useractivity/` + id)
       .then((res) => {
         setReputation(res.data[0].reputation);
         setActivity(res.data[0].activities);

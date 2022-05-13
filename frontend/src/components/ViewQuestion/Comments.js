@@ -2,43 +2,44 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router";
+import STRINGS from "../../constant";
 
 export default function Comments(props) {
-  const {  answer_id, question_id, isQuestionComment } = props;
+  const { answer_id, question_id, isQuestionComment } = props;
   const [showCommentBox, setshowCommentBox] = useState("");
   const [commentText, setCommentText] = useState("");
   const [comments, setComments] = useState([]);
-  const LoggedInUser=useSelector((state)=>state.LoggedInUser)
-  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
+  const LoggedInUser = useSelector((state) => state.LoggedInUser);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const history = useNavigate();
 
   useEffect(() => {
-    setComments(props.comments)
-  }, [props.comments])
+    setComments(props.comments);
+  }, [props.comments]);
 
   const handleComment = async () => {
-    if(!isLoggedIn){
-      console.log("insidde login")
+    if (!isLoggedIn) {
+      console.log("insidde login");
       history("/login");
-    }
-    else{
-
+    } else {
       if (commentText !== "") {
         const body = {
           questionId: question_id,
           answer_id: answer_id,
           description: commentText,
           isQuestionComment: isQuestionComment,
-          username:LoggedInUser.username,
-          userId:LoggedInUser.userId
+          username: LoggedInUser.username,
+          userId: LoggedInUser.userId,
           // user: user,
         };
-        await axios.put(`http://localhost:3001/question/postComment`, body).then((res) => {
-          setCommentText("");
-          setshowCommentBox("");
-          setComments(res.data)
-          console.log(res)
-        });
+        await axios
+          .put(STRINGS.url + `/question/postComment`, body)
+          .then((res) => {
+            setCommentText("");
+            setshowCommentBox("");
+            setComments(res.data);
+            console.log(res);
+          });
       }
     }
   };
@@ -46,23 +47,27 @@ export default function Comments(props) {
     <div>
       <div className="comments">
         <div className="comment">
-          
           {comments &&
             comments.map((comment) => (
-
               <p key={comment?.answer_id}>
-                {comment.description}{" "} -
+                {comment.description} -
                 <span>
                   {comment.username ? comment.username : "Nate Eldredge"}
                 </span>{" "}
                 {"    "}
-                <small>
-                  {new Date(comment.postedOn).toLocaleString()}
-                </small>
+                <small>{new Date(comment.postedOn).toLocaleString()}</small>
               </p>
             ))}
         </div>
-        {!showCommentBox ? <p id={answer_id} onClick={() => setshowCommentBox(answer_id)}>Add a comment</p> : <p id={answer_id} onClick={() => setshowCommentBox("")}>Add a comment</p>}
+        {!showCommentBox ? (
+          <p id={answer_id} onClick={() => setshowCommentBox(answer_id)}>
+            Add a comment
+          </p>
+        ) : (
+          <p id={answer_id} onClick={() => setshowCommentBox("")}>
+            Add a comment
+          </p>
+        )}
         {showCommentBox && showCommentBox === answer_id && (
           <div className="title">
             <textarea
@@ -90,7 +95,6 @@ export default function Comments(props) {
           </div>
         )}
       </div>
-
     </div>
   );
 }

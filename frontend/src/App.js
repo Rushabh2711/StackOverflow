@@ -43,6 +43,7 @@ import Layout from "./pages/Layout";
 import SearchTag from "./pages/SearchTag";
 import SearchResults from "./pages/SearchResults";
 import MainQuestion from "./components/ViewQuestion/MainQuestion";
+import AdminLayout from "./pages/admin/AdminLayout";
 
 export default function App() {
   return (
@@ -52,9 +53,9 @@ export default function App() {
         <Navbar />
 
         <Routes>
-          <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/adminHome" element={<AdminLayout page={<AdminHome />} />} />
           <Route path="/chat/:username" element={<Demo />} />
-          <Route path="/adminDashboard" element={<AdminDashboard />} />
+          <Route path="/adminDashboard" element={<AdminLayout page={<AdminDashboard />}/>} />
           <Route path="/" element={<LandingPage />} />
           <Route
             path="/home"
