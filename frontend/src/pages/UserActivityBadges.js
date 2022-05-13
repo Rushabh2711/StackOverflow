@@ -92,55 +92,49 @@ export default function UserActivityBadges() {
                   <Grid item xs={3}>
                     <div>
                       {goldbadge.tagBased === true ? (
-                        <Grid item xs={3}>
-                          <div>
-                            <Box
-                              component="div"
+                        <div>
+                          <Box
+                            component="div"
+                            sx={{
+                              bgcolor: "#eeeeee",
+                              border: 1,
+                              borderColor: "#bdbdbd",
+                              color: "#757575",
+                              fontSize: 15,
+                              mb: 1,
+                            }}
+                          >
+                            <CircleIcon
                               sx={{
-                                bgcolor: "#eeeeee",
-                                border: 1,
-                                borderColor: "#bdbdbd",
-                                color: "#757575",
-                                fontSize: 15,
-                                width: 100,
-                                mb: 1,
+                                color: "#ffc400",
+                                fontSize: 10,
                               }}
-                            >
-                              <CircleIcon
-                                sx={{
-                                  color: "#ffc400",
-                                  fontSize: 10,
-                                }}
-                              ></CircleIcon>{" "}
-                              {goldbadge.name}
-                            </Box>
-                          </div>
-                        </Grid>
+                            ></CircleIcon>{" "}
+                            {goldbadge.name}
+                          </Box>
+                        </div>
                       ) : (
-                        <Grid item xs={3}>
-                          <div>
-                            <Box
-                              component="div"
+                        <div>
+                          <Box
+                            component="div"
+                            sx={{
+                              bgcolor: "#263238",
+                              border: 1,
+                              borderColor: "#bdbdbd",
+                              color: "white",
+                              fontSize: 15,
+                              mb: 1,
+                            }}
+                          >
+                            <CircleIcon
                               sx={{
-                                bgcolor: "#263238",
-                                border: 1,
-                                borderColor: "#bdbdbd",
-                                color: "white",
-                                fontSize: 15,
-                                width: 100,
-                                mb: 1,
+                                color: "#ffc400",
+                                fontSize: 10,
                               }}
-                            >
-                              <CircleIcon
-                                sx={{
-                                  color: "#ffc400",
-                                  fontSize: 10,
-                                }}
-                              ></CircleIcon>{" "}
-                              {goldbadge.name}
-                            </Box>
-                          </div>
-                        </Grid>
+                            ></CircleIcon>{" "}
+                            {goldbadge.name}
+                          </Box>
+                        </div>
                       )}
                     </div>
                   </Grid>
@@ -153,55 +147,49 @@ export default function UserActivityBadges() {
                   <Grid item xs={3}>
                     <div>
                       {silverbadge.tagBased === true ? (
-                        <Grid item xs={3}>
-                          <div>
-                            <Box
-                              component="div"
+                        <div>
+                          <Box
+                            component="div"
+                            sx={{
+                              bgcolor: "#eeeeee",
+                              border: 1,
+                              borderColor: "#bdbdbd",
+                              color: "#757575",
+                              fontSize: 15,
+                              mb: 1,
+                            }}
+                          >
+                            <CircleIcon
                               sx={{
-                                bgcolor: "#eeeeee",
-                                border: 1,
-                                borderColor: "#bdbdbd",
-                                color: "#757575",
-                                fontSize: 15,
-                                width: 100,
-                                mb: 1,
+                                color: "#bdbdbd",
+                                fontSize: 10,
                               }}
-                            >
-                              <CircleIcon
-                                sx={{
-                                  color: "#bdbdbd",
-                                  fontSize: 10,
-                                }}
-                              ></CircleIcon>{" "}
-                              {silverbadge.name}
-                            </Box>
-                          </div>
-                        </Grid>
+                            ></CircleIcon>{" "}
+                            {silverbadge.name}
+                          </Box>
+                        </div>
                       ) : (
-                        <Grid item xs={3}>
-                          <div>
-                            <Box
-                              component="div"
+                        <div>
+                          <Box
+                            component="div"
+                            sx={{
+                              bgcolor: "#263238",
+                              border: 1,
+                              borderColor: "#bdbdbd",
+                              color: "white",
+                              fontSize: 15,
+                              mb: 1,
+                            }}
+                          >
+                            <CircleIcon
                               sx={{
-                                bgcolor: "#263238",
-                                border: 1,
-                                borderColor: "#bdbdbd",
-                                color: "white",
-                                fontSize: 15,
-                                width: 100,
-                                mb: 1,
+                                color: "#bdbdbd",
+                                fontSize: 10,
                               }}
-                            >
-                              <CircleIcon
-                                sx={{
-                                  color: "#bdbdbd",
-                                  fontSize: 10,
-                                }}
-                              ></CircleIcon>{" "}
-                              {silverbadge.name}
-                            </Box>
-                          </div>
-                        </Grid>
+                            ></CircleIcon>{" "}
+                            {silverbadge.name}
+                          </Box>
+                        </div>
                       )}
                     </div>
                   </Grid>
@@ -214,55 +202,49 @@ export default function UserActivityBadges() {
                   <Grid item xs={3}>
                     <div>
                       {bronzebadge.tagBased === true ? (
-                        <Grid item xs={3}>
-                          <div>
-                            <Box
-                              component="div"
+                        <div>
+                          <Box
+                            component="div"
+                            sx={{
+                              bgcolor: "#eeeeee",
+                              border: 1,
+                              borderColor: "#bdbdbd",
+                              color: "#757575",
+                              fontSize: 15,
+                              mb: 1,
+                            }}
+                          >
+                            <CircleIcon
                               sx={{
-                                bgcolor: "#eeeeee",
-                                border: 1,
-                                borderColor: "#bdbdbd",
                                 color: "#757575",
-                                fontSize: 15,
-                                width: 100,
-                                mb: 1,
+                                fontSize: 10,
                               }}
-                            >
-                              <CircleIcon
-                                sx={{
-                                  color: "#757575",
-                                  fontSize: 10,
-                                }}
-                              ></CircleIcon>{" "}
-                              {bronzebadge.name}
-                            </Box>
-                          </div>
-                        </Grid>
+                            ></CircleIcon>{" "}
+                            {bronzebadge.name}
+                          </Box>
+                        </div>
                       ) : (
-                        <Grid item xs={3}>
-                          <div>
-                            <Box
-                              component="div"
+                        <div>
+                          <Box
+                            component="div"
+                            sx={{
+                              bgcolor: "#263238",
+                              border: 1,
+                              borderColor: "#bdbdbd",
+                              color: "white",
+                              fontSize: 15,
+                              mb: 1,
+                            }}
+                          >
+                            <CircleIcon
                               sx={{
-                                bgcolor: "#263238",
-                                border: 1,
-                                borderColor: "#bdbdbd",
-                                color: "white",
-                                fontSize: 15,
-                                width: 100,
-                                mb: 1,
+                                color: "#757575",
+                                fontSize: 10,
                               }}
-                            >
-                              <CircleIcon
-                                sx={{
-                                  color: "#757575",
-                                  fontSize: 10,
-                                }}
-                              ></CircleIcon>{" "}
-                              {bronzebadge.name}
-                            </Box>
-                          </div>
-                        </Grid>
+                            ></CircleIcon>{" "}
+                            {bronzebadge.name}
+                          </Box>
+                        </div>
                       )}
                     </div>
                   </Grid>
