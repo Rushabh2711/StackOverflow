@@ -16,5 +16,7 @@ userRouter.put(
 userRouter.get("/useractivity/:userId", userController.fetchUserActivity);
 userRouter.put("/user/editprofile", userController.editUser);
 userRouter.put("/user/updatevisitedtime", userController.updatelastVisitedTime);
+userRouter.put("/user/tagBadges/:userId", userController.fetchTagBadges);
+
 
 export default userRouter;

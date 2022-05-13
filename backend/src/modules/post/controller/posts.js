@@ -16,6 +16,7 @@ class QuestionController {
     let time = new Date();
     let tags = req.body.tags;
     let type = req.body.type;
+    let userId = req.body.userId;
     var modifiedAt={
       type:type,
       date:time.toISOString()
@@ -32,18 +33,46 @@ class QuestionController {
         status: req.body.description.includes('src="data:image/')
           ? "PENDING"
           : "APPROVED",
-        userId: req.body.userId,
+        userId: userId,
       });
 
       const response = await newPost.save();
-      // let postId = response._id;
-      // tags.map(tag => {
-      //   let tagId = tag.tagId;
-      //   await Tags.findByIdAndUpdate(tagId, )
-      // })
-      
+
+      let postId = response._id;
+      console.log(postId);
+      for(var tag of tags)
+      {
+        let tagId = tag.tagId;
+        const tagModelResponse = await Tags.findByIdAndUpdate(tagId, {$push: { posts: postId }});
+        console.log(tagModelResponse);
+
+        let user = await UserDetails.find({_id : userId, "tags.tagId": tagId});
+        if(user.length > 0)
+        {
+          const existingTagResponse = await UserDetails.updateOne(
+            {_id : userId, "tags.tagId": tagId},
+            {
+              $inc : {"tags.$.posts" : 1}
+            }
+         )
+        
+         console.log("existingTagResponse  ", existingTagResponse);
+        }
+        else
+        {
+          const newTagResponse = await UserDetails.findOneAndUpdate(
+            {_id : userId},
+            {
+              $push : { tags : tag }
+            }
+          )
+ 
+         console.log("newTagResponse  ", newTagResponse);
+        }
+      }
       res.status(200).send(response);
-    } catch (err) {
+
+      } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
@@ -283,15 +312,18 @@ class QuestionController {
   votePost = async (req, res) => {
     const { userId, voteType, postId} = req.body;
     let response;
-    let query;
+    
     let time = new Date();
     console.log("result", req.body);
 
     try {
       const result = await Votes.find({userId: userId, postId: postId});
-
+      let updateScoreResponse;
+      let query = (voteType == "Upvote") ? {$inc : {"tags.$.score" : 1}} : {$inc : {"tags.$.score" : -1}};
       let post = await Posts.find({_id : postId});
-      console.log("post", post);
+
+      let tags = post[0].questionTags;
+
       if(result.length == 0)
       {
           const newVote = new Votes({
@@ -304,7 +336,12 @@ class QuestionController {
           });
 
           response = await newVote.save();
-          // query = voteType == "Upvote" ? { $inc: { upvotesCount: 1 }} : { $inc: { downVotesCount: 1 }};
+          
+          for(var tag of tags)
+          {
+            await UserDetails.updateOne({_id : userId, "tags.tagId": tag.tagId}, query);
+          }
+
           console.log(response);
       }
       else if(voteType == "Upvote")
@@ -318,7 +355,10 @@ class QuestionController {
                 {$set: {voteType : "Upvote"}}
              );
           } 
-          // query = { $and: [ { $inc: { upvotesCount: 1 }}, { $inc: { downVotesCount: -1 }} ] }
+          for(var tag of tags)
+          {
+            await UserDetails.updateOne({_id : userId, "tags.tagId": tag.tagId}, {$inc : {"tags.$.score" : 1}} );
+          }
       }
 
       else if(voteType == "Downvote")
@@ -331,9 +371,11 @@ class QuestionController {
                 {$set: {voteType : "Downvote"}}
              );
           }
-          // query = { $and: [ { $inc: { upvotesCount: -1 }}, { $inc: { downVotesCount: 1 }} ] }  
+          for(var tag of tags)
+          {
+            await UserDetails.updateOne({_id : userId, "tags.tagId": tag.tagId}, {$inc : {"tags.$.score" : -1}});
+          }
       }
-      // const userDetailsUpdateResponse = await UserDetails.updateOne({_id : userId},  query) 
       res.status(200).send(response);
     } catch (err) {
       console.error(err);

@@ -55,153 +55,154 @@ class QuestionController {
     }
   }
 
+
   fetchQuestionDetails = async (data) => {
-    console.log(data);
-
-    const { questionId, userId } = data;
-    const tempUserID = userId
-    console.log("data", questionId, userId);
-    try {
-      const questionDetails = await Posts.findById({ _id: questionId });
-      // console.log("questionDetails",questionDetails);
-
-      let answers = await Posts.find({ parentId: questionId });
-      let question = await Posts.find({ _id: questionId });
-
-      const userDetailsQuestionPoster = UserDetails.find({ _id: question.userId });
-
-      // const votes = Votes.find({postId : questionId}).aggregate([
-      //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
-      // ]);
-
-      // for await(const doc of votes){
-      //     if(doc._id.voteType == "Upvote")
-      //     {
-      //         upvotes = doc.count;
-      //     }
-      //     if(doc._id.voteType == "Downvote" )
-      //     {
-      //         downvotes = doc.count
-      //     }
-      //     console.log("votes", doc.count, doc._id.voteType);
-      //   }
-
-      // console.log("answers",answers);
-      let answersModified = [];
-      if (answers && answers.length > 0) {
-        for (var answer of answers) {
-          var userArray = await Votes.find({ postId: answer._id });
-          console.log("userarray", userArray)
-          var userArray1 = userArray.filter(array => array.voteType === 'Upvote');
-          var userArray12 = userArray.filter(array => array.voteType === 'Downvote');
-          // console.log("asdsadsadsa", userArray1)
-           console.log("asdsadsadsa222", userArray12)
-          // console.log("asdsadsadsa", tempUserID)
-          var found = false;
-          for (var i = 0; i < userArray1.length; i++) {
-            if (userArray1[i].userId == tempUserID) {
-              found = true;
-              break;
+      console.log(data);
+  
+      const { questionId, userId } = data;
+      const tempUserID = userId
+      console.log("data", questionId, userId);
+      try {
+        const questionDetails = await Posts.findById({ _id: questionId });
+        // console.log("questionDetails",questionDetails);
+  
+        let answers = await Posts.find({ parentId: questionId });
+        let question = await Posts.find({ _id: questionId });
+  
+        const userDetailsQuestionPoster = UserDetails.find({ _id: question.userId });
+  
+        // const votes = Votes.find({postId : questionId}).aggregate([
+        //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
+        // ]);
+  
+        // for await(const doc of votes){
+        //     if(doc._id.voteType == "Upvote")
+        //     {
+        //         upvotes = doc.count;
+        //     }
+        //     if(doc._id.voteType == "Downvote" )
+        //     {
+        //         downvotes = doc.count
+        //     }
+        //     console.log("votes", doc.count, doc._id.voteType);
+        //   }
+  
+        // console.log("answers",answers);
+        let answersModified = [];
+        if (answers && answers.length > 0) {
+          for (var answer of answers) {
+            var userArray = await Votes.find({ postId: answer._id });
+            console.log("userarray", userArray)
+            var userArray1 = userArray.filter(array => array.voteType === 'Upvote');
+            var userArray12 = userArray.filter(array => array.voteType === 'Downvote');
+            // console.log("asdsadsadsa", userArray1)
+             console.log("asdsadsadsa222", userArray12)
+            // console.log("asdsadsadsa", tempUserID)
+            var found = false;
+            for (var i = 0; i < userArray1.length; i++) {
+              if (userArray1[i].userId == tempUserID) {
+                found = true;
+                break;
+              }
             }
-          }
-          var found2 = false;
-          for (var i = 0; i < userArray12.length; i++) {
-            if (userArray12[i].userId == tempUserID) {
-              found2 = true;
-              break;
+            var found2 = false;
+            for (var i = 0; i < userArray12.length; i++) {
+              if (userArray12[i].userId == tempUserID) {
+                found2 = true;
+                break;
+              }
             }
+            let { questionTitle, postType, parentId, description, shortdesc, votes, _id,
+              views, numberOfAnswers,
+              addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
+            let userDetails = await UserDetails.findById({ _id: userId });
+  
+            const obj = {
+              _id: _id,
+              questionTitle: questionTitle,
+              postType: postType,
+              parentId: parentId,
+              description: description,
+              shortdesc: shortdesc,
+              upvotes: userArray1.length,//(await this.fetchVoteCount(answer._id, "Upvote")),
+              downvotes: userArray12.length,//(await this.fetchVoteCount(answer._id, "Downvote")),
+              upvoteFlag:found ,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+              downvoteFlag: found2,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
+              views: views,
+              numberOfAnswers: numberOfAnswers,
+              addedAt: addedAt,
+              modifiedAt: modifiedAt,
+              isAcceptedAnswerId: isAcceptedAnswerId,
+              status: status,
+              isAccepted: isAccepted,
+              userId: userId,
+              comments: comments,
+              questionTags: questionTags,
+              username: userDetails.username,
+              profilePicture: userDetails.profilePicture,
+              badges: userDetails.badges,
+              reputation: userDetails.reputation,
+            }
+            answersModified.push(obj);
           }
-          let { questionTitle, postType, parentId, description, shortdesc, votes, _id,
-            views, numberOfAnswers,
-            addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
-          let userDetails = await UserDetails.findById({ _id: userId });
-
-          const obj = {
-            _id: _id,
-            questionTitle: questionTitle,
-            postType: postType,
-            parentId: parentId,
-            description: description,
-            shortdesc: shortdesc,
-            upvotes: userArray1.length,//(await this.fetchVoteCount(answer._id, "Upvote")),
-            downvotes: userArray12.length,//(await this.fetchVoteCount(answer._id, "Downvote")),
-            upvoteFlag:found ,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
-            downvoteFlag: found2,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
-            views: views,
-            numberOfAnswers: numberOfAnswers,
-            addedAt: addedAt,
-            modifiedAt: modifiedAt,
-            isAcceptedAnswerId: isAcceptedAnswerId,
-            status: status,
-            isAccepted: isAccepted,
-            userId: userId,
-            comments: comments,
-            questionTags: questionTags,
-            username: userDetails.username,
-            profilePicture: userDetails.profilePicture,
-            badges: userDetails.badges,
-            reputation: userDetails.reputation,
+        }
+  
+        var userArray = await Votes.find({ postId: questionDetails._id });
+        console.log("userarray", userArray)
+        var userArray1 = userArray.filter(array => array.voteType === 'Upvote');
+        var userArray12 = userArray.filter(array => array.voteType === 'Downvote');
+        var found = false;
+        for (var i = 0; i < userArray1.length; i++) {
+          if (userArray1[i].userId == tempUserID) {
+            found = true;
+            break;
           }
-          answersModified.push(obj);
         }
-      }
-
-      var userArray = await Votes.find({ postId: questionDetails._id });
-      console.log("userarray", userArray)
-      var userArray1 = userArray.filter(array => array.voteType === 'Upvote');
-      var userArray12 = userArray.filter(array => array.voteType === 'Downvote');
-      var found = false;
-      for (var i = 0; i < userArray1.length; i++) {
-        if (userArray1[i].userId == tempUserID) {
-          found = true;
-          break;
+        var found2 = false;
+        for (var i = 0; i < userArray12.length; i++) {
+          if (userArray12[i].userId == tempUserID) {
+            found2 = true;
+            break;
+          }
         }
+        const result = {
+          questionId: questionDetails._id,
+          questionTitle: questionDetails.questionTitle,
+          views: questionDetails.views,
+          description: questionDetails.description,
+          createdTime: questionDetails.addedAt,
+          modifiedAt: questionDetails.modifiedAt,
+          tags: questionDetails.questionTags,
+          votes: questionDetails.votes,
+          upvotes: userArray1.length,//(await this.fetchVoteCount(answer._id, "Upvote")),
+              downvotes: userArray12.length,//(await this.fetchVoteCount(answer._id, "Downvote")),
+              upvoteFlag:found ,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+              downvoteFlag: found2,
+          // upvotes: //(await this.fetchVoteCount(questionId, "Upvote")),
+          // downvotes: (await this.fetchVoteCount(questionId, "Downvote")),
+          // upvoteFlag: (await this.fetchVoteFlag(questionId, "Upvote", userId)),
+          // downvoteFlag: (await this.fetchVoteFlag(questionId, "Downvote", userId)),
+          comments: questionDetails.comments,
+          numberOfAnswers: questionDetails.numberOfAnswers,
+          answers: questionDetails.answers,
+          isAcceptedAnswerId: questionDetails.isAcceptedAnswerId,
+          questionComments: questionDetails.questionComments,
+          username: userDetailsQuestionPoster.username,
+          profilePicture: userDetailsQuestionPoster.profilePicture,
+          badges: userDetailsQuestionPoster.badges,
+          userId: questionDetails.userId,
+          reputation: userDetailsQuestionPoster.reputation,
+          answers: answersModified
+        };
+        return this.responseGenerator(200, result);
+      } catch (err) {
+        console.error("Error when fetching question details ", err);
+        return this.responseGenerator(
+          404,
+          "Error when fetching question details"
+        );
       }
-      var found2 = false;
-      for (var i = 0; i < userArray12.length; i++) {
-        if (userArray12[i].userId == tempUserID) {
-          found2 = true;
-          break;
-        }
-      }
-      const result = {
-        questionId: questionDetails._id,
-        questionTitle: questionDetails.questionTitle,
-        views: questionDetails.views,
-        description: questionDetails.description,
-        createdTime: questionDetails.addedAt,
-        modifiedAt: questionDetails.modifiedAt,
-        tags: questionDetails.questionTags,
-        votes: questionDetails.votes,
-        upvotes: userArray1.length,//(await this.fetchVoteCount(answer._id, "Upvote")),
-            downvotes: userArray12.length,//(await this.fetchVoteCount(answer._id, "Downvote")),
-            upvoteFlag:found ,//userId.length == 0 ? false : (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
-            downvoteFlag: found2,
-        // upvotes: //(await this.fetchVoteCount(questionId, "Upvote")),
-        // downvotes: (await this.fetchVoteCount(questionId, "Downvote")),
-        // upvoteFlag: (await this.fetchVoteFlag(questionId, "Upvote", userId)),
-        // downvoteFlag: (await this.fetchVoteFlag(questionId, "Downvote", userId)),
-        comments: questionDetails.comments,
-        numberOfAnswers: questionDetails.numberOfAnswers,
-        answers: questionDetails.answers,
-        isAcceptedAnswerId: questionDetails.isAcceptedAnswerId,
-        questionComments: questionDetails.questionComments,
-        username: userDetailsQuestionPoster.username,
-        profilePicture: userDetailsQuestionPoster.profilePicture,
-        badges: userDetailsQuestionPoster.badges,
-        userId: questionDetails.userId,
-        reputation: userDetailsQuestionPoster.reputation,
-        answers: answersModified
-      };
-      return this.responseGenerator(200, result);
-    } catch (err) {
-      console.error("Error when fetching question details ", err);
-      return this.responseGenerator(
-        404,
-        "Error when fetching question details"
-      );
-    }
-  };
+    };
 
 
   fetchVoteCount = async (id, type) => {
