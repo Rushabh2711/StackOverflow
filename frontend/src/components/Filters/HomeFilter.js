@@ -65,9 +65,9 @@ export default function HomeFilter(props){
                         style={{ textTransform: "none", fontSize:"12px",
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif' }}
                       >
-                        Interesting
+                        Newest
                       </Button>
-                      <Button
+                      {/* <Button
                         id="hotFilter"
                         className="unselectedFilter"
                         onClick={(e) => {
@@ -77,7 +77,7 @@ export default function HomeFilter(props){
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif'}}
                       >
                         Hot
-                      </Button>
+                      </Button> */}
                       <Button
                         id="scoreFilter"
                         className="unselectedFilter"
@@ -87,9 +87,9 @@ export default function HomeFilter(props){
                         style={{ textTransform: "none", fontSize:"12px",
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif' }}
                       >
-                        Score
+                        Votes
                       </Button>
-                      <Button
+                      {/* <Button
                         id="unansweredFilter"
                         className="unselectedFilter"
                         onClick={(e) => {
@@ -99,7 +99,7 @@ export default function HomeFilter(props){
                         fontFamily: '-apple-system,BlinkMacSystemFont,"Segoe UI Adjusted","Segoe UI","Liberation Sans",sans-serif' }}
                       >
                         Unanswered
-                      </Button>
+                      </Button> */}
                     </ButtonGroup>
                   </ThemeProvider>
     )
