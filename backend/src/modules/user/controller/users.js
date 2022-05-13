@@ -27,12 +27,14 @@ export class UserController {
           .send({ errorMsg: "Incorrect password. Please try again!" });
       }
 
-      let response = {
-        emailId: emailId,
-        username: user.username,
-        accountType: user.accountType,
-        userId: user.userId,
-      };
+      try {
+        const response = await UserDetails.findOne({ emailId: emailId });
+        res.status(200).send(response);
+      } catch (err) {
+        console.error(err);
+        res.status(400).send(err);
+      }
+      let response = response;
       return res.status(200).send(response);
     } catch (error) {
       console.error(error);
@@ -109,7 +111,7 @@ export class UserController {
   getAllUsers = async (req, res) => {
     try {
       const response = await UserDetails.find({});
-      console.log(response)
+      console.log(response);
       res.status(200).send(response);
     } catch (err) {
       console.error(err);

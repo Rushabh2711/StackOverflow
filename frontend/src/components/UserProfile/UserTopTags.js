@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
 import axios from "axios";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 
 export default function UserTopTags(props) {
   const { id } = useParams();
@@ -52,7 +53,7 @@ export default function UserTopTags(props) {
                 gutterBottom
                 align="left"
               >
-                You currently have no tags
+                {user.username} currently have no tags
               </Typography>
             </ListItem>
           </List>
@@ -78,7 +79,12 @@ export default function UserTopTags(props) {
                             mb: 1,
                           }}
                         >
-                          {tag.name}
+                          <Link
+                            to={"/questions/tagged/" + tag.name}
+                            style={{ textDecoration: "none", color: "#757575" }}
+                          >
+                            {tag.name}
+                          </Link>
                         </Box>
                       </Grid>
                       <Grid item xs={3} style={{ display: "flex" }}>
