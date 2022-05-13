@@ -1,9 +1,10 @@
-const mongoose = require("mongoose");
+import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const userActivitySchema = new Schema({
-  questionId: { type: Schema.Types.ObjectId, ref: "question" },
+  postId: { type: Schema.Types.ObjectId, ref: "post" },
   activityType: { type: String, required: true },
+  points: {type: Number, required: true},
   date: { type: Date, required: true },
   userId: {
     type: Schema.Types.ObjectId,
@@ -11,5 +12,5 @@ const userActivitySchema = new Schema({
   },
 });
 
-const userActivities = mongoose.model("userActivity", userActivitySchema);
-export default userActivities;
+const UserActivities = mongoose.model("userActivity", userActivitySchema);
+export default UserActivities;

@@ -7,23 +7,25 @@ import Box from "@mui/material/Box";
 import axios from "axios";
 import { useParams } from "react-router";
 import Moment from "react-moment";
+import { Link } from "react-router-dom";
 
-export default function UserTopPosts() {
+export default function UserTopPosts(props) {
   const { id } = useParams();
   const [topposts, setTopPosts] = useState("");
   const [answers, setAnswers] = useState("");
   const [questions, setQuestions] = useState("");
   const [postType, setPostType] = useState("all");
   const [filterType, setFilterType] = useState("score");
+  const { user } = props;
   const [posts, setPosts] = useState([]);
+  const [topPostUpdated, setTopPostUpdated] = useState(false);
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/questions/` + id)
+      .get(`http://localhost:3001/user/posts/` + id)
       .then((res) => {
         setTopPosts(res.data);
         setPosts(res.data.sort((a, b) => b.votes - a.votes));
-        console.log(res.data[0]);
       })
       .catch((err) => {
         console.log(err);
@@ -37,13 +39,14 @@ export default function UserTopPosts() {
       if (filterType === "score") {
         if (topposts !== "") {
           setPosts(topposts.sort((a, b) => b.votes - a.votes));
+          setTopPostUpdated(false);
         }
       } else if (filterType === "newest") {
-        console.log(topposts);
         if (topposts !== "") {
           setPosts(
             topposts.sort((a, b) => new Date(b.addedAt) - new Date(a.addedAt))
           );
+          setTopPostUpdated(true);
         }
       }
     } else if (postType === "questions") {
@@ -135,7 +138,7 @@ export default function UserTopPosts() {
                 gutterBottom
                 align="left"
               >
-                You currently have no posts
+                {user.username} currently have no posts
               </Typography>
             </ListItem>
           </List>
@@ -409,7 +412,12 @@ export default function UserTopPosts() {
                           sx={{ fontSize: 15, color: "#212121" }}
                           gutterBottom
                         >
-                          {post.questionTitle}
+                          <Link
+                            to={"/view/" + post._id}
+                            style={{ textDecoration: "none" }}
+                          >
+                            {post.questionTitle}
+                          </Link>
                         </Typography>
                       </Grid>
                       <Grid item xs={2}>

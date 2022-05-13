@@ -2,6 +2,8 @@ import React, {useState, useEffect} from 'react';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import { TextField, Button } from '@mui/material';
+import STRING from "../../constant"
+import axios from "axios"
 
 const style = {
   position: 'absolute',
@@ -19,11 +21,28 @@ const style = {
 
 export default function AddTag(props) {
 
+  const [tagName, setTagName] = useState("");
+  const [tagDescription, setTagDescription] = useState("");
+
     const handleAddTag = () => {
         var tag = document.getElementById("tagName").value;  
         var description = document.getElementById("tagDescription").value;  
-        console.log(tag,description);
-        props.handleClose();
+        if(tag === "" || description === "") {
+          alert("please enter data")
+        }
+        else {
+          var body = {
+            name: tag,
+            description
+          }
+          axios.post(STRING.url + "/tags/addTag", body).then((res) => {
+              console.log(res.data);
+            }).catch(err => {
+              console.log(err)
+            });
+            props.handleClose();
+        }
+        
     }
 
   return (
@@ -41,13 +60,15 @@ export default function AddTag(props) {
                     maxWidth: '100%',
                 }}
                 >
-                <TextField fullWidth label="Tag Name" id="tagName" />
+                <TextField fullWidth label="Tag Name" id="tagName" 
+                onChange={(e) => setTagName(e.target.value)}/>
                 <TextField fullWidth
                     id="tagDescription"
                     sx={{ mt: 2 }}
                     label="Tag Description"
                     multiline
                     rows={4}
+                    onChange={(e) => setTagDescription(e.target.value)}
                 />
                 <Button  sx={{ mt: 2 }} variant="contained" onClick={handleAddTag}>Add Tag</Button>
             </Box>

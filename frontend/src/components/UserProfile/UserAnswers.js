@@ -9,6 +9,8 @@ import { useParams } from "react-router";
 import axios from "axios";
 import questionsJson from "../../dummydata/questions.json";
 import Moment from "react-moment";
+import TagList from "../ViewQuestion/TagList";
+import { Link } from "react-router-dom";
 
 export default function UserAnswers(props) {
   const { id } = useParams();
@@ -16,9 +18,16 @@ export default function UserAnswers(props) {
 
   useEffect(() => {
     console.log(id);
-    axios.get("http://localhost:3001/user/questions/" + id).then((response) => {
-      setAnswers(response.data.filter((x) => x.postType === "answer"));
-    });
+    axios
+      .get("http://localhost:3001/user/answersAnswered/" + id)
+      .then((response) => {
+        console.log(response.data);
+        setAnswers(
+          response.data
+            .filter((x) => x.postType === "answer")
+            .sort((a, b) => b.votes - a.votes)
+        );
+      });
     console.log(answers);
   }, []);
 
@@ -40,7 +49,7 @@ export default function UserAnswers(props) {
               gutterBottom
               align="left"
             >
-              You currently have no answers
+              No answers given.
             </Typography>
           </ListItem>
         </List>
@@ -74,16 +83,23 @@ export default function UserAnswers(props) {
                               <di></di>
                             )}
                           </div>
-                          <div>{answer.questionTitle}</div>
+                          <div>
+                            <Link
+                              to={"/view/" + answer.parentId}
+                              style={{ textDecoration: "none" }}
+                            >
+                              {answer.questionTitle}
+                            </Link>
+                          </div>
                           <div>
                             <Grid container spacing={2}>
                               <Grid item xs={9}>
                                 <Stack direction="row" spacing={1}>
-                                  {answer.tags === undefined ? (
+                                  {answer.questionTags === undefined ? (
                                     <div></div>
                                   ) : (
-                                    answer.tags.map((tag) => (
-                                      <Chip label={tag.name} />
+                                    answer.questionTags.map((tag) => (
+                                      <TagList tag={tag} />
                                     ))
                                   )}{" "}
                                 </Stack>

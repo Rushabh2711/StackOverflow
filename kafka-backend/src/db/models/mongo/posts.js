@@ -2,19 +2,23 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const postSchema = new Schema({
-  // _id: mongoose.ObjectId,
   questionTitle: { type: String, required: true },
   postType: { type: String, required: true },
   parentId: { type: Schema.Types.ObjectId },
   description: { type: String, required: true },
+  shortdesc: { type: String},
   votes: { type: Number, default: 0 },
-  views: { type: Number},
-  numberOfAnswers: { type: Number},
+  upvotes: { type: Number, default: 0 },
+  downvotes: { type: Number, default: 0 },
+  views: { type: Number, default: 0 },
+  numberOfAnswers: { type: Number, default: 0 },
   addedAt: { type: Date, required: true },
-  modifiedAt: { type: Date, required: true },
+  //modifiedAt: { type: Date, required: true },
+  modifiedAt: {type:{ type:String},date:{type: Date}},
+
   isAcceptedAnswerId: { type: Schema.Types.ObjectId },
   status: { type: String },
-  isAccepted: { type: Boolean },
+  isAccepted: { type: Boolean, default: false },
   userId: { type: Schema.Types.ObjectId, required: true },
   comments: [
     {

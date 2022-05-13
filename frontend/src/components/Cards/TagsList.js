@@ -16,9 +16,9 @@ export default function TagsList(props) {
             backgroundColor: "#E1ECF4",
             borderRadius: "3px",
             "&:hover": {
-                color: "#2C5877",
-                backgroundColor:"#D0E3F1"
-              },
+              color: "#2C5877",
+              backgroundColor: "#D0E3F1",
+            },
           }}
         >
           <Typography

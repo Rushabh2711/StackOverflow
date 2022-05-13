@@ -20,6 +20,7 @@ import UserActivityBookmarks from "./pages/UserActivityBookmarks";
 import UserActivityReputation from "./pages/UserActivityReputation";
 import UserEditProfile from "./pages/UserEditProfile";
 import ErrorPage from "./pages/ErrorPage";
+import Demo from "./pages/chat/Demo";
 
 import UsersPage from "./pages/User/UserPage";
 import TagsPage from "./pages/Tags/TagPage";
@@ -33,7 +34,9 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import CssBaseline from "@mui/material/CssBaseline";
 import Navbar from "./components/Navbar/Navbar";
+import Activity from "./components/Activity/activity";
 import Add from "./pages/AddQuestion";
+import Edit from "./pages/EditQuestion";
 //import ViewQuestion from "./components/ViewQuestion/MainQuestion";
 
 import Layout from "./pages/Layout";
@@ -49,6 +52,7 @@ export default function App() {
 
         <Routes>
           <Route path="/adminHome" element={<AdminHome />} />
+          <Route path="/chat/:username" element={<Demo />} />
           <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/" element={<LandingPage />} />
           <Route
@@ -119,9 +123,15 @@ export default function App() {
             element={<Layout page={<UserActivityReputation />} />}
           />
           <Route path="/ask" element={<Add />} />
+          <Route path="/edit/:id" element={<Edit />} />
+
           <Route
             path="/question/view/:id"
             element={<Layout page={<MainQuestion />} />}
+          />
+          <Route
+            path="/activity/:id"
+            element={<Layout page={<Activity />} sidebarTabValue={2} />}
           />
 
           <Route path="/errorpage" element={<ErrorPage />}  />

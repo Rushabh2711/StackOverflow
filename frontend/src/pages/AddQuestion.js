@@ -12,39 +12,20 @@ import { useNavigate } from "react-router-dom";
 // import ChipsArray from "./TagsInput";
 import ImageUploader from "quill-image-uploader";
 import Navbar from "../components/Navbar/Navbar";
+import { useSelector } from "react-redux";
 //import ImageResize from "quill-image-resize-module-react";
 
 // #2 register module
 Quill.register("modules/imageUploader", ImageUploader);
 function Ask() {
   //const user = useSelector(selectUser);
- 
-  const top100Films = [
-    'Node',
-    'React',
-    'HTML',
-    'JAVA',
-    'javascript',
-    "AWS",
-    'C#'
-  ];
-  const top100Films11 = [
-    { title: 'React', year: 1972 }
-  ];
-  const top100Films1 = [
-    { title: 'java', year: 1994 },
-    { title: 'React', year: 1972 },
-    { title: 'HTML', year: 1974 },
-    { title: 'C', year: 2008 },
-    { title: 'C++', year: 1957 },
-    { title: "AWS", year: 1993 },
-    { title: 'Node', year: 1994 }
-  ]
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [shortDesc, setShortDesc] = useState("");
   const [tag, setTag] = useState([]);
   const [tagList, setTagList] = useState([]);
   const history = useNavigate();
+  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
 
   const handleQuill = (value) => {
     setBody(value);
@@ -60,18 +41,27 @@ function Ask() {
           })
            .catch((err) => console.log(err));
     console.log("data",tagList)
+    console.clear()
   }, []);
   
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("title",title)
     console.log("body",body)
+    console.log("body",shortDesc)
     console.log("tag",tag)
-      if (title !== "" && body !== "") {
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+      if (title !== "" && body !== "" && tag?.length>0) {
         const bodyJSON = {
           title: title,
           description: body,
+          shortdesc: shortDesc.replace(/\s/g,' '),
           tags: tag,
+          type: "asked",
           userId:"62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
           username:"virag"//localStorage.getItem('username')
          // user: user,
@@ -87,6 +77,17 @@ function Ask() {
             console.log(err);
           });
       }
+      else if(title===""){
+         alert("title is required")
+      }
+      else if(body===""){
+        alert("description is required")
+     }
+      else if(tag?.length>0){
+      alert("tag is required")
+   }
+
+    }
   };
  
 
@@ -142,6 +143,7 @@ function Ask() {
                  body={body}
                  onBlur={setBody}
                  onChange={setBody}
+                 shortText={setShortDesc}
                 />
               </div>
             </div>

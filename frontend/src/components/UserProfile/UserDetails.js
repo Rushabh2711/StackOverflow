@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import Typography from "@mui/material/Typography";
 import CakeIcon from "@mui/icons-material/Cake";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import Moment from "react-moment";
 import axios from "axios";
+import { useNavigate } from "react-router";
 
 export default function UserDetails(props) {
   const { user } = props;
+
+  const navigate = useNavigate();
+  const chat = (e) => {
+    navigate("/chat/" + user.username);
+  };
 
   return (
     <div className="userprofile-details-component">
@@ -41,6 +47,7 @@ export default function UserDetails(props) {
           >
             {user.username}
           </Typography>
+
           <Grid container spacing={0}>
             <Grid item xs={0.5}>
               <Typography
@@ -85,6 +92,15 @@ export default function UserDetails(props) {
                 Last seen <Moment fromNow>{user.visitedTime}</Moment>
               </Typography>
             </Grid>
+            <Grid item xs={4}>
+              <Button
+                sx={{ fontSize: 12, color: "#fafafa" }}
+                variant="contained"
+                onClick={chat}
+              >
+                Chat
+              </Button>
+            </Grid>
           </Grid>
 
           {user.location !== undefined ? (
@@ -99,7 +115,7 @@ export default function UserDetails(props) {
                   <LocationOnIcon />
                 </Typography>
               </Grid>
-              <Grid item xs={3}>
+              <Grid item xs={8}>
                 <Typography
                   color="text.secondary"
                   align="left"

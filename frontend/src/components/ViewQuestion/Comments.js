@@ -1,30 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router";
 
 export default function Comments(props) {
-  const { comments, answer_id, question_id, isQuestionComment } = props;
+  const {  answer_id, question_id, isQuestionComment } = props;
   const [showCommentBox, setshowCommentBox] = useState("");
   const [commentText, setCommentText] = useState("");
+  const [comments, setComments] = useState([]);
+  const LoggedInUser=useSelector((state)=>state.LoggedInUser)
+  const isLoggedIn=useSelector((state)=>state.isLoggedIn)
+  const history = useNavigate();
+
+  useEffect(() => {
+    setComments(props.comments)
+  }, [props.comments])
+
   const handleComment = async () => {
-    if (commentText !== "") {
-      const body = {
-        question_id: question_id,
-        answer_id: answer_id,
-        comment: commentText,
-        isQuestionComment: isQuestionComment
-        // user: user,
-      };
-      await axios.post(`/api/postComment`, body).then((res) => {
-        setCommentText("");
-        setshowCommentBox("");
-      });
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else{
+
+      if (commentText !== "") {
+        const body = {
+          questionId: question_id,
+          answer_id: answer_id,
+          description: commentText,
+          isQuestionComment: isQuestionComment,
+          username:LoggedInUser.username,
+          userId:LoggedInUser.userId
+          // user: user,
+        };
+        await axios.put(`http://localhost:3001/question/postComment`, body).then((res) => {
+          setCommentText("");
+          setshowCommentBox("");
+          setComments(res.data)
+          console.log(res)
+        });
+      }
     }
   };
   return (
     <div>
       <div className="comments">
         <div className="comment">
-          {console.log("virag", answer_id)}
+          
           {comments &&
             comments.map((comment) => (
 
@@ -35,7 +57,7 @@ export default function Comments(props) {
                 </span>{" "}
                 {"    "}
                 <small>
-                  {new Date(comment.created_date).toLocaleString()}
+                  {new Date(comment.postedOn).toLocaleString()}
                 </small>
               </p>
             ))}

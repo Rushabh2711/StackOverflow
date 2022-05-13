@@ -29,6 +29,7 @@ import InboxIcon from "@mui/icons-material/Inbox";
 import Sidebar from "./MiniSidebar";
 
 import { useNavigate } from "react-router";
+import { useSelector } from "react-redux";
 
 //Configuring Style for SearchBar Elements
 const Search = styled("div")(({ theme }) => ({
@@ -164,7 +165,7 @@ const ColorButton = styled(Button)(({ theme }) => ({
 export default function Navbar(props) {
   let navigate = useNavigate();
 
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const isLoggedIn = useSelector((state) => state.isLoggedIn);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [tabValue, setTabValue] = React.useState(0);
   const isMenuOpen = Boolean(anchorEl);
