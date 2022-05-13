@@ -12,13 +12,14 @@ import { useDispatch } from "react-redux";
 import axios from "axios";
 import validator from "validator";
 import { login } from "../actions";
+import { useNavigate } from "react-router";
 
 export default function Login() {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const dispatch = useDispatch();
-  let navigate = useDispatch();
+  let navigate = useNavigate();
 
   //email change handler to update state variable with the text entered by the user
   const emailIdChangeHandler = (e) => {
@@ -43,21 +44,18 @@ export default function Login() {
         emailId: emailId,
         password: password,
       };
-      // axios
-      //   .post(`http://localhost:3001/user/login`, data)
-      //   .then((res) => {
-      //     console.log("Status Code : ", res.status);
-      //     if (res.data === "Email already in use") {
-      //       setMessage("Email already in use");
-      //     } else {
-      //       console.log(res.data);
-      //       dispatch(login(res.data));
-      //       navigate("/home");
-      //     }
-      //   })
-      //   .catch((err) => {
-      //     setMessage(err.res.data);
-      //   });
+      axios
+        .post(`http://localhost:3001/user/login`, data)
+        .then((res) => {
+          console.log("Status Code : ", res.status);
+          console.log(res.data);
+          dispatch(login(res.data));
+          navigate("/home");
+          console.log(res.data);
+        })
+        .catch((err) => {
+          // setMessage(err.res.data);
+        });
     }
   };
 
