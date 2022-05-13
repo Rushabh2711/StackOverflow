@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 
 export default function TagList(props) {
   const [tag, setTag] = React.useState(props.tag);
+  console.log("Tag"+tag);
   useEffect(() => {
     setTag(props.tag);
   }, [props.tag]);
@@ -28,7 +29,7 @@ export default function TagList(props) {
         to={"/questions/tagged/" + tag.name}
         style={{ textDecoration: "none", color: "#39739d" }}
       >
-        {tag.name}
+        {tag}
       </Link>
     </Box>
   );
