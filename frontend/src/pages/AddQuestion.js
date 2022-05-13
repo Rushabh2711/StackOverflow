@@ -97,7 +97,9 @@ function Ask() {
  
 
   const setTagsState = (tagObj) => {
-    setTag(arr => [...arr, {tagId : tagObj._id, name: tagObj.name}])
+    if(tagObj){
+      setTag(arr => [...arr, {tagId : tagObj._id, name: tagObj.name}])
+    }
   };
   
 
