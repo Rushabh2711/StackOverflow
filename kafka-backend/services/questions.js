@@ -12,7 +12,7 @@ const handleQuestionRequest = async (req, callback) => {
     case "/get-test-questions-kafka":
         results = await questionController.fetch10kQuestions();
         break;
-    case "/questions/:questionId":
+    case "/fetch/questions":
       results = await questionController.fetchQuestionDetails(req.body);
       break;
     case "/question/addView":

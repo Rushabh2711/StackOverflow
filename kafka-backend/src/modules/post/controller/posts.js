@@ -2,6 +2,7 @@
 import Posts from "../../../db/models/mongo/posts.js";
 import QuestionViews from "../../../db/models/mongo/questionViews.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
+import Votes from "../../../db/models/mongo/votes.js"
 import moment from "moment";
 
 class QuestionController {
@@ -56,14 +57,67 @@ class QuestionController {
 
   fetchQuestionDetails = async (data) => {
     console.log(data);
-    const questionId = data.questionId;
+   
+    const {questionId, userId} = data;
+    console.log("data",questionId, userId);
     try {
       const questionDetails = await Posts.findById({ _id: questionId });
-      console.log("questionDetails",questionDetails);
+      // console.log("questionDetails",questionDetails);
 
-      const answers = await Posts.find({parentId : questionId});
+      let answers = await Posts.find({parentId : questionId});
 
-      const userDetails = UserDetails.find({_id : data.userId});
+      // const userDetails = UserDetails.find({_id : data.userId});
+
+      // const votes = Votes.find({postId : questionId}).aggregate([
+      //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
+      // ]);
+
+      // for await(const doc of votes){
+      //     if(doc._id.voteType == "Upvote")
+      //     {
+      //         upvotes = doc.count;
+      //     }
+      //     if(doc._id.voteType == "Downvote" )
+      //     {
+      //         downvotes = doc.count
+      //     }
+      //     console.log("votes", doc.count, doc._id.voteType);
+      //   }
+
+      // console.log("answers",answers);
+      let answersModified = [];
+      if(answers && answers.length > 0)
+      {
+        for(var answer of answers)
+        {
+          const {questionTitle, postType, parentId, description, shortdesc, votes, 
+                views, numberOfAnswers,
+                addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
+          const obj = {
+              questionTitle: questionTitle,
+              postType: postType,
+              parentId: parentId,
+              description: description,
+              shortdesc: shortdesc,
+              upvotes: (await this.fetchVoteCount(answer._id, "Upvote")),
+              downvotes:(await this.fetchVoteCount(answer._id, "Downvote")),
+              upvoteFlag: (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+              downvoteFlag: (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
+              views: views,
+              numberOfAnswers: numberOfAnswers,
+              addedAt: addedAt,
+              modifiedAt: modifiedAt,
+              isAcceptedAnswerId: isAcceptedAnswerId,
+              status: status,
+              isAccepted: isAccepted,
+              userId: userId,
+              comments: comments,
+              questionTags: questionTags
+          }
+           answersModified.push(obj);
+        }
+      }
+      
 
       const result = {
         questionId: questionDetails._id,
@@ -74,18 +128,21 @@ class QuestionController {
         modifiedTime: questionDetails.modifiedTime,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
-        upvotes: questionDetails.upvotes,
-        downvotes: questionDetails.downvotes,
+        upvotes: (await this.fetchVoteCount(questionId, "Upvote")),
+        downvotes: (await this.fetchVoteCount(questionId, "Downvote")),
+        upvoteFlag: (await this.fetchVoteFlag(questionId, "Upvote", userId)),
+        downvoteFlag: (await this.fetchVoteFlag(questionId, "Downvote", userId)),
         comments: questionDetails.comments,
         numberOfAnswers: questionDetails.numberOfAnswers,
         answers: questionDetails.answers,
+        isAcceptedAnswerId: questionDetails.isAcceptedAnswerId,
         questionComments: questionDetails.questionComments,
-        username: userDetails.username,
-        profilePicture: userDetails.profilePicture,
-        badges: userDetails.badges,
+        // username: userDetails.username,
+        // profilePicture: userDetails.profilePicture,
+        // badges: userDetails.badges,
         userId: questionDetails.userId,
-        reputation: userDetails.reputation,
-        answers : answers
+        // reputation: userDetails.reputation,
+        answers : answersModified
       };
       return this.responseGenerator(200, result);
     } catch (err) {
@@ -96,6 +153,38 @@ class QuestionController {
       );
     }
   };
+
+
+  fetchVoteCount = async (id, type) => {
+      let count=0;
+      let votes = await Votes.find({postId : id});
+      // console.log("votes", votes);
+      for(var vote of votes)
+      {
+          if(vote.voteType == type)  count++;
+      }
+      return count;
+  }
+
+  fetchVoteFlag = async (id, type, userId) => {
+    let flag = false;
+    let votes;
+    if(userId == "")
+    {
+        votes = await Votes.find({postId : id});
+    }
+    else
+    {
+      votes = await Votes.find({postId : id, userId : userId});
+    }
+    console.log("votes", votes);
+    for(var vote of votes)
+    {
+        console.log(vote.voteType , "equals", type);
+        if(vote.voteType == type)  flag = true;
+    }
+    return flag;
+}
 
   addView = async (data) => {
     console.log(data);
@@ -171,6 +260,8 @@ class QuestionController {
       }, {
         upsert: true, new: true
       });
+
+      await UserDetails.updateOne({_id : userId},  {$inc : {commentsCount : 1}});
       console.log("comment successfully added to answer",answerId)
       res.status(200).send(response.comments);
     } catch (err) {
