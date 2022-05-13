@@ -78,7 +78,8 @@ function Ask() {
             console.log(res.data);
             alert("Question added successfully");
             //history.push("/");
-            history(`/view/${res.data._id}`);
+            history(`/question/view/${res.data._id}`);
+
           })
           .catch((err) => {
             console.log(err);

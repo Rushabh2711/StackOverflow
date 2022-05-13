@@ -54,10 +54,10 @@ export default function Home() {
     axios.get(STRINGS.url + "/getQuestions").then((response) => {
       setPosts(response.data);
       setTempPosts(response.data);
-      
+      console.log(response.data);
     });
     // console.log(posts);
-    // setRefreshGrid(false);
+    setRefreshGrid(false);
   },[])
     
   // };
@@ -77,7 +77,7 @@ export default function Home() {
 
   const hotFilterFunction = async (data) => {
     console.log(data)
-    return data.sort((a,b) => a.questionTitle.includes("Why"));  
+    return data.filter((a) => a.questionTitle.includes("Why"));  
   }
 
   const scoreFilterFunction = async (data) => {

@@ -185,7 +185,12 @@ export default function Navbar(props) {
   };
 
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
-  const user = useSelector((state) => state.LoggedInUser);
+
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
+
+  // const goldCount = loggedInUser.badges.filter((x) => x.type === "gold") ? loggedInUser?.badges?.filter((x) => x.type === "gold").length : 0;
+  // const silverCount = loggedInUser.badges.filter((x) => x.type === "silver") ? loggedInUser?.badges?.filter((x) => x.type === "silver").length : 0;
+  // const bronzeCount = loggedInUser.badges.filter((x) => x.type === "bronze") ? loggedInUser?.badges?.filter((x) => x.type === "bronze").length : 0;
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
@@ -285,8 +290,15 @@ export default function Navbar(props) {
 
   const submitSearch = (e) => {
     if (e.keyCode == 13) {
-      var url = "/search/" + searchQuery;
-      navigate(url);
+      if (
+        !searchQuery.includes(":") &&
+        searchQuery.includes('"') &&
+        searchQuery.includes("[")
+      ) {
+      } else {
+        var url = "/search/" + searchQuery;
+        navigate(url);
+      }
     }
   };
   return (
@@ -601,7 +613,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                2963
+                {loggedInUser.reputation}
               </Typography>
               <Typography
                 variant="body2"
@@ -618,7 +630,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 1
+                {"\u2022"} 0
               </Typography>
               <Typography
                 variant="body2"
@@ -635,7 +647,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 2
+                {"\u2022"} 0
               </Typography>
               <Typography
                 variant="body2"
@@ -652,7 +664,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 3
+                {"\u2022"} 0
               </Typography>
             </IconButton>
           ) : null}
