@@ -231,7 +231,7 @@ export class UserController {
   fetchTagBadges = async (req, res) => {
     const { userId } = req.params;
     let user = await UserDetails.findById({ _id: userId });
-    let badges = user.badges;
+    let tagBadges = [];
 
     try {
         const tags = user.tags;
@@ -242,7 +242,7 @@ export class UserController {
            {
               tagBadge = {
                 name: tag.name,
-                type: "Bronze",
+                type: "bronze",
                 tagBased: true
               }
            }
@@ -250,7 +250,7 @@ export class UserController {
            {
               tagBadge = {
                 name: tag.name,
-                type: "Silver",
+                type: "silver",
                 tagBased: true
               }
            }
@@ -258,13 +258,13 @@ export class UserController {
            {
               tagBadge = {
                 name: tag.name,
-                type: "Gold",
+                type: "gold",
                 tagBased: true
               }
            }
-           badges.push(tagBadge);
+           tagBadges.push(tagBadge);
         }
-        res.status(200).send(badges);
+        res.status(200).send(tagBadges);
     } catch (error) {
       console.error(err);
       res.status(400).send(err);
