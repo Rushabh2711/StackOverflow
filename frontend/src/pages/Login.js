@@ -8,16 +8,18 @@ import TextField from "@mui/material/TextField";
 import { Helmet } from "react-helmet";
 import { Grid, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import validator from "validator";
 import { login } from "../actions";
-import { useNavigate } from "react-router";
+import { Navigate, useNavigate } from "react-router";
 
 export default function Login() {
   const [emailId, setEmailId] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
+
   const dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -114,7 +116,9 @@ export default function Login() {
     </React.Fragment>
   );
 
-  return (
+  return loggedInUser !== 0 ? (
+    <Navigate to="/home" />
+  ) : (
     <div className="login-component">
       <Toolbar/>
       <Helmet>

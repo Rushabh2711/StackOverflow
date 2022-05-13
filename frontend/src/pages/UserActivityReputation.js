@@ -17,105 +17,18 @@ import { useNavigate, useParams } from "react-router";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import axios from "axios";
 import moment from "moment";
+import { Link } from "react-router-dom";
 
 export default function UserActivityReputation() {
   const [user, setUser] = useState("");
-  const [activity, setActivity] = useState(userJson);
-  const [dataKey, setDataKey] = useState([]);
-  const [data, setData] = useState([]);
+  const [finalJson, setFinalJson] = useState([]);
+  const [activity, setActivity] = useState("");
+  const [reputation, setReputation] = useState("");
 
   const { id } = useParams();
   let navigate = useNavigate();
 
-  let d = [
-    {
-      title: "May 8th 2022",
-      content: [
-        {
-          title: "122",
-          content: [
-            {
-              title: [
-                {
-                  questionId: 122,
-                  activityType: "upvote",
-                  date: "2022-05-08T23:26:44.337+00:00",
-                  userId: 1,
-                },
-              ],
-              content: [],
-            },
-          ],
-        },
-        {
-          title: "123",
-          content: [
-            {
-              title: [
-                {
-                  questionId: 123,
-                  activityType: "upvote",
-                  date: "2022-05-08T23:26:44.337+00:00",
-                  userId: 1,
-                },
-                {
-                  questionId: 123,
-                  activityType: "upvote",
-                  date: "2022-05-08T23:26:44.337+00:00",
-                  userId: 1,
-                },
-              ],
-              content: [],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "May 7th 2022",
-      content: [
-        {
-          title: "123",
-          content: [
-            {
-              title: [
-                {
-                  questionId: 123,
-                  activityType: "upvote",
-                  date: "2022-05-07T23:26:44.337+00:00",
-                  userId: 1,
-                },
-              ],
-              content: [],
-            },
-          ],
-        },
-      ],
-    },
-    {
-      title: "May 6th 2022",
-      content: [
-        {
-          title: "123",
-          content: [
-            {
-              title: [
-                {
-                  questionId: 123,
-                  activityType: "upvote",
-                  date: "2022-05-06T23:26:44.337+00:00",
-                  userId: 1,
-                },
-              ],
-              content: [],
-            },
-          ],
-        },
-      ],
-    },
-  ];
-
-  function litem(d) {
+  function litem(points) {
     return (
       <ListItem
         sx={{
@@ -131,7 +44,20 @@ export default function UserActivityReputation() {
           gutterBottom
           align="left"
         >
-          {d}
+          {" "}
+          {points === 5 ? (
+            <Typography>+5 answer upvote</Typography>
+          ) : points === -5 ? (
+            <Typography>+5 answer downvote</Typography>
+          ) : points === 10 ? (
+            <Typography>+10 question upvote</Typography>
+          ) : points === -10 ? (
+            <Typography>-10 question downvote</Typography>
+          ) : points === 15 ? (
+            <Typography>+15 best answer accepted</Typography>
+          ) : (
+            <Typography>-15 best answer reversed</Typography>
+          )}
         </Typography>
       </ListItem>
     );
@@ -145,7 +71,7 @@ export default function UserActivityReputation() {
           <div>
             {" "}
             <List sx={{ width: "100%", bgcolor: "background.paper" }}>
-              {d.title.map((reps) => litem(reps.activityType))}
+              {d.title.map((reps) => litem(reps.points))}
             </List>
             <br></br>
           </div>
@@ -159,7 +85,26 @@ export default function UserActivityReputation() {
             aria-controls="panel1a-content"
             id="panel1a-header"
           >
-            <Typography>{d.title}</Typography>
+            {d.title.includes("May") ? (
+              <div>
+                {" "}
+                <Typography>{d.title}</Typography>
+              </div>
+            ) : (
+              activity
+                .filter((i) => i.questionTitle === d.title)
+                .slice(0, 1)
+                .map((e) => (
+                  <Typography>
+                    <Link
+                      to={"/view/" + e.postId}
+                      style={{ textDecoration: "none" }}
+                    >
+                      {e.questionTitle}
+                    </Link>
+                  </Typography>
+                ))
+            )}
           </AccordionSummary>
           <Accordion>
             <AccordionDetails
@@ -186,37 +131,37 @@ export default function UserActivityReputation() {
         navigate("/errorpage");
       });
 
-    let groupedDatesThatMatch = _.mapValues(
-      _.groupBy(activity, (i) => moment(i.date).format("MMMM Do YYYY")),
-      (app) => _.groupBy(app, (i) => i.questionId)
-    );
+    axios
+      .get(`http://localhost:3001/useractivity/` + id)
+      .then((res) => {
+        setReputation(res.data[0].reputation);
+        setActivity(res.data[0].activities);
+        let groupedDatesThatMatch = _.mapValues(
+          _.groupBy(res.data[0].activities, (i) =>
+            moment(i.date).format("MMMM Do YYYY")
+          ),
+          (app) => _.groupBy(app, (i) => i.questionTitle)
+        );
 
-    console.log("here");
-    console.log(groupedDatesThatMatch);
+        console.log(groupedDatesThatMatch);
 
-    const getObjects = (o, parent) =>
-      o && typeof o === "object" && !isArray(o)
-        ? Object.entries(o).map(([title, v]) => ({
-            title,
-            key,
-            content: getObjects(v, title),
-          }))
-        : [{ title: o, key, content: [] }];
+        const getObjects = (o, parent) =>
+          o && typeof o === "object" && !isArray(o)
+            ? Object.entries(o).map(([title, v]) => ({
+                title,
 
-    var result = getObjects(groupedDatesThatMatch, "null");
-    console.log(result);
-    var count = 0;
-    var keyValue = [];
-    var keyData = [];
-    for (var key in groupedDatesThatMatch) {
-      if (groupedDatesThatMatch.hasOwnProperty(key)) {
-        keyValue[count] = key;
-        keyData[key] = groupedDatesThatMatch[key];
-        count++;
-      }
-      setDataKey(keyValue);
-      setData(keyData);
-    }
+                content: getObjects(v, title),
+              }))
+            : [{ title: o, content: [] }];
+
+        var result = getObjects(groupedDatesThatMatch, "null");
+        console.log(result);
+        setFinalJson(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        navigate("/errorpage");
+      });
   }, []);
 
   function isArray(arr) {
@@ -248,9 +193,13 @@ export default function UserActivityReputation() {
             gutterBottom
             align="left"
           >
-            Reputation
+            {reputation} Reputation
           </Typography>
-          {d.map((du) => recurr(du))}
+          {finalJson.length > 0 ? (
+            finalJson.map((du) => recurr(du))
+          ) : (
+            <div></div>
+          )}
         </Grid>
       </Grid>
     </div>

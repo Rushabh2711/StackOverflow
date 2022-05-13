@@ -89,21 +89,21 @@ export default function UserEditProfile() {
   }, []);
 
   const handleSubmit = (e) => {
-    console.log("here");
     e.preventDefault();
-    const data = {
-      _id: id,
-      city: city,
-      about: about,
-      country: country,
-      image: image,
-    };
-    console.log(data);
-    if (!validator.isAlpha(city)) {
-      setMessage("City can have only letter");
-    } else if (!validator.isAlpha(country, { ignore: " " })) {
-      setMessage("Country can have only letter");
+    console.log("here");
+    if (!validator.isAlpha(city, "en-US", { ignore: " " })) {
+      setMessage("City can have only letters");
+    } else if (!validator.isAlpha(country, "en-US", { ignore: " " })) {
+      setMessage("Country can have only letters");
     } else {
+      const data = {
+        _id: id,
+        city: city,
+        about: about,
+        country: country,
+        image: image,
+      };
+      console.log(data);
       axios
         .put(`http://localhost:3001/user/editprofile`, data)
         .then((res) => {
