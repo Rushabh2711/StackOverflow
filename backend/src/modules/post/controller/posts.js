@@ -123,7 +123,7 @@ class QuestionController {
   fetchQuestionDetails = async (req, res) => {
     console.log("Inside question controller, about to make Kafka request");
     const message = {};
-    message.body = req.params;
+    message.body = req.body;
     console.log(message.body);
     message.path = req.route.path;
     make_request("post", message, (err, results) => {

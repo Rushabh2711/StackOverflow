@@ -20,8 +20,8 @@ questionRouter.put(
   "/answer/postComment",
   questionController.postCommentToAnswer
 );
-questionRouter.get(
-  "/questions/:questionId/:userId",
+questionRouter.post(
+  "/fetch/questions",
   questionController.fetchQuestionDetails
 );
 questionRouter.get(
