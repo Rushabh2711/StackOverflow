@@ -86,35 +86,38 @@ class QuestionController {
 
       // console.log("answers",answers);
       let answersModified = [];
-
-      for(var answer of answers)
+      if(answers && answers.length > 0)
       {
-        const {questionTitle, postType, parentId, description, shortdesc, votes, 
-              views, numberOfAnswers,
-              addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
-        const obj = {
-            questionTitle: questionTitle,
-            postType: postType,
-            parentId: parentId,
-            description: description,
-            shortdesc: shortdesc,
-            upvotes: (await this.fetchVoteCount(answer._id, "Upvote")),
-            downvotes:(await this.fetchVoteCount(answer._id, "Downvote")),
-            upvoteFlag: (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
-            downvoteFlag: (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
-            views: views,
-            numberOfAnswers: numberOfAnswers,
-            addedAt: addedAt,
-            modifiedAt: modifiedAt,
-            isAcceptedAnswerId: isAcceptedAnswerId,
-            status: status,
-            isAccepted: isAccepted,
-            userId: userId,
-            comments: comments,
-            questionTags: questionTags
+        for(var answer of answers)
+        {
+          const {questionTitle, postType, parentId, description, shortdesc, votes, 
+                views, numberOfAnswers,
+                addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
+          const obj = {
+              questionTitle: questionTitle,
+              postType: postType,
+              parentId: parentId,
+              description: description,
+              shortdesc: shortdesc,
+              upvotes: (await this.fetchVoteCount(answer._id, "Upvote")),
+              downvotes:(await this.fetchVoteCount(answer._id, "Downvote")),
+              upvoteFlag: (await this.fetchVoteFlag(answer._id, "Upvote", userId)),
+              downvoteFlag: (await this.fetchVoteFlag(answer._id, "Downvote", userId)),
+              views: views,
+              numberOfAnswers: numberOfAnswers,
+              addedAt: addedAt,
+              modifiedAt: modifiedAt,
+              isAcceptedAnswerId: isAcceptedAnswerId,
+              status: status,
+              isAccepted: isAccepted,
+              userId: userId,
+              comments: comments,
+              questionTags: questionTags
+          }
+           answersModified.push(obj);
         }
-         answersModified.push(obj);
       }
+      
 
       const result = {
         questionId: questionDetails._id,
@@ -165,8 +168,15 @@ class QuestionController {
 
   fetchVoteFlag = async (id, type, userId) => {
     let flag = false;
-    // console.log("postid",id , "user", userId);
-    let votes = await Votes.find({postId : id, userId : userId});
+    let votes;
+    if(userId == "")
+    {
+        votes = await Votes.find({postId : id});
+    }
+    else
+    {
+      votes = await Votes.find({postId : id, userId : userId});
+    }
     console.log("votes", votes);
     for(var vote of votes)
     {
