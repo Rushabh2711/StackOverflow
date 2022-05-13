@@ -60,10 +60,15 @@ class QuestionController {
         }
         else
         {
+          const newTag = {
+            tagId : tag.tagId,
+            name: tag.name,
+            posts: 1
+          }
           const newTagResponse = await UserDetails.findOneAndUpdate(
             {_id : userId},
             {
-              $push : { tags : tag }
+              $push : { tags : newTag }
             }
           )
  
