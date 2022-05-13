@@ -13,5 +13,5 @@ const userActivitySchema = new Schema({
   },
 });
 
-const userActivities = mongoose.model("userActivity", userActivitySchema);
-export default userActivities;
+const UserActivities = mongoose.model("userActivity", userActivitySchema);
+export default UserActivities;

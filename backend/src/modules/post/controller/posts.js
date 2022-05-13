@@ -2,11 +2,8 @@ import { make_request } from "../../../../kafka/client.js";
 import Posts from "../../../db/models/mongo/posts.js";
 import Tags from "../../../db/models/mongo/tags.js";
 import UserDetails from "../../../db/models/mongo/userDetails.js";
-// const mongoose = require('mongoose');
-import mongoose from "mongoose";
 import Votes from "../../../db/models/mongo/votes.js";
 import PostActivities from "../../../db/models/mongo/postActivity.js";
-import userActivities from "../../../db/models/mongo/userActivity.js";
 
 
 class QuestionController {
@@ -426,6 +423,24 @@ class QuestionController {
       res.status(200).send(question);
       
     } catch (error) {
+      console.error(err);
+      res.status(400).send(err);
+    }
+  }
+
+  fetchQuestionActivity = async (req, res) => {
+    const { postId } = req.params;
+    let results = [];
+    try {
+      const activities = await PostActivities.find({_id : postId}, {postId : 0});
+
+      activities.map(async (activity) => {
+        results.push(activity);
+      });
+
+      console.log("user activity", results);
+      res.status(200).send(results);
+    } catch (err) {
       console.error(err);
       res.status(400).send(err);
     }
