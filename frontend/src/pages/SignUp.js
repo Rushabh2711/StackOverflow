@@ -51,8 +51,10 @@ export default function SignUp() {
       const data = {
         username: username,
         emailId: emailId,
+        accountType: "user",
         password: password,
       };
+      console.log(data);
       axios
         .post(`http://localhost:3001/user/signup`, data)
         .then((res) => {
