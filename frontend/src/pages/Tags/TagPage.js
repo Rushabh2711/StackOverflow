@@ -107,7 +107,8 @@ export default function TagPage() {
   useEffect(() =>{
     fetch('http://localhost:3001/tags')
         .then(res => res.json())
-        .then(data=> setTags(data))
+        .then(data=> {setTags(data);
+        console.log(data)})
   }, [])
 
 
