@@ -99,15 +99,21 @@ export default function UserEditProfile() {
       image: image,
     };
     console.log(data);
-    axios
-      .put(`http://localhost:3001/user/editprofile`, data)
-      .then((res) => {
-        setMessage("Your profile has been updated");
-        console.log(res);
-      })
-      .catch((err) => {
-        setMessage(err.res.data);
-      });
+    if (!validator.isAlpha(city)) {
+      setMessage("City can have only letter");
+    } else if (!validator.isAlpha(country, { ignore: " " })) {
+      setMessage("Country can have only letter");
+    } else {
+      axios
+        .put(`http://localhost:3001/user/editprofile`, data)
+        .then((res) => {
+          setMessage("Your profile has been updated");
+          console.log(res);
+        })
+        .catch((err) => {
+          setMessage(err.res.data);
+        });
+    }
   };
 
   return loggedInUser === null || loggedInUser._id !== id ? (
@@ -191,6 +197,7 @@ export default function UserEditProfile() {
                   id="city"
                   type="text"
                   value={city}
+                  size="30"
                   onChange={cityChangeHandler}
                   required
                   sx={{ width: 500 }}
@@ -207,6 +214,7 @@ export default function UserEditProfile() {
                   id="country"
                   type="text"
                   value={country}
+                  size="30"
                   onChange={countryChangeHandler}
                   required
                   sx={{ width: 500 }}

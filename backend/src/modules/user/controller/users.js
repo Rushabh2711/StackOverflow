@@ -14,7 +14,9 @@ export class UserController {
       console.log(user);
 
       if (user === null) {
-        return res.status(400).send({ errorMsg: "Email not registered with us" });
+        return res
+          .status(400)
+          .send({ errorMsg: "Email not registered with us" });
       }
       if (!bcrypt.compareSync(password, user.password)) {
         return res
@@ -139,7 +141,7 @@ export class UserController {
       res.status(200).send(response);
     } catch (err) {
       console.error(err);
-      res.status(400).send(err);
+      res.status(400).send("Profile not updated");
     }
   };
 
@@ -189,26 +191,26 @@ export class UserController {
     const { userId } = req.params;
     let results = [];
     try {
-      const activities = await UserActivities.find({userId : userId});
-      console.log("activites",activities);
+      const activities = await UserActivities.find({ userId: userId });
+      console.log("activites", activities);
 
-      let user = await UserDetails.findById({_id : userId})
+      let user = await UserDetails.findById({ _id: userId });
       let all = [];
 
-      for(var act of activities)
-      { 
-        let post = await Posts.find({_id : act.postId});
+      for (var act of activities) {
+        let post = await Posts.find({ _id: act.postId });
         let activity = {
-          postId: post[0].postType  == "question" ? post[0]._id : post[0].parentId,
+          postId:
+            post[0].postType == "question" ? post[0]._id : post[0].parentId,
           questionTitle: post[0].questionTitle,
           activityType: act.activityType,
           points: act.points,
           date: act.date,
-        }
+        };
         all.push(activity);
       }
 
-      results.push({reputation: user.reputation, activities : all})
+      results.push({ reputation: user.reputation, activities: all });
 
       console.log("user activity", results);
       res.status(200).send(results);
@@ -216,7 +218,7 @@ export class UserController {
       console.error(err);
       res.status(400).send(err);
     }
-  }
+  };
 }
 
 export default UserController;

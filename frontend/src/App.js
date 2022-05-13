@@ -52,7 +52,7 @@ export default function App() {
 
         <Routes>
           <Route path="/adminHome" element={<AdminHome />} />
-          <Route path="/demo" element={<Demo />} />
+          <Route path="/chat/:username" element={<Demo />} />
           <Route path="/adminDashboard" element={<AdminDashboard />} />
           <Route path="/" element={<LandingPage />} />
           <Route
@@ -133,6 +133,7 @@ export default function App() {
             path="/activity/:id"
             element={<Layout page={<Activity />} sidebarTabValue={2} />}
           />
+
           <Route path="/errorpage" element={<Layout page={<ErrorPage />} />} />
         </Routes>
       </Box>

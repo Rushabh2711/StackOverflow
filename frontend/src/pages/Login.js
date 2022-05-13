@@ -46,15 +46,16 @@ export default function Login() {
       };
       axios
         .post(`http://localhost:3001/user/login`, data)
-        .then((res) => {
-          console.log("Status Code : ", res.status);
-          console.log(res.data);
-          dispatch(login(res.data));
+        .then((response) => {
+          console.log("Status Code : ", response.status);
+          console.log(response.data);
+          dispatch(login(response.data));
           navigate("/home");
-          console.log(res.data);
+          console.log(response.data);
         })
-        .catch((err) => {
-          // setMessage(err.res.data);
+        .catch((error) => {
+          console.log(error.response.data.errorMsg);
+          setMessage(error.response.data.errorMsg);
         });
     }
   };
