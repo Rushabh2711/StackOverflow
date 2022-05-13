@@ -196,17 +196,29 @@ export class UserController {
     const { userId } = req.params;
     let results = [];
     try {
-      const activities = await UserActivities.find({_id : userId}, {userId : 0});
+      const activities = await UserActivities.find({userId : userId});
+      console.log("activites",activities);
 
-      activities.map(async (activity) => {
-        let postId = activity.postId;
-        let title = await Posts.findById({_id : postId});
-        activity.title = title;
-        results.push(activity);
-      });
+      let user = await UserDetails.findById({_id : userId})
+      let all = [];
 
-      console.log("user activity", response);
-      res.status(200).send(response);
+      for(var act of activities)
+      { 
+        let post = await Posts.find({_id : act.postId});
+        let activity = {
+          postId: post[0].postType  == "question" ? post[0]._id : post[0].parentId,
+          questionTitle: post[0].questionTitle,
+          activityType: act.activityType,
+          points: act.points,
+          date: act.date,
+        }
+        all.push(activity);
+      }
+
+      results.push({reputation: user.reputation, activities : all})
+
+      console.log("user activity", results);
+      res.status(200).send(results);
     } catch (err) {
       console.error(err);
       res.status(400).send(err);

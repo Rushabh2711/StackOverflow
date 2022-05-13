@@ -12,6 +12,7 @@ const postSchema = new Schema({
   addedAt: { type: Date, required: true },
   modifiedAt: {type:{ type:String},date:{type: Date}},
   isAcceptedAnswerId: { type: Schema.Types.ObjectId },
+  isAcceptedUserId: {type: Schema.Types.ObjectId, ref: "userDetails"},
   status: { type: String },
   isAccepted: { type: Boolean, default: false },
   userId: { type: Schema.Types.ObjectId, required: true },
