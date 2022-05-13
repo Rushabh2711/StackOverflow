@@ -54,10 +54,10 @@ export default function Home() {
     axios.get(STRINGS.url + "/getQuestions").then((response) => {
       setPosts(response.data);
       setTempPosts(response.data);
-      
+      console.log(response.data);
     });
     // console.log(posts);
-    // setRefreshGrid(false);
+    setRefreshGrid(false);
   },[])
     
   // };

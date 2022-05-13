@@ -169,7 +169,14 @@ export default function Navbar(props) {
     dispatch(logout());
   }
   const isLoggedIn = useSelector((state) => state.isLoggedIn);
+
+  const loggedInUser = useSelector((state) => state.LoggedInUser);
   
+  const goldCount = loggedInUser.badges.filter((x) => x.type === "gold");
+  const silverCount = loggedInUser.badges.filter((x) => x.type === "silver");
+  const bronzeCount = loggedInUser.badges.filter((x) => x.type === "bronze");
+  
+
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorEl2, setAnchorEl2] = React.useState(null);
   const [tabValue, setTabValue] = React.useState(0);
@@ -268,8 +275,14 @@ export default function Navbar(props) {
 
   const submitSearch = (e) => {
     if(e.keyCode == 13){
-      var url = "/search/" + searchQuery;
+
+      if(!searchQuery.includes(":") && searchQuery.includes('"') && searchQuery.includes("[")){
+
+      }else{
+        var url = "/search/" + searchQuery;
       navigate(url);
+      }
+      
     }
   }
   return (
@@ -574,7 +587,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                2963
+                {loggedInUser.reputation}
               </Typography>
               <Typography
                 variant="body2"
@@ -591,7 +604,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 1
+                {"\u2022"} {goldCount}
               </Typography>
               <Typography
                 variant="body2"
@@ -608,7 +621,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 2
+                {"\u2022"} {silverCount}
               </Typography>
               <Typography
                 variant="body2"
@@ -625,7 +638,7 @@ export default function Navbar(props) {
                 }}
                 textTransform="none"
               >
-                {"\u2022"} 3
+                {"\u2022"} {bronzeCount}
               </Typography>
             </IconButton>
           ) : null}
