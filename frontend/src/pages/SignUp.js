@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Helmet } from "react-helmet";
-import { Grid } from "@mui/material";
+import { Grid, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 import validator from "validator";
 import axios from "axios";
@@ -155,6 +155,7 @@ export default function SignUp() {
     <Navigate to="/home" />
   ) : (
     <div className="signup-component">
+      <Toolbar/>
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>
@@ -173,8 +174,8 @@ export default function SignUp() {
           <Box sx={{ width: 350 }} align="right">
             <Card variant="outlined">{card}</Card>
           </Box>
-          <div align="center">
-            Already have an account? <Link to={`/login`}>Log in</Link>
+          <div>
+            <p>Already have an account?</p> <Link to={`/login`}>Log in</Link>
           </div>
         </Grid>
       </Grid>

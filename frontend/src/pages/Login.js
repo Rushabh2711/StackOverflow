@@ -6,7 +6,7 @@ import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import { Helmet } from "react-helmet";
-import { Grid } from "@mui/material";
+import { Grid, Toolbar } from "@mui/material";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
@@ -121,6 +121,7 @@ export default function Login() {
     <Navigate to="/home" />
   ) : (
     <div className="login-component">
+      <Toolbar/>
       <Helmet>
         <style>{"body { background-color: #eeeeee }"}</style>
       </Helmet>

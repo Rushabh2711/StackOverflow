@@ -17,6 +17,7 @@ import Sidebar from '../components/Navbar/Sidebar';
 import { IconButton } from '@mui/material';
 import { useNavigate } from 'react-router';
 
+import staticPage from '../images/landingPage.jpg';
 const drawerWidth = 240;
 
 export default function LandingPage() {
@@ -27,7 +28,7 @@ export default function LandingPage() {
         navigate("/question");
     }
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: 'flex' , width: "100vw", height: "100vh"}}  >
       {/* <CssBaseline />
       <Navbar />
       <Drawer
@@ -49,197 +50,7 @@ export default function LandingPage() {
         <Toolbar />
         your component goes here */}
     
-      <p style={{ position:"relative", width:"inherit", textAlign: "left"}}>
-        HARSH Vaghasutyausfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbddfsfdddddddddddddddddddddddddddddddddddddddddddddddddddddddsssssssssssssssssssfsdfsefefdsfvxdvcszdfwadeadfzdfsdefawfsef
-        <br />
-        <IconButton
-              size="large"
-              edge="start"
-              color="inherit"
-              aria-label="open drawer"
-              style={{
-                borderRadius: "0px",
-                marginTop: "0px",
-                marginBottom: "0px",
-              }}
-              sx={{
-                mr: 2,
-                "&:hover": {
-                  backgroundColor: "grey",
-                },
-              }}
-              onClick={handleOnClick}
-            >
-              go here
-            </IconButton>
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        v vv v
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        vvv
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        v vv v
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        vvv
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        v vv v
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        vvv
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-        safdgsdgusfopjadjsbdgoskidabdsgsfbhaifhsfbawdhsdjvbsejdjovsdifhawecnsdvjseabdaojuvsdrifrbd
-        <br />
-      </p>
-      {/* </Box> */}
+      <img src={staticPage} width="100%" height="100%"></img>
     </Box>
   );
 }
