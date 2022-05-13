@@ -35,6 +35,17 @@ const history = useNavigate();
     }).catch(err => {
       console.log(err)
     });
+    if(isLoggedIn){
+      axios.get(`http://localhost:3001/user/${LoggedInUser?.userId}`).then((res) => {
+        console.log(res.data[0]);
+        if(res.data[0].bookmarkedQuestions.includes(question.questionId)){    
+          SetIsBookmarked(true)
+        }
+        // setAksedQuestionUser(res.data[0]);
+      }).catch(err => {
+        console.log(err)
+      });
+    }
   }, [question]);
 
   useEffect(() => {
@@ -49,7 +60,7 @@ const history = useNavigate();
     const body = {
       postId: question.questionId,
       userId:LoggedInUser?LoggedInUser.userId:"",
-      // postType: "Question",
+      postType: "question",
       voteType: e.target.id
     }
     if(!isLoggedIn){
@@ -113,6 +124,9 @@ const history = useNavigate();
     }
 
   };
+  const gotoactivity=()=>{
+    history(`/activity/${question.questionId}`)
+  }
   return (
     <>
       <div
@@ -134,7 +148,7 @@ const history = useNavigate();
            
             {isBookmarked? <BookmarkIcon className="votes" onClick={removeBookmark} style={{ color: "cea81c" }}/>:<BookmarkIcon className="votes" onClick={addBookmark} />}
  
-            <HistoryIcon className="votes" style={{ "fontSize": "1.5rem" }} />
+            <HistoryIcon className="votes" style={{ "fontSize": "1.5rem" }} onClick={gotoactivity} />
           </div>
         </div>
         <div className="question-answer" style={{ marginBottom: "10px" }}>
@@ -150,7 +164,7 @@ const history = useNavigate();
                <TagList tag={tag}/>
           ))}
           </div>
-          <Author author={aksedQuestionUser} createdTime={question?.createdTime} isQuestion={true}/>
+          <Author answer={aksedQuestionUser} createdTime={question?.createdTime} isQuestion={true}/>
 
           <Comments comments={question?.comments} isQuestionComment={true} question_id={question.questionId} answer_id={question.questionId} />
 

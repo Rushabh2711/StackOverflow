@@ -65,8 +65,9 @@ class QuestionController {
       // console.log("questionDetails",questionDetails);
 
       let answers = await Posts.find({parentId : questionId});
+      let question = await Posts.find({_id : questionId});
 
-      const userDetailsQuestionPoster= UserDetails.find({_id : data.userId});
+      const userDetailsQuestionPoster= UserDetails.find({_id : question.userId});
 
       // const votes = Votes.find({postId : questionId}).aggregate([
       //   {"$group" : {_id:{postId: "$postId", voteType: "$voteType"}, count:{$sum:1}}}
@@ -90,13 +91,13 @@ class QuestionController {
       {
         for(var answer of answers)
         {
-          let { questionTitle, postType, parentId, description, shortdesc, 
-                views, numberOfAnswers, addedAt, modifiedAt, isAcceptedAnswerId, 
-                status, isAccepted, userId, comments, questionTags 
-              } = answer;
+          let {questionTitle, postType, parentId, description, shortdesc, votes, _id,
+                views, numberOfAnswers,
+                addedAt, modifiedAt, isAcceptedAnswerId, status, isAccepted, userId, comments, questionTags } = answer;
           let userDetails = await UserDetails.findById({_id : userId});
 
           const obj = {
+              _id: _id,
               questionTitle: questionTitle,
               postType: postType,
               parentId: parentId,
@@ -132,7 +133,7 @@ class QuestionController {
         views: questionDetails.views,
         description: questionDetails.description,
         createdTime: questionDetails.addedAt,
-        modifiedTime: questionDetails.modifiedTime,
+        modifiedAt: questionDetails.modifiedAt,
         tags: questionDetails.questionTags,
         votes: questionDetails.votes,
         upvotes: (await this.fetchVoteCount(questionId, "Upvote")),

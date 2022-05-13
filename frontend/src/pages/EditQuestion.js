@@ -9,8 +9,11 @@ import axios from "axios";
 //import { TagsInput } from "react-tag-input-component";
 // import { selectUser } from "../../feature/userSlice";
 // import ChipsArray from "./TagsInput";
+import { useNavigate } from "react-router-dom";
+
 import ImageUploader from "quill-image-uploader";
 import Navbar from "../components/Navbar/Navbar";
+import { useSelector } from "react-redux";
 //import ImageResize from "quill-image-resize-module-react";
 // #2 register module
 Quill.register("modules/imageUploader", ImageUploader);
@@ -22,8 +25,11 @@ function Edit() {
   const [tag, setTag] = useState([]);
   const [isAdmin, setisAdmin] = useState(false);
   const [tagList, setTagList] = useState([]);
-  const [shortDesc, setShortDesc] = useState("");
+  const history = useNavigate();
 
+  const [shortDesc, setShortDesc] = useState("");
+  const isLoggedIn = useSelector((state) => state.isLoggedIn)
+  const LoggedInUser = useSelector((state) => state.LoggedInUser)
   useEffect(() => {
     console.log("inside")
     axios
@@ -36,9 +42,12 @@ function Edit() {
     console.log("data", tagList)
   }, [id]);
   useEffect(() => {
-    console.log("inside")
+    var body = {
+      questionId: id,
+      userId: LoggedInUser?.userId ? LoggedInUser.userId : ""
+    }
     axios
-      .get(`http://localhost:3001/questions/${id}`)
+      .post(`http://localhost:3001/fetch/questions`, body)
       .then((res) => {
         console.log("question", res.data.response);
         var taglist = res.data.response.tags;
@@ -61,24 +70,29 @@ function Edit() {
     }));
     console.log("all tasg", transformed)
     console.log("tag", tag)
-    if (title !== "" && body !== "") {
+    if(!isLoggedIn){
+      console.log("insidde login")
+      history("/login");
+    }
+    else if (title !== "" && body !== "" && (tag?.length>0 && tag?.length<6)) {
       const bodyJSON = {
         title: title,
         description: body,
         tags: transformed,
         postId: id,
+        shortdesc: shortDesc.replace(/\s/g,' '),
         type: "modified",
         isAdmin: false,
-        userId: "62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
-        username: "virag"//localStorage.getItem('username')
+        userId:LoggedInUser?.userId,//localStorage.getItem('userId')
+        username:LoggedInUser.username//localStorage.getItem('username')
         // user: user,
       };
       await axios
         .post("http://localhost:3001/questions/edit", bodyJSON)
         .then((res) => {
           console.log(res.data);
-          alert("Question added successfully");
-          //history.push("/");
+          alert("Question updated successfully");
+          history(`/view/${id}`);
         })
         .catch((err) => {
           console.log(err);
@@ -90,6 +104,11 @@ function Edit() {
     else if(body===""){
       alert("Description can not be empty")
     }
+    else if(tag?.length<1){
+      alert("tag is required")}
+    else if(tag?.length>5){
+      alert("only 5 tags are allowed")
+ }
   };
 
   const setTagsState2 = (tagObj) => {
@@ -196,15 +215,15 @@ function Edit() {
                 isOptionEqualToValue={(option, value) => option.name === value.name}
                 value={tag}
                 onChange={(event, tags) => {
-                  console.log(event);
-                  console.log(tags);
-                  if(tag.length<5){
-                    //setTag();
-                    setTag(tags)
-                  }
-                  else{
-                    alert("You can add only 5 tags")
-                  }
+                  //console.log(event);
+                  //console.log(tags);
+                  setTag(tags)
+                  // if(tag.length<5){
+                  //   //setTag();
+                  // }
+                  // else{
+                  //   alert("You can add only 5 tags")
+                  // }
                   // setTagsState(tags.at(-1))
                 }
                 }

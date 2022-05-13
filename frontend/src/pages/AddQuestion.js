@@ -26,7 +26,7 @@ function Ask() {
   const [tagList, setTagList] = useState([]);
   const history = useNavigate();
   const isLoggedIn=useSelector((state)=>state.isLoggedIn)
-
+  const LoggedInUser = useSelector((state) => state.LoggedInUser)
   const handleQuill = (value) => {
     setBody(value);
   };
@@ -55,15 +55,15 @@ function Ask() {
       history("/login");
     }
     else{
-      if (title !== "" && body !== "" && tag?.length>0) {
+      if (title !== "" && body !== "" && (tag?.length>0 && tag?.length<6)) {
         const bodyJSON = {
           title: title,
           description: body,
           shortdesc: shortDesc.replace(/\s/g,' '),
           tags: tag,
           type: "asked",
-          userId:"62763e26bfe0a2faeddf026c",//localStorage.getItem('userId')
-          username:"virag"//localStorage.getItem('username')
+          userId:LoggedInUser?.userId,//localStorage.getItem('userId')
+          username:LoggedInUser.username//localStorage.getItem('username')
          // user: user,
         };
         await axios
@@ -72,6 +72,8 @@ function Ask() {
              console.log(res.data);
             alert("Question added successfully");
             //history.push("/");
+            history(`/view/${res.data._id}`);
+
           })
           .catch((err) => {
             console.log(err);
@@ -83,8 +85,11 @@ function Ask() {
       else if(body===""){
         alert("description is required")
      }
-      else if(tag?.length>0){
-      alert("tag is required")
+      else if(tag?.length<1){
+      alert("tag is required")}
+
+      else if(tag?.length>5){
+        alert("only 5 tags are allowed")
    }
 
     }

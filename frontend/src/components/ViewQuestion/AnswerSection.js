@@ -40,19 +40,19 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
   //     console.log(err)
   //   });
   // }, [answer,question_id]);
-  useEffect(() => {
-    axios.get(`http://localhost:3001/user/${answer.userId}`).then((res) => {
-      // console.log(res.data[0]);
-      SetansweredUser(res.data[0]);
-    }).catch(err => {
-      console.log(err)
-    });
-    if(isAcceptedAnswerId===answer._id){
-         SetisAcceptedAnswer(true)
-      }
-      setupvoteFlag(answer.upvoteFlag)   
-      setdownvoteFlag(answer.downvoteFlag) 
-  }, [answer]);
+  // useEffect(() => {
+  //   axios.get(`http://localhost:3001/user/${answer.userId}`).then((res) => {
+  //     // console.log(res.data[0]);
+  //     SetansweredUser(res.data[0]);
+  //   }).catch(err => {
+  //     console.log(err)
+  //   });
+  //   if(isAcceptedAnswerId===answer._id){
+  //        SetisAcceptedAnswer(true)
+  //     }
+  //     setupvoteFlag(answer.upvoteFlag)   
+  //     setdownvoteFlag(answer.downvoteFlag) 
+  // }, [answer]);
  
   // useEffect(() => {
   //   console.log("answer2222",isAcceptedAnswerId)
@@ -66,7 +66,7 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
     const body = {
       postId: answer._id,
       userId:LoggedInUser?LoggedInUser.userId:"",
-      // postType: "answer",
+      postType: "answer",
       voteType: e.target.id
     }
     if(!isLoggedIn){
@@ -97,6 +97,7 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
       console.log("inside accpeted answer")
       const body = {
         answerId: answer._id,
+        answeruserId: answer.userId,
         questionId: question_id,
         postType:!isAcceptedAnswer?"Accepted":"Removed"
       }
@@ -158,7 +159,7 @@ const [upvoteFlag, setupvoteFlag] = useState(false);
             readOnly={true}
             theme={"bubble"}
           />
-          <Author author={answeredUser} createdTime={answer?.addedAt} isQuestion={false}/>
+          <Author answer={answer} createdTime={answer?.addedAt} isQuestion={false}/>
 
           {/* {ReactHtmlParser(answer.description)} */}
           <Comments comments={answer?.comments} isQuestionComment={false} question_id={answer._id} answer_id={answer._id} />
