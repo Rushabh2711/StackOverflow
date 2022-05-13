@@ -8,6 +8,7 @@ import Box from "@mui/material/Box";
 import CircleIcon from "@mui/icons-material/Circle";
 import axios from "axios";
 import { useParams } from "react-router";
+import STRINGS from "../../constant";
 import { Link } from "react-router-dom";
 
 export default function UserTopTags(props) {
@@ -18,7 +19,7 @@ export default function UserTopTags(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url + `/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);

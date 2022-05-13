@@ -6,6 +6,7 @@ import Typography from "@mui/material/Typography";
 import { Grid, List, ListItem } from "@mui/material";
 import CircleIcon from "@mui/icons-material/Circle";
 import axios from "axios";
+import STRINGS from "../../constant";
 import { useParams } from "react-router";
 
 export default function UserBadges(props) {
@@ -17,7 +18,7 @@ export default function UserBadges(props) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url + `/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);

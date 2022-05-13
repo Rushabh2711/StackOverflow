@@ -9,6 +9,7 @@ import { useParams } from "react-router";
 import axios from "axios";
 import Moment from "react-moment";
 import TagList from "../ViewQuestion/TagList";
+import STRINGS from "../../constant";
 import TagsList from "../Cards/TagsList";
 import { Link } from "react-router-dom";
 
@@ -17,7 +18,7 @@ export default function UserQuestions(props) {
   const [questions, setQuestions] = useState("");
   useEffect(() => {
     console.log(id);
-    axios.get("http://localhost:3001/user/questions/" + id).then((response) => {
+    axios.get(STRINGS.url + "/user/questions/" + id).then((response) => {
       setQuestions(
         response.data
           .filter((x) => x.postType === "question")

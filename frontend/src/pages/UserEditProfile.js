@@ -20,6 +20,7 @@ import validator from "validator";
 import UserEditSidebar from "../components/UserProfile/UserEditSidebar";
 import axios from "axios";
 import { Navigate, useNavigate, useParams } from "react-router";
+import STRINGS from "../constant";
 
 export default function UserEditProfile() {
   const [image, setImage] = useState("");
@@ -70,7 +71,7 @@ export default function UserEditProfile() {
   useEffect(() => {
     console.log(loggedInUser.userId);
     axios
-      .get(`http://localhost:3001/user/` + id)
+      .get(STRINGS.url + `/user/` + id)
       .then((res) => {
         console.log(res.data);
         setUser(res.data[0]);
@@ -105,7 +106,7 @@ export default function UserEditProfile() {
       };
       console.log(data);
       axios
-        .put(`http://localhost:3001/user/editprofile`, data)
+        .put(STRINGS.url + `/user/editprofile`, data)
         .then((res) => {
           setMessage("Your profile has been updated");
           console.log(res);

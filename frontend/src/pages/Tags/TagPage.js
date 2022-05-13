@@ -7,6 +7,7 @@ import SearchIcon from "@mui/icons-material/Search";
 import TagsSearch from "./TagsSearch.js";
 import { Button, ButtonGroup } from "@mui/material";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import STRINGS from "../../constant";
 
 import "./tags.css";
 
@@ -101,7 +102,7 @@ export default function TagPage() {
   const [popular, setPopular] = useState("");
 
   useEffect(() => {
-    fetch("http://localhost:3001/tags")
+    fetch(STRINGS.url + "/tags")
       .then((res) => res.json())
       .then((data) => {
         setTags(data);
