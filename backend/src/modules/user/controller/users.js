@@ -131,13 +131,14 @@ export class UserController {
   };
 
   editUser = async (req, res) => {
-    const { _id, about, city, country } = req.body;
+    const { _id, about, city, country, image } = req.body;
     const data = { city: city, country: country };
     console.log(data);
     try {
       const response = await UserDetails.findByIdAndUpdate(_id, {
         location: data,
         about: about,
+        profilePicture: image,
       });
       console.log("user profile updated", response);
       res.status(200).send(response);
